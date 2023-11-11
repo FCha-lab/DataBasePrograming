@@ -2,80 +2,63 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="300dp"
+    android:paddingBottom="300dp"
     android:paddingLeft="30dp"
     android:paddingRight="30dp"
-    android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:orientation="horizontal"
-        >
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:orientation="horizontal"
-        >
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:text="CapyBara"
-            android:fontFamily="@font/pretendard_bold"
-            android:textSize="30dp"
-            android:fontWeight="900"
-            android:textColor="#000000"
-            />
-
-        <ImageButton
-            android:id="@+id/add"
-            android:src="@drawable/plus_square"
-            android:background="#FFFFFF"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-            android:layout_marginLeft="30dp"
-            />
-
-        <ImageButton
-            android:id="@+id/map_search"
-            android:src="@drawable/map_pin"
-            android:background="#FFFFFF"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-            android:layout_marginLeft="30dp"
-            />
-
-        <ImageButton
-            android:id="@+id/user_info"
-            android:src="@drawable/user"
-            android:background="#FFFFFF"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-            android:layout_marginLeft="30dp"
-            />
-    </LinearLayout>
+        android:text="CapyBara"
+        android:fontFamily="@font/pretendard_bold"
+        android:textStyle="italic"
+        android:textSize="30dp"
+        android:fontWeight="900"
+        android:textColor="#000000"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="39dp"
-        android:background="@drawable/view_border"
-        android:layout_marginBottom="30dp"
+        android:layout_height="42dp"
+        android:background="@drawable/round_border"
+        android:layout_marginBottom="15dp"
         android:orientation="horizontal"
         >
         <EditText
-            android:id="@+id/search_textview"
+            android:id="@+id/id_textview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity = "center"
             android:layout_weight="0.9"
-            android:hint="검색어를 입력하세요"
+            android:hint="아이디를 입력하세요"
+            android:background="@null"
+            android:paddingLeft="15dp"
+            android:fontFamily="@font/pretendard_medium"
+            android:textSize="20dp"
+            android:fontWeight="400"
+            android:textColor="#000000"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/round_border"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal"
+        >
+        <EditText
+            android:id="@+id/pw_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity = "center"
+            android:layout_weight="0.9"
+            android:hint="비밀번호를 입력하세요"
+            android:inputType="textPassword"
             android:background="@null"
             android:paddingLeft="15dp"
             android:fontFamily="@font/pretendard_medium"
@@ -84,8 +67,8 @@
             android:textColor="#000000"
             />
         <ImageButton
-            android:id="@+id/search_button"
-            android:src="@drawable/search"
+            android:id="@+id/show_pw_button"
+            android:src="@drawable/closedeye"
             android:background="#FFFFFF"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -96,128 +79,60 @@
             />
     </LinearLayout>
 
-    <GridLayout
+    <Button
+        android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:columnCount = "3"
-        android:rowCount= "2"
-        android:layout_gravity="center"
-        android:layout_marginBottom="30dp"
-        >
-        <ImageButton
-            android:id="@+id/reserve_info"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:src="@drawable/reserve_info"
-            android:background="@null"
-            android:layout_marginLeft="30dp"
-            />
+        android:background="@drawable/button_background"
+        android:text="로그인"
+        android:elevation="30dp"
+        android:textColor="#fff"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="15dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="예약정보"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:fontFamily="@font/pretendard_medium"
-            android:fontWeight="400"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
-            />
-        <ImageButton
-            android:id="@+id/diagno_info"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:src="@drawable/diagno_info"
-            android:background="@null"
-            android:layout_marginLeft="30dp"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="진료기록"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:fontFamily="@font/pretendard_medium"
-            android:fontWeight="400"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
-            />
-        <ImageButton
-            android:id="@+id/favorites"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:src="@drawable/favorites"
-            android:background="@null"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="즐겨찾기"
-            android:textColor="#000000"
-            android:textSize="15dp"
-            android:fontFamily="@font/pretendard_medium"
-            android:fontWeight="400"
-            android:layout_gravity="center"
-            />
-    </GridLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:background="#D3D3D3"
-        android:layout_marginBottom="30dp"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="진료과로 찾아보아요!"
-        android:fontFamily="@font/pretendard_bold"
-        android:textSize="20dp"
-        android:fontWeight="900"
-        android:textColor="#000000"
-        android:layout_marginBottom="30dp"
-        />
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
+        android:orientation="horizontal"
         >
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hospital_type_recycle"
-            android:scrollbars="horizontal"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/find_id"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="아이디 찾기"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="#000000"
+            android:textSize="10dp"
+            android:fontWeight="400"
+            android:gravity="center"
             />
-    </ScrollView>
+        <TextView
+            android:id="@+id/find_pw"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="비밀번호 찾기"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="#000000"
+            android:textSize="10dp"
+            android:fontWeight="400"
+            android:gravity="center"
+            />
+        <TextView
+            android:id="@+id/join"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="회원가입"
+            android:fontFamily="@font/pretendard_medium"
+            android:textColor="#000000"
+            android:textSize="10dp"
+            android:fontWeight="400"
+            android:gravity="center"
+            />
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:background="#D3D3D3"
-        android:layout_marginBottom="30dp"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="이런 병원을 추천해요!"
-        android:fontFamily="@font/pretendard_bold"
-        android:textSize="20dp"
-        android:fontWeight="900"
-        android:textColor="#000000"
-        android:layout_marginBottom="30dp"
-        />
-
+    </LinearLayout>
 </LinearLayout>
