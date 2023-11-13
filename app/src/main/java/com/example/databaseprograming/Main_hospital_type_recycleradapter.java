@@ -56,6 +56,20 @@ public class Main_hospital_type_recycleradapter extends RecyclerView.Adapter<Mai
         String text = typeText.get(position) ;
         holder.imageButton1.setImageResource(image);
         holder.textView1.setText(text) ;
+
+        holder.imageButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        holder.textView1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

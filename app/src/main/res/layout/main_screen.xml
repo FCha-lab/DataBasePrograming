@@ -5,227 +5,236 @@
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
         android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp">
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:orientation="horizontal"></LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
-                android:fontFamily="@font/pretendard_bold"
-                android:fontWeight="900"
-                android:text="CapyBara"
-                android:textColor="#000000"
-                android:textSize="30dp" />
+                android:orientation="vertical"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
 
-            <ImageButton
-                android:id="@+id/add"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="0.1"
-                android:background="#FFFFFF"
-                android:src="@drawable/plus_square" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:orientation="horizontal"></LinearLayout>
 
-            <ImageButton
-                android:id="@+id/map_search"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="0.1"
-                android:background="#FFFFFF"
-                android:src="@drawable/map_pin" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:orientation="horizontal">
 
-            <ImageButton
-                android:id="@+id/user_info"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_weight="0.1"
-                android:background="#FFFFFF"
-                android:src="@drawable/user" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:text="CapyBara"
+                        android:textColor="#000000"
+                        android:textSize="30dp" />
+<!--
+                    <ImageButton
+                        android:id="@+id/add"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="0.1"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/plus_square" />
+
+                    <ImageButton
+                        android:id="@+id/map_search"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="0.1"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/map_pin" />
+                        -->
+
+                    <ImageButton
+                        android:id="@+id/user_info_mani"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="30dp"
+                        android:layout_weight="0.1"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/user" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="39dp"
+                    android:layout_marginBottom="30dp"
+                    android:background="@drawable/view_border"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/search_textview"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.9"
+                        android:background="@null"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:hint="검색어를 입력하세요"
+                        android:paddingLeft="15dp"
+                        android:textColor="#000000"
+                        android:textSize="20dp" />
+
+                    <ImageButton
+                        android:id="@+id/search_button"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="0.1"
+                        android:background="#FFFFFF"
+                        android:src="@drawable/search" />
+                </LinearLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="30dp"
+                    android:columnCount="3"
+                    android:orientation="vertical"
+                    android:rowCount="2">
+
+                    <ImageButton
+                        android:id="@+id/reserve_info"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/reserve_info" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="예약정보"
+                        android:textColor="#000000"
+                        android:textSize="15dp" />
+
+                    <ImageButton
+                        android:id="@+id/diagno_info"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/diagno_info" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="30dp"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="진료기록"
+                        android:textColor="#000000"
+                        android:textSize="15dp" />
+
+                    <ImageButton
+                        android:id="@+id/favorites"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:background="@null"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/favorites" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/pretendard_medium"
+                        android:text="즐겨찾기"
+                        android:textColor="#000000"
+                        android:textSize="15dp" />
+                </GridLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:layout_marginBottom="30dp"
+                android:background="#D3D3D3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="진료과로 찾아보아요!"
+                    android:textColor="#000000"
+                    android:textSize="20dp" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/hospital_type_recycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:scrollbars="horizontal" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="2dp"
+                android:layout_marginBottom="30dp"
+                android:background="#D3D3D3" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="30dp"
+                android:paddingRight="30dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:text="이런 병원을 추천해요!"
+                    android:textColor="#000000"
+                    android:textSize="20dp" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recomend_recycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:scrollbars="horizontal" />
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="39dp"
-            android:layout_marginBottom="30dp"
-            android:background="@drawable/view_border"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/search_textview"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.9"
-                android:background="@null"
-                android:fontFamily="@font/pretendard_medium"
-                android:fontWeight="400"
-                android:hint="검색어를 입력하세요"
-                android:paddingLeft="15dp"
-                android:textColor="#000000"
-                android:textSize="20dp" />
-
-            <ImageButton
-                android:id="@+id/search_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="0.1"
-                android:background="#FFFFFF"
-                android:src="@drawable/search" />
-        </LinearLayout>
-
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="30dp"
-            android:columnCount="3"
-            android:orientation="vertical"
-            android:rowCount="2">
-
-            <ImageButton
-                android:id="@+id/reserve_info"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:background="@null"
-                android:scaleType="centerCrop"
-                android:src="@drawable/reserve_info" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:fontWeight="400"
-                android:text="예약정보"
-                android:textColor="#000000"
-                android:textSize="15dp" />
-
-            <ImageButton
-                android:id="@+id/diagno_info"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:background="@null"
-                android:scaleType="centerCrop"
-                android:src="@drawable/diagno_info" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="30dp"
-                android:fontFamily="@font/pretendard_medium"
-                android:fontWeight="400"
-                android:text="진료기록"
-                android:textColor="#000000"
-                android:textSize="15dp" />
-
-            <ImageButton
-                android:id="@+id/favorites"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="center"
-                android:background="@null"
-                android:scaleType="centerCrop"
-                android:src="@drawable/favorites" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/pretendard_medium"
-                android:fontWeight="400"
-                android:text="즐겨찾기"
-                android:textColor="#000000"
-                android:textSize="15dp" />
-        </GridLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_marginBottom="30dp"
-        android:background="#D3D3D3" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:fontWeight="900"
-            android:text="진료과로 찾아보아요!"
-            android:textColor="#000000"
-            android:textSize="20dp" />
-
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hospital_type_recycle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="horizontal"
-            android:layout_marginBottom="30dp"/>
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="2dp"
-        android:layout_marginBottom="30dp"
-        android:background="#D3D3D3" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:fontWeight="900"
-            android:text="이런 병원을 추천해요!"
-            android:textColor="#000000"
-            android:textSize="20dp" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recomend_recycle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
-    </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
