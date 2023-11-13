@@ -28,6 +28,8 @@ public class Main_hospital_type_recycleradapter extends RecyclerView.Adapter<Mai
             imageButton1 = itemView.findViewById(R.id.main_recycler_hospital_icon);
             textView1 = itemView.findViewById(R.id.main_recycler_hospital_text) ;
         }
+
+
     }
 
     Main_hospital_type_recycleradapter(ArrayList<Integer> tIcon, ArrayList<String> tText) {
