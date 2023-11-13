@@ -7,8 +7,8 @@
 
     <EditText
         android:id="@+id/editTextTime"
-        android:layout_width="100"
-        android:layout_height="30"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="30dp"
         android:ems="10"
         android:inputType="time" />

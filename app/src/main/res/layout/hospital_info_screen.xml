@@ -96,7 +96,7 @@
                     android:layout_width="35dp"
                     android:layout_height="30dp"
                     android:background="@null"
-                    android:scaleType="fitXY"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/heart_empty" />
 
                 <TextView
