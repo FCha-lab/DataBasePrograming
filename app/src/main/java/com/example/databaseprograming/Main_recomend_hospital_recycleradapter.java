@@ -68,7 +68,7 @@ public class Main_recomend_hospital_recycleradapter extends RecyclerView.Adapter
         holder.textView1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("1", position + "번째 리사이클러");
+
             }
         });
 
@@ -76,7 +76,6 @@ public class Main_recomend_hospital_recycleradapter extends RecyclerView.Adapter
             @Override
             public void onClick(View view) {
 
-                Log.d("2", position + "번째 리사이클러");
             }
         });
 
@@ -84,7 +83,6 @@ public class Main_recomend_hospital_recycleradapter extends RecyclerView.Adapter
             @Override
             public void onClick(View view) {
 
-                Log.d("3", position + "번째 리사이클러");
             }
         });
     }
