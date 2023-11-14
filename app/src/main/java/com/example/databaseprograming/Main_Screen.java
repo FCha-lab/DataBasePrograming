@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,8 @@ public class Main_Screen extends AppCompatActivity {
     //상단 아이콘
     ImageButton user_info_mani;
 
-    //검색창 아이콘
+    //검색창
+    EditText search_bar;
     ImageButton search_button;
 
     //3가지 아이콘
@@ -98,9 +100,10 @@ public class Main_Screen extends AppCompatActivity {
 
 
 
-        //버튼들 연결
+        //위젯을 연결
         user_info_mani = findViewById(R.id.user_info_mani);
 
+        search_bar = findViewById(R.id.search_textview);
         search_button = findViewById(R.id.search_button);
 
         reserve_info = findViewById(R.id.reserve_info);
