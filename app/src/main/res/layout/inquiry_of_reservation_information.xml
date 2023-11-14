@@ -50,20 +50,21 @@
         android:background="@drawable/view_border"
         android:orientation="horizontal"
         >
+
         <EditText
             android:id="@+id/search_textview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity = "center"
+            android:layout_gravity="center"
             android:layout_weight="0.9"
-            android:hint="병원명을 입력하세요"
             android:background="@null"
-            android:paddingLeft="15dp"
             android:fontFamily="@font/pretendard_medium"
-            android:textSize="20dp"
             android:fontWeight="400"
+            android:hint="병원명을 입력하세요"
+            android:paddingLeft="15dp"
             android:textColor="#000000"
-            />
+            android:textSize="20dp" />
+
         <ImageButton
             android:id="@+id/calendar_button"
             android:layout_width="10dp"

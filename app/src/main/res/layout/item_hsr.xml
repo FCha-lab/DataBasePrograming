@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/hsr_button_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/view_border">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="30dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/hospital_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="천안 오케이 내과"
+                android:textColor="#000000"
+                android:textSize="22dp" />
+
+            <TextView
+                android:id="@+id/hospital_kind"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="20dp"
+                android:text="내과"
+                android:gravity="left"
+                android:textColor="#000000"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="0dp">
+
+                <ImageButton
+                    android:id="@+id/hospital_like"
+                    android:layout_width="35dp"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:scaleType="fitXY"
+                    android:gravity="center"
+                    android:src="@drawable/heart_empty" />
+
+                <TextView
+                    android:id="@+id/like_count"
+                    android:layout_width="35dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="50"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="영업시간"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/hospital_operation_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="09:00~18:00"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="전화번호"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/hospital_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="041-553-2479"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="30dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hospital_adress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="충첨남도 천안시 서북구 ..."
+                android:layout_marginLeft="10dp"
+                android:textColor="#000000"
+                android:textSize="16dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

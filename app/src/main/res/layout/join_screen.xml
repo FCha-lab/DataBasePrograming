@@ -72,10 +72,10 @@
                 android:background="@drawable/round_border"
                 android:fontFamily="@font/pretendard_medium"
                 android:fontWeight="400"
+                android:inputType="text"
                 android:paddingLeft="15dp"
                 android:textColor="#000000"
-                android:textSize="20dp"
-                android:inputType="text" />
+                android:textSize="20dp" />
 
             <Button
                 android:id="@+id/check_duplicate"
