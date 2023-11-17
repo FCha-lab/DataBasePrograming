@@ -51,15 +51,14 @@ public class Main_Screen extends Fragment {
     ImageButton diagno_info;
     ImageButton favorites;
 
-    public Main_Screen(Context c){
-        sc = (Screen_controller) c;
+    public Main_Screen(){
+
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Log.d("확인", "프래그먼트 전환 테스트");
         View rootView = inflater.inflate(R.layout.main_screen, container, false);
 
         //과목별 검색 recyclerview 리스트 추가
@@ -126,7 +125,14 @@ public class Main_Screen extends Fragment {
         user_info_mani.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sc.replaceToLogin();
+                //회원 정보 페이지 이동 시도
+                if(sc.getIsLogin()){
+                    //로그인 되어있을 경우
+                    sc.replaceFragment(sc.getScreen(new Main_Screen()));
+                }else {
+                    //로그인 안 되어있을 경우
+                    sc.replaceFragment(sc.getScreen(new Login_Screen()));
+                }
             }
         });
 
@@ -140,6 +146,8 @@ public class Main_Screen extends Fragment {
         reserve_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //예약정보 이미지를 눌렀을 때
+                sc.replaceFragment(sc.getScreen(new Reservation_Screen()));
 
             }
         });
@@ -162,10 +170,21 @@ public class Main_Screen extends Fragment {
         return rootView;
     }
 
+    //Screen Controller 초기화 및 메모리 해제
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof Screen_controller) {
+            sc = (Screen_controller) context;
+        } else {
+            throw new ClassCastException(context.toString() + " must implement Screen_controller");
+        }
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
         sc = null; // 참조 해제
     }
+
 }
