@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DataBasePrograming">
         <activity
-            android:name=".Screen_controller"
+            android:name=".test"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
