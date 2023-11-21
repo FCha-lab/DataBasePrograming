@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class Hospital_Info_Screen extends Fragment {
 
@@ -52,12 +55,29 @@ public class Hospital_Info_Screen extends Fragment {
 
         View rootView = inflater.inflate(R.layout.hospital_info_screen, container, false);
 
+        ArrayList<Boolean> gender = new ArrayList<Boolean>() {
+            {
+                add(false);
+                add(true);
+                add(true);
+            }
+        };
+
+        ArrayList<String> name = new ArrayList<String>(
+                Arrays.asList("장현희", "조승훈", "정동주")
+        );
+
+        ArrayList<String> university = new ArrayList<String>(
+                Arrays.asList("공주대학교", "충남대학교", "서울대학교")
+        );
+
+
         //리사이클러뷰 연결
         hospital_doctor_list = rootView.findViewById(R.id.hospital_doctor_recycle);
 
         //리사이클러뷰 어댑터 초기화
-        hospital_doctor_list.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        hDoctor_recycler = new Hospital_info_doctor_recycleradapter();
+        hospital_doctor_list.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        hDoctor_recycler = new Hospital_info_doctor_recycleradapter(gender, name, university);
         hospital_doctor_list.setAdapter(hDoctor_recycler);
 
         //리사이클러뷰 어댑터 가로 스크롤바 없애기
@@ -99,11 +119,11 @@ public class Hospital_Info_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //좋아요 버튼을 눌렀을 때
-                if(isHospitalLiked){
+                if (isHospitalLiked) {
                     //만약 이미 좋아요 상태라면?
                     hospital_like.setImageResource(R.drawable.heart_full);
                     like_count.setText("");
-                }else{
+                } else {
                     //만약 좋아요를 누르지 않은 상태였다면?
                     hospital_like.setImageResource(R.drawable.heart_empty);
                     like_count.setText("");
@@ -117,7 +137,6 @@ public class Hospital_Info_Screen extends Fragment {
 
             }
         });
-
 
 
         return rootView;

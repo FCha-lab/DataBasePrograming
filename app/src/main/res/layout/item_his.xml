@@ -70,14 +70,6 @@
                 android:textColor="#4B4B4B"
                 android:textSize="16dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="의과대학"
-                android:layout_marginLeft="10dp"
-                android:textColor="#4B4B4B"
-                android:textSize="16dp" />
-
         </LinearLayout>
 
     </LinearLayout>
