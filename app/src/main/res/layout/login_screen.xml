@@ -104,27 +104,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/find_id"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:fontFamily="@font/pretendard_medium"
-                android:fontWeight="400"
-                android:gravity="center"
-                android:textColor="#000000"
-                android:textSize="10dp" />
 
-            <TextView
-                android:id="@+id/find_pw"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:fontFamily="@font/pretendard_medium"
-                android:fontWeight="400"
-                android:gravity="center"
-            android:textColor="#000000"
-            android:textSize="10dp" />
 
             <TextView
                 android:id="@+id/join"
@@ -136,7 +116,7 @@
                 android:gravity="center"
                 android:text="회원가입"
                 android:textColor="#000000"
-                android:textSize="10dp" />
+                android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
 

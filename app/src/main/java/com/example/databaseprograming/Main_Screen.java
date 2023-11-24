@@ -2,8 +2,6 @@ package com.example.databaseprograming;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,13 +25,13 @@ public class Main_Screen extends Fragment {
 
     //리사이클러뷰 - 진료과목별
     RecyclerView hospital_list;
-    Main_hospital_type_recycleradapter hType_recycler;
+    Main_hospital_type_recyclerAdapter hType_recycler;
     ArrayList<Integer> hospital_icon;
     ArrayList<String> hospital_text;
 
     //리사이클러뷰 - 추천
     RecyclerView recomend_list;
-    Main_recomend_hospital_recycleradapter rList_recycler;
+    Main_recommend_hospital_recyclerAdapter rList_recycler;
     ArrayList<String> recomend_type;
     ArrayList<String> recomend_name;
     ArrayList<String> recomend_info;
@@ -51,9 +48,6 @@ public class Main_Screen extends Fragment {
     ImageButton diagno_info;
     ImageButton favorites;
 
-    public Main_Screen(){
-
-    }
 
     @Nullable
     @Override
@@ -96,12 +90,12 @@ public class Main_Screen extends Fragment {
 
         //리사이클러뷰 어댑터 초기화
         hospital_list.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
-        hType_recycler = new Main_hospital_type_recycleradapter(hospital_icon, hospital_text);
+        hType_recycler = new Main_hospital_type_recyclerAdapter(hospital_icon, hospital_text);
         hospital_list.setAdapter(hType_recycler);
 
 
         recomend_list.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.HORIZONTAL,false));
-        rList_recycler = new Main_recomend_hospital_recycleradapter(recomend_type, recomend_name, recomend_info);
+        rList_recycler = new Main_recommend_hospital_recyclerAdapter(recomend_type, recomend_name, recomend_info);
         recomend_list.setAdapter(rList_recycler);
 
         //리사이클러뷰 어댑터 가로 스크롤바 없애기
@@ -126,12 +120,12 @@ public class Main_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //회원 정보 페이지 이동 시도
-                if(sc.getIsLogin()){
+                if(sc.getToken() != null){
                     //로그인 되어있을 경우
-                    sc.replaceFragment(sc.getScreen(new Main_Screen()));
+                    sc.replaceFragment(new Modification_Screen());
                 }else {
                     //로그인 안 되어있을 경우
-                    sc.replaceFragment(sc.getScreen(new Login_Screen()));
+                    sc.replaceFragment(new Login_Screen());
                 }
             }
         });

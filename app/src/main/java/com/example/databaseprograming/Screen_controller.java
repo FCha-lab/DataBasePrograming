@@ -1,5 +1,6 @@
 package com.example.databaseprograming;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -8,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 public class Screen_controller extends AppCompatActivity {
 
@@ -25,8 +28,11 @@ public class Screen_controller extends AppCompatActivity {
     private Reservation_Screen reservation_screen;
     private Hospital_Info_Screen hospital_info_screen;
 
-    //사용자 데이터 선언
-    private boolean isLogin;
+    //토큰 관련 암호화 변수 선언
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private MasterKey masterKey;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,8 +49,22 @@ public class Screen_controller extends AppCompatActivity {
         reservation_screen = new Reservation_Screen();
         hospital_info_screen = new Hospital_Info_Screen();
 
-        //사용자 데이터 불러오기
-        isLogin = false;
+        //토큰 관련 변수 셋팅
+        try{
+            masterKey = new MasterKey.Builder(this)
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+            sharedPreferences = EncryptedSharedPreferences.create(
+                    this,
+                    "sharedPreferences",
+                    masterKey, // MasterKey 객체
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        }catch (Exception e){
+           e.printStackTrace();
+        }
+        editor = sharedPreferences.edit();
 
         //초기 화면 설정하기
         transaction = fragmentManager.beginTransaction();
@@ -58,13 +78,22 @@ public class Screen_controller extends AppCompatActivity {
     }
 
 
-    //로그인 여부 반환 메서드
-    public boolean getIsLogin() {
-        return isLogin;
+    //토큰 반환 메서드
+    public String getToken() {
+        return sharedPreferences.getString("token", null);
     }
 
+    public void setToken(String t){
+        editor.putString("token", t);
+        editor.apply();
+    }
+
+
+
     //화면 변환 메서드
-    public void replaceFragment(Fragment target) {
+    public void replaceFragment(Fragment t) {
+        Fragment target = getScreen(t);
+
         transaction.addToBackStack(null);
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.screen, target);

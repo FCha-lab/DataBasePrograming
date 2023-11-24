@@ -2,16 +2,31 @@ package com.example.databaseprograming;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+import okhttp3.Headers;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Join_Screen extends Fragment {
 
@@ -40,6 +55,9 @@ public class Join_Screen extends Fragment {
     //페이지 관련 변수 선언
     private boolean isShowedpw;
 
+    //서버 관련 변수 선언
+    private Join_RetrofitClient join_retrofitClient;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,6 +85,10 @@ public class Join_Screen extends Fragment {
         //페이지 필요 변수 초기화
         isShowedpw = false;
 
+        //서버 관련 처리
+        join_retrofitClient = new Join_RetrofitClient();
+        Join_RetrofitInterface r1 = join_retrofitClient.getApiService();
+
         //버튼에 대한 리스너 등록
         page_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +100,80 @@ public class Join_Screen extends Fragment {
         join_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //회원가입 버튼을 누를 경우
+                //입력된 회원가입 정보를 저장
+                String id = id_input.getText().toString();
+                String pw = pw_input.getText().toString();
+                String name = name_input.getText().toString();
+                String birthday = birthday_input.getText().toString();
+                String phoneNumber = first_phone_input.getText().toString() + "-" + middle_phone_input.getText().toString() + "-" + last_phone_input.getText().toString();
 
+                //공백 지우기
+                id = id.trim();
+                pw = pw.trim();
+                name = name.trim();
+                birthday = birthday.trim();
+                phoneNumber = phoneNumber.trim();
+
+                //JSON 객체를 생성하고 입력된 정보를 저장
+                Join_Request joinRequest = new Join_Request();
+                joinRequest.setuserId(id);
+                joinRequest.setpassword(pw);
+                joinRequest.setuserName(name);
+                joinRequest.setbirthDate(birthday);
+                joinRequest.setphoneNumber(phoneNumber);
+
+                //통신 시도
+                r1.getJoinResponse(joinRequest).enqueue(new Callback<Join_Response>() {
+                    @Override
+                    public void onResponse(Call<Join_Response> call, Response<Join_Response> response) {
+                        //정상적인 통신이 진행될 경우
+                        Log.d("통신 확인", response.toString());
+                        if (response.isSuccessful() || response.body() != null) {
+                            Join_Response result = response.body();
+                            Log.d("통신 확인", result.toString());
+
+                            Log.d("통신 확인", "회원가입 확인 완료!!!!" + result.toString());
+
+                            sc.replaceFragment(new Login_Screen());
+
+                        } else {
+                            //오류 처리
+                            Login_Response errorObject = null;
+                            ResponseBody rb = response.errorBody();
+                            if (rb != null) {
+                                try {
+                                    // 오류 응답을 문자열로 읽어옴
+                                    String errorResponse = rb.string();
+
+                                    // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                                    Gson gson = new Gson();
+                                    errorObject = gson.fromJson(errorResponse, Login_Response.class);
+
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    if (rb != null) {
+                                        rb.close(); // 반드시 닫아주어야 함
+                                    }
+                                }
+
+                                if (errorObject != null) {
+                                    // 오류 응답 처리
+                                    Log.d("통신 확인", "오류 응답: " + errorObject.toString());
+                                }
+                                Toast.makeText(sc.getApplicationContext(), "아이디와 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Join_Response> call, Throwable t) {
+                        //서버에 문제가 있을 경우
+                        Log.d("통신 확인", "onfailure 실패 ");
+                    }
+                });
             }
         });
 
@@ -96,12 +191,14 @@ public class Join_Screen extends Fragment {
                 if(isShowedpw){
                     //만약 비밀번호가 보이는 상태라면?
                     show_pw_button.setImageResource(R.drawable.closedeye);
-                    pw_input.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    pw_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    pw_input.invalidate();
                     isShowedpw = false;
                 }else{
                     //만약 비밀번호가 안 보이는 상태라면?
                     show_pw_button.setImageResource(R.drawable.openedeye);
-                    pw_input.setInputType(android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    pw_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    pw_input.invalidate();
                     isShowedpw = true;
                 }
             }

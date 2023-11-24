@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class Main_hospital_type_recycleradapter extends RecyclerView.Adapter<Main_hospital_type_recycleradapter.ViewHolder>{
+public class Main_hospital_type_recyclerAdapter extends RecyclerView.Adapter<Main_hospital_type_recyclerAdapter.ViewHolder>{
 
     private ArrayList<Integer> typeIcon = null;
     private ArrayList<String> typeText = null;
@@ -32,26 +32,26 @@ public class Main_hospital_type_recycleradapter extends RecyclerView.Adapter<Mai
 
     }
 
-    Main_hospital_type_recycleradapter(ArrayList<Integer> tIcon, ArrayList<String> tText) {
+    Main_hospital_type_recyclerAdapter(ArrayList<Integer> tIcon, ArrayList<String> tText) {
          typeIcon = tIcon;
          typeText = tText;
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
     @Override
-    public Main_hospital_type_recycleradapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Main_hospital_type_recyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext() ;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
 
         View view = inflater.inflate(R.layout.hospital_type, parent, false) ;
-        Main_hospital_type_recycleradapter.ViewHolder vh = new Main_hospital_type_recycleradapter.ViewHolder(view) ;
+        Main_hospital_type_recyclerAdapter.ViewHolder vh = new Main_hospital_type_recyclerAdapter.ViewHolder(view) ;
 
         return vh ;
     }
 
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
-    public void onBindViewHolder(Main_hospital_type_recycleradapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(Main_hospital_type_recyclerAdapter.ViewHolder holder, int position) {
         Integer image = typeIcon.get(position);
         String text = typeText.get(position) ;
 

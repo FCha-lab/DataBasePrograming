@@ -39,7 +39,7 @@ public class Hospital_Info_Screen extends Fragment {
 
     //의사 정보 리사이클러뷰 관련 변수 선언
     private RecyclerView hospital_doctor_list;
-    private Hospital_info_doctor_recycleradapter hDoctor_recycler;
+    private Hospital_info_doctor_recyclerAdapter hDoctor_recycler;
 
     //상호작용 관련 위젯 변수 선언
     private ImageButton hospital_like;
@@ -77,7 +77,7 @@ public class Hospital_Info_Screen extends Fragment {
 
         //리사이클러뷰 어댑터 초기화
         hospital_doctor_list.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        hDoctor_recycler = new Hospital_info_doctor_recycleradapter(gender, name, university);
+        hDoctor_recycler = new Hospital_info_doctor_recyclerAdapter(gender, name, university);
         hospital_doctor_list.setAdapter(hDoctor_recycler);
 
         //리사이클러뷰 어댑터 가로 스크롤바 없애기

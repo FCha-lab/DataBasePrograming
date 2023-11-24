@@ -1,7 +1,6 @@
 package com.example.databaseprograming;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Main_recomend_hospital_recycleradapter extends RecyclerView.Adapter<Main_recomend_hospital_recycleradapter.ViewHolder>{
+public class Main_recommend_hospital_recyclerAdapter extends RecyclerView.Adapter<Main_recommend_hospital_recyclerAdapter.ViewHolder>{
 
 
     private List<String> typeText = null;
@@ -35,7 +34,7 @@ public class Main_recomend_hospital_recycleradapter extends RecyclerView.Adapter
 
     }
 
-    Main_recomend_hospital_recycleradapter(ArrayList<String> tText, ArrayList<String> nText, ArrayList<String> iText) {
+    Main_recommend_hospital_recyclerAdapter(ArrayList<String> tText, ArrayList<String> nText, ArrayList<String> iText) {
         typeText = tText;
         nameText = nText;
         infoText = iText;
@@ -43,19 +42,19 @@ public class Main_recomend_hospital_recycleradapter extends RecyclerView.Adapter
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
     @Override
-    public Main_recomend_hospital_recycleradapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public Main_recommend_hospital_recyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext() ;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
 
         View view = inflater.inflate(R.layout.hospital_recomendation, parent, false) ;
-        Main_recomend_hospital_recycleradapter.ViewHolder vh = new Main_recomend_hospital_recycleradapter.ViewHolder(view) ;
+        Main_recommend_hospital_recyclerAdapter.ViewHolder vh = new Main_recommend_hospital_recyclerAdapter.ViewHolder(view) ;
 
         return vh ;
     }
 
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
-    public void onBindViewHolder(Main_recomend_hospital_recycleradapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(Main_recommend_hospital_recyclerAdapter.ViewHolder holder, int position) {
         String text1 = typeText.get(position);
         String text2 = nameText.get(position);
         String text3 = infoText.get(position);
