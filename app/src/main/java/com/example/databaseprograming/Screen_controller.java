@@ -27,6 +27,10 @@ public class Screen_controller extends AppCompatActivity {
     private Join_Screen join_screen;
     private Reservation_Screen reservation_screen;
     private Hospital_Info_Screen hospital_info_screen;
+    private Hospital_Search_Results_Screen hospital_search_results_screen;
+    private Inquiry_of_Reservation_Information_Screen inquiry_of_reservation_information_screen;
+    private Medical_Records_Inquiry_Screen medical_records_inquiry_screen;
+    private Medical_Records_Screen medical_records_screen;
 
     //토큰 관련 암호화 변수 선언
     private SharedPreferences sharedPreferences;
@@ -48,6 +52,10 @@ public class Screen_controller extends AppCompatActivity {
         join_screen = new Join_Screen();
         reservation_screen = new Reservation_Screen();
         hospital_info_screen = new Hospital_Info_Screen();
+        hospital_search_results_screen = new Hospital_Search_Results_Screen();
+        inquiry_of_reservation_information_screen = new Inquiry_of_Reservation_Information_Screen();
+        medical_records_inquiry_screen = new Medical_Records_Inquiry_Screen();
+        medical_records_screen = new Medical_Records_Screen();
 
         //토큰 관련 변수 셋팅
         try{
@@ -115,8 +123,14 @@ public class Screen_controller extends AppCompatActivity {
             return join_screen;
         }else if(target instanceof Reservation_Screen){
             return reservation_screen;
-        }else if(target instanceof Hospital_Info_Screen){
-            return hospital_info_screen;
+        }else if(target instanceof Hospital_Search_Results_Screen){
+            return hospital_search_results_screen;
+        }else if(target instanceof Inquiry_of_Reservation_Information_Screen){
+            return inquiry_of_reservation_information_screen;
+        }else if(target instanceof Medical_Records_Screen){
+            return medical_records_screen;
+        }else if(target instanceof Medical_Records_Inquiry_Screen){
+            return medical_records_inquiry_screen;
         }
         return null;
     }
@@ -138,7 +152,7 @@ public class Screen_controller extends AppCompatActivity {
             finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
             android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
 
-        } else if (current_page instanceof Login_Screen || current_page instanceof Reservation_Screen) {
+        } else if (current_page instanceof Login_Screen || current_page instanceof Reservation_Screen|| current_page instanceof Inquiry_of_Reservation_Information_Screen|| current_page instanceof Medical_Records_Inquiry_Screen) {
 
             replaceFragment(main_screen);
 
@@ -146,7 +160,12 @@ public class Screen_controller extends AppCompatActivity {
 
             replaceFragment(login_screen);
 
+        } else if (current_page instanceof Medical_Records_Screen) {
+
+            replaceFragment(medical_records_inquiry_screen);
+
         }
+
         return;
     }
 

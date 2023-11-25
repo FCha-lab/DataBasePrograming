@@ -103,7 +103,7 @@ public class Reservation_Screen extends Fragment {
                 sc.onBackPressed();
             }
         });
-        
+
         reservation_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
