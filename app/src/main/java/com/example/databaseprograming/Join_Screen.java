@@ -3,7 +3,6 @@ package com.example.databaseprograming;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +19,6 @@ import androidx.fragment.app.Fragment;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.StringTokenizer;
-
-import okhttp3.Headers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
