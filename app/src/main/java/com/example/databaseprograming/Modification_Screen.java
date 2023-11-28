@@ -3,19 +3,28 @@ package com.example.databaseprograming;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
 import java.util.StringTokenizer;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Modification_Screen extends Fragment {
 
@@ -42,6 +51,9 @@ public class Modification_Screen extends Fragment {
 
     //페이지 관련 변수 선언
     private boolean isShowedpw;
+
+    //서버 관련 변수 선언
+    Modification_Request_RetrofitClient modification_request_retrofitClient;
 
     @Nullable
     @Override
@@ -116,6 +128,8 @@ public class Modification_Screen extends Fragment {
         }
         setArguments(null);
 
+        //서버 관련 변수 초기화
+        modification_request_retrofitClient = new Modification_Request_RetrofitClient();
 
         //버튼에 대한 리스너 등록
         page_back.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +145,80 @@ public class Modification_Screen extends Fragment {
             public void onClick(View view) {
                 //수정하기 버튼을 눌렀을 경우
 
+                Modification_Request_RetrofitInterface r1 = modification_request_retrofitClient.getApiService(sc.getToken());
+                //입력된 정보를 담기
+                String pw = null;
+                String name = null;
+                String birthday = null;
+                String phoneNumber = null;
+                try {
+                    pw = pw_input.getText().toString();
+                    name = name_input.getText().toString();
+                    birthday = birthday_input.getText().toString();
+                    phoneNumber = first_phone_input.getText().toString() + "-" + middle_phone_input.getText().toString() + "-" + last_phone_input.getText().toString();
+                }catch(Exception e){
+                    Toast.makeText(sc.getApplicationContext(), "정보 입력 상황을 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //수정할 정보를 JSON객체에 실기
+                UserInfo_Modification userInfo_modification = new UserInfo_Modification();
+                userInfo_modification.setPassword(pw);
+                userInfo_modification.setBirthDate(birthday);
+                userInfo_modification.setPhoneNumber(phoneNumber);
+                userInfo_modification.setUserName(name);
+
+                r1.setUserInfo(userInfo_modification).enqueue(new Callback<UserInfo_Modification>() {
+                    @Override
+                    public void onResponse(Call<UserInfo_Modification> call, Response<UserInfo_Modification> response) {
+                        //정상적인 통신이 진행될 경우
+                        Log.d("통신 확인", response.toString());
+                        if (response.isSuccessful() || response.body() != null) {
+                            UserInfo_Modification result = response.body();
+                            Log.d("통신 확인", result.toString());
+
+                            Log.d("통신 확인", "회원정보 수정 완료!!!!" + result.toString());
+
+                            Toast.makeText(sc.getApplicationContext(), "회원정보 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                            sc.replaceFragment(new Main_Screen());
+
+                        } else {
+                            //오류 처리
+                            UserInfo_Modification errorObject = null;
+                            ResponseBody rb = response.errorBody();
+                            if (rb != null) {
+                                try {
+                                    // 오류 응답을 문자열로 읽어옴
+                                    String errorResponse = rb.string();
+
+                                    // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                                    Gson gson = new Gson();
+                                    errorObject = gson.fromJson(errorResponse, UserInfo_Modification.class);
+
+                                    Log.d("통신 확인", "오류 응답: " + errorResponse);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    if (rb != null) {
+                                        rb.close(); // 반드시 닫아주어야 함
+                                    }
+                                }
+
+                                if (errorObject != null) {
+                                    // 오류 응답 처리
+                                    Log.d("통신 확인", "오류 응답: " + errorObject.toString());
+                                }
+                                Toast.makeText(sc.getApplicationContext(), "실패 정보 : ", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<UserInfo_Modification> call, Throwable t) {
+                        //서버에 문제가 있을 경우
+                        Log.d("통신 확인", "onfailure 실패 ");
+                    }
+                });
 
             }
         });

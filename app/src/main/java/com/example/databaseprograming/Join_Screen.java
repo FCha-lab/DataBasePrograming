@@ -107,7 +107,6 @@ public class Join_Screen extends Fragment {
 
         //서버 관련 처리
         join_retrofitClient = new Join_RetrofitClient();
-        Join_RetrofitInterface r1 = join_retrofitClient.getApiService();
 
         //버튼에 대한 리스너 등록
         page_back.setOnClickListener(new View.OnClickListener() {
@@ -121,21 +120,20 @@ public class Join_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //회원가입 버튼을 누를 경우
-                //입력된 회원가입 정보를 저장
-                String id = id_input.getText().toString();
-                String pw = pw_input.getText().toString();
-                String name = name_input.getText().toString();
-                String birthday = birthday_input.getText().toString();
-                String phoneNumber = first_phone_input.getText().toString() + "-" + middle_phone_input.getText().toString() + "-" + last_phone_input.getText().toString();
 
-                //공백 지우기
+                Join_RetrofitInterface r1 = join_retrofitClient.getApiService();
+                //입력된 회원가입 정보를 저장
+                String id = null;
+                String pw = null;
+                String name = null;
+                String birthday = null;
+                String phoneNumber = null;
                 try {
-                    id = id.trim();
-                    pw = pw.trim();
-                    name = name.trim();
-                    birthday = birthday.trim();
-                    birthday = birthday.substring(0, 4)+"-"+ birthday.substring(4, 6) + "-" + birthday.substring(6, 8);
-                    phoneNumber = phoneNumber.trim();
+                    id = id_input.getText().toString();
+                    pw = pw_input.getText().toString();
+                    name = name_input.getText().toString();
+                    birthday = birthday_input.getText().toString();
+                    phoneNumber = first_phone_input.getText().toString() + "-" + middle_phone_input.getText().toString() + "-" + last_phone_input.getText().toString();
                 }catch(Exception e){
                     Toast.makeText(sc.getApplicationContext(), "정보 입력 상황을 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
                     return;
