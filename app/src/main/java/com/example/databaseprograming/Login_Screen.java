@@ -136,6 +136,7 @@ public class Login_Screen extends Fragment {
                             token = authorization.nextToken();
 
                             sc.setToken(token);
+                            Toast.makeText(sc.getApplicationContext(), "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                             sc.replaceFragment(new Main_Screen());
 
                         } else {

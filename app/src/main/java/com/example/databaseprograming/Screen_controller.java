@@ -112,7 +112,7 @@ public class Screen_controller extends AppCompatActivity {
     }
 
     //요구하는 화면 클래스 반환
-    private Fragment getScreen(Fragment target) {
+    public Fragment getScreen(Fragment target) {
         if (target instanceof Main_Screen) {
             return main_screen;
         } else if (target instanceof Login_Screen) {

@@ -114,7 +114,7 @@
                     android:inputType="textPassword"
                     android:textColor="#000000"
                     android:textSize="20dp"
-                    android:text="회원비밀번호"/>
+                    android:text=""/>
 
                 <ImageButton
                     android:id="@+id/show_pw_button"

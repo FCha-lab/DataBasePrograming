@@ -161,11 +161,12 @@ public class Join_Screen extends Fragment {
 
                             Log.d("통신 확인", "회원가입 확인 완료!!!!" + result.toString());
 
+                            Toast.makeText(sc.getApplicationContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
                             sc.replaceFragment(new Login_Screen());
 
                         } else {
                             //오류 처리
-                            Login_Response errorObject = null;
+                            Join_Response errorObject = null;
                             ResponseBody rb = response.errorBody();
                             if (rb != null) {
                                 try {
@@ -174,9 +175,9 @@ public class Join_Screen extends Fragment {
 
                                     // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
                                     Gson gson = new Gson();
-                                    errorObject = gson.fromJson(errorResponse, Login_Response.class);
+                                    errorObject = gson.fromJson(errorResponse, Join_Response.class);
 
-
+                                    Log.d("통신 확인", "오류 응답: " + errorResponse);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 } finally {
