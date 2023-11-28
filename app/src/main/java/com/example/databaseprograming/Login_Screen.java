@@ -2,6 +2,7 @@ package com.example.databaseprograming;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -68,6 +69,15 @@ public class Login_Screen extends Fragment {
         //비밀번호 보이는지에 대한 선언
         isShowedpw = false;
 
+        //공백 관련 필터 선언
+        InputFilter filter[] =  new InputFilter[]{
+                new NoSpaceInputFilter()
+        };
+
+        //필터 등록
+        id_textview.setFilters(filter);
+        pw_textview.setFilters(filter);
+
 
         //서버 관련 처리
         Login_RetrofitInterface r1 = login_retrofitClient.getApiService();
@@ -126,7 +136,7 @@ public class Login_Screen extends Fragment {
                             token = authorization.nextToken();
 
                             sc.setToken(token);
-                            sc.replaceFragment(sc.getScreen(new Main_Screen()));
+                            sc.replaceFragment(new Main_Screen());
 
                         } else {
                             // 401 오류 처리

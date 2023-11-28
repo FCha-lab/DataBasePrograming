@@ -2,6 +2,7 @@ package com.example.databaseprograming;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,6 +123,7 @@ public class Main_Screen extends Fragment {
                 //회원 정보 페이지 이동 시도
                 if(sc.getToken() != null){
                     //로그인 되어있을 경우
+                    Log.d("메인 전환 확인", sc.getToken());
                     sc.replaceFragment(new Modification_Screen());
                 }else {
                     //로그인 안 되어있을 경우
@@ -141,7 +143,7 @@ public class Main_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //예약정보 이미지를 눌렀을 때
-                sc.replaceFragment(sc.getScreen(new Inquiry_of_Reservation_Information_Screen()));
+                sc.replaceFragment(new Reservation_Screen());
 
             }
         });
@@ -149,14 +151,14 @@ public class Main_Screen extends Fragment {
         diagno_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sc.replaceFragment(sc.getScreen(new Medical_Records_Inquiry_Screen()));
+                sc.replaceFragment(new Medical_Records_Inquiry_Screen());
             }
         });
 
         favorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sc.replaceFragment(sc.getScreen(new Hospital_Search_Results_Screen()));
+                sc.replaceFragment(new Hospital_Search_Results_Screen());
             }
         });
 

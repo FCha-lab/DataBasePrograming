@@ -5,7 +5,7 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Login_RetrofitClient {
+public class Modification_Check_RetrofitClient {
     private static final String BASE_URL = "http://3.36.79.34:8080/users/login/";
 
     private static OkHttpClient okHttpClient = new OkHttpClient.Builder()

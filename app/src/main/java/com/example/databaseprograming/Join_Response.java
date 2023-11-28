@@ -10,12 +10,19 @@ public class Join_Response {
     @SerializedName("status")
     private int status;
 
+    @SerializedName("userName")
+    private String userName;
+
     public String getMessage(){
         return message;
     }
 
     public int getStatus(){
         return status;
+    }
+
+    public String getUserName(){
+        return userName;
     }
 
 

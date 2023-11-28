@@ -2,6 +2,7 @@ package com.example.databaseprograming;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -77,6 +78,29 @@ public class Join_Screen extends Fragment {
 
         show_pw_button = rootView.findViewById(R.id.show_pw_button);
 
+        //공백 관련 필터 선언
+        InputFilter filter[] =  new InputFilter[]{
+                new NoSpaceInputFilter()
+        };
+        InputFilter[] phoneFilters = new InputFilter[]{
+                new InputFilter.LengthFilter(4),
+                new NoSpaceInputFilter()
+        };
+        InputFilter[] birthdayFilters = new InputFilter[]{
+                new InputFilter.LengthFilter(8),
+                new NoSpaceInputFilter()
+        };
+
+        //필터 등록
+        id_input.setFilters(filter);
+        pw_input.setFilters(filter);
+
+        name_input.setFilters(filter);
+        birthday_input.setFilters(birthdayFilters);
+
+        first_phone_input.setFilters(phoneFilters);
+        middle_phone_input.setFilters(phoneFilters);
+        last_phone_input.setFilters(phoneFilters);
 
         //페이지 필요 변수 초기화
         isShowedpw = false;
@@ -105,11 +129,17 @@ public class Join_Screen extends Fragment {
                 String phoneNumber = first_phone_input.getText().toString() + "-" + middle_phone_input.getText().toString() + "-" + last_phone_input.getText().toString();
 
                 //공백 지우기
-                id = id.trim();
-                pw = pw.trim();
-                name = name.trim();
-                birthday = birthday.trim();
-                phoneNumber = phoneNumber.trim();
+                try {
+                    id = id.trim();
+                    pw = pw.trim();
+                    name = name.trim();
+                    birthday = birthday.trim();
+                    birthday = birthday.substring(0, 4)+"-"+ birthday.substring(4, 6) + "-" + birthday.substring(6, 8);
+                    phoneNumber = phoneNumber.trim();
+                }catch(Exception e){
+                    Toast.makeText(sc.getApplicationContext(), "정보 입력 상황을 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 //JSON 객체를 생성하고 입력된 정보를 저장
                 Join_Request joinRequest = new Join_Request();
@@ -159,7 +189,7 @@ public class Join_Screen extends Fragment {
                                     // 오류 응답 처리
                                     Log.d("통신 확인", "오류 응답: " + errorObject.toString());
                                 }
-                                Toast.makeText(sc.getApplicationContext(), "아이디와 비밀번호를 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(sc.getApplicationContext(), errorObject.getStatus() + ", " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

@@ -58,7 +58,7 @@ public class Screen_controller extends AppCompatActivity {
         medical_records_screen = new Medical_Records_Screen();
 
         //토큰 관련 변수 셋팅
-        try{
+        try {
             masterKey = new MasterKey.Builder(this)
                     .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
                     .build();
@@ -69,8 +69,8 @@ public class Screen_controller extends AppCompatActivity {
                     EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                     EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
             );
-        }catch (Exception e){
-           e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         editor = sharedPreferences.edit();
 
@@ -78,6 +78,7 @@ public class Screen_controller extends AppCompatActivity {
         transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.screen, main_screen);
         transaction.commit();
+        setToken(null);
 
         previous_page = main_screen;
         current_page = main_screen;
@@ -91,11 +92,10 @@ public class Screen_controller extends AppCompatActivity {
         return sharedPreferences.getString("token", null);
     }
 
-    public void setToken(String t){
+    public void setToken(String t) {
         editor.putString("token", t);
         editor.apply();
     }
-
 
 
     //화면 변환 메서드
@@ -112,24 +112,24 @@ public class Screen_controller extends AppCompatActivity {
     }
 
     //요구하는 화면 클래스 반환
-    public Fragment getScreen(Fragment target){
-        if (target instanceof Main_Screen){
+    private Fragment getScreen(Fragment target) {
+        if (target instanceof Main_Screen) {
             return main_screen;
-        }else if(target instanceof Login_Screen){
+        } else if (target instanceof Login_Screen) {
             return login_screen;
-        }else if(target instanceof Modification_Screen){
+        } else if (target instanceof Modification_Screen) {
             return modification_screen;
-        }else if(target instanceof Join_Screen){
+        } else if (target instanceof Join_Screen) {
             return join_screen;
-        }else if(target instanceof Reservation_Screen){
+        } else if (target instanceof Reservation_Screen) {
             return reservation_screen;
-        }else if(target instanceof Hospital_Search_Results_Screen){
+        } else if (target instanceof Hospital_Search_Results_Screen) {
             return hospital_search_results_screen;
-        }else if(target instanceof Inquiry_of_Reservation_Information_Screen){
+        } else if (target instanceof Inquiry_of_Reservation_Information_Screen) {
             return inquiry_of_reservation_information_screen;
-        }else if(target instanceof Medical_Records_Screen){
+        } else if (target instanceof Medical_Records_Screen) {
             return medical_records_screen;
-        }else if(target instanceof Medical_Records_Inquiry_Screen){
+        } else if (target instanceof Medical_Records_Inquiry_Screen) {
             return medical_records_inquiry_screen;
         }
         return null;
@@ -138,31 +138,35 @@ public class Screen_controller extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //현재 페이지 위치에 따라 뒤로가기 버튼의 이동.
+        if (true) {
+            Log.d("페이지 상태", "\n현재 페이지 : " + current_page.getClass().getSimpleName() + "\n이전 페이지 : " + previous_page.getClass().getSimpleName());
 
-        Log.d("페이지 상태", "\n현재 페이지 : " + current_page.getClass().getSimpleName() + "\n이전 페이지 : " + previous_page.getClass().getSimpleName());
+            if (current_page instanceof Main_Screen) {
+                //데이터 해제
+                fragmentManager = null;
+                transaction = null;
+                previous_page = null;
+                current_page = null;
 
-        if (current_page instanceof Main_Screen) {
-            //데이터 해제
-            fragmentManager = null;
-            transaction = null;
-            previous_page = null;
-            current_page = null;
+                moveTaskToBack(true); // 태스크를 백그라운드로 이동
+                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
+                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
 
-            moveTaskToBack(true); // 태스크를 백그라운드로 이동
-            finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-            android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+            } else if (current_page instanceof Login_Screen || current_page instanceof Reservation_Screen) {
 
-        } else if (current_page instanceof Login_Screen || current_page instanceof Reservation_Screen|| current_page instanceof Inquiry_of_Reservation_Information_Screen|| current_page instanceof Medical_Records_Inquiry_Screen) {
+                replaceFragment(main_screen);
 
-            replaceFragment(main_screen);
+            } else if (current_page instanceof Medical_Records_Screen) {
 
-        } else if (previous_page instanceof  Login_Screen) {
+                replaceFragment(medical_records_inquiry_screen);
 
-            replaceFragment(login_screen);
+            } else if (previous_page instanceof Login_Screen) {
 
-        } else if (current_page instanceof Medical_Records_Screen) {
+                replaceFragment(login_screen);
 
-            replaceFragment(medical_records_inquiry_screen);
+            }
+        } else {
+            super.onBackPressed();
 
         }
 
