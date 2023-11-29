@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,9 +46,6 @@ public class Login_Screen extends Fragment {
     private TextView find_pw;
     private TextView join;
 
-    //페이지 관련 변수 선언
-    private boolean isShowedpw;
-
     //서버 관련 변수 선언
     private Login_RetrofitClient login_retrofitClient;
 
@@ -66,11 +65,8 @@ public class Login_Screen extends Fragment {
 //        find_pw = rootView.findViewById(R.id.find_pw);
         join = rootView.findViewById(R.id.join);
 
-        //비밀번호 보이는지에 대한 선언
-        isShowedpw = false;
-
         //공백 관련 필터 선언
-        InputFilter filter[] =  new InputFilter[]{
+        InputFilter filter[] = new InputFilter[]{
                 new NoSpaceInputFilter()
         };
 
@@ -79,27 +75,21 @@ public class Login_Screen extends Fragment {
         pw_textview.setFilters(filter);
 
 
-        //서버 관련 처리
-        Login_RetrofitInterface r1 = login_retrofitClient.getApiService();
-
         //버튼에 대한 리스너 등록
         show_pw_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //비밀번호 보이기 버튼 누르기
-                if (isShowedpw) {
-                    //만약 비밀번호가 보이는 상태라면?
+                if (pw_textview.getTransformationMethod() == HideReturnsTransformationMethod.getInstance()) {
+                    //비밀번호 숨기기
                     show_pw_button.setImageResource(R.drawable.closedeye);
-                    pw_textview.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    pw_textview.invalidate();
-                    isShowedpw = false;
+                    pw_textview.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 } else {
-                    //만약 비밀번호가 안 보이는 상태라면?
+                    //비밀번호 보이기
                     show_pw_button.setImageResource(R.drawable.openedeye);
-                    pw_textview.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    pw_textview.invalidate();
-                    isShowedpw = true;
+                    pw_textview.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
+                //출처: https://gooners0304.tistory.com/entry/EditText-비밀번호-보이기숨기기 [괴발개발 개발새발:티스토리]
             }
         });
 
@@ -118,6 +108,9 @@ public class Login_Screen extends Fragment {
 
                 //JSON 객체를 생성하고 입력된 정보를 저장
                 Login_Request loginRequest = new Login_Request(id, pw);
+
+                //서버 관련 처리
+                Login_RetrofitInterface r1 = login_retrofitClient.getApiService();
 
                 //통신 시도
                 r1.getLoginResponse(loginRequest).enqueue(new Callback<Login_Response>() {

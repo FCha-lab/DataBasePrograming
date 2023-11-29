@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,8 +51,6 @@ public class Join_Screen extends Fragment {
     //비밀번호 보이기 관련 위젯 선언
     private ImageButton show_pw_button;
 
-    //페이지 관련 변수 선언
-    private boolean isShowedpw;
 
     //서버 관련 변수 선언
     private Join_RetrofitClient join_retrofitClient;
@@ -103,7 +103,6 @@ public class Join_Screen extends Fragment {
         last_phone_input.setFilters(phoneFilters);
 
         //페이지 필요 변수 초기화
-        isShowedpw = false;
 
         //서버 관련 처리
         join_retrofitClient = new Join_RetrofitClient();
@@ -213,19 +212,16 @@ public class Join_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //비밀번호 보이기 버튼 누르기
-                if(isShowedpw){
-                    //만약 비밀번호가 보이는 상태라면?
+                if (pw_input.getTransformationMethod() == HideReturnsTransformationMethod.getInstance()) {
+                    //비밀번호 숨기기
                     show_pw_button.setImageResource(R.drawable.closedeye);
-                    pw_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    pw_input.invalidate();
-                    isShowedpw = false;
-                }else{
-                    //만약 비밀번호가 안 보이는 상태라면?
+                    pw_input.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else {
+                    //비밀번호 보이기
                     show_pw_button.setImageResource(R.drawable.openedeye);
-                    pw_input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    pw_input.invalidate();
-                    isShowedpw = true;
+                    pw_input.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
+                //출처: https://gooners0304.tistory.com/entry/EditText-비밀번호-보이기숨기기 [괴발개발 개발새발:티스토리]
             }
         });
 

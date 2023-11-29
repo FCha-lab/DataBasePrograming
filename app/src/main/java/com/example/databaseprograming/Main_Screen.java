@@ -129,7 +129,6 @@ public class Main_Screen extends Fragment {
 
         //서버 관련 변수 초기화
         modification_check_retrofitClient = new Modification_Check_RetrofitClient();
-        Modification_Check_RetrofitInterface r1 = modification_check_retrofitClient.getApiService(sc.getToken());
 
 
         //버튼에 대한 리스너 등록
@@ -144,6 +143,8 @@ public class Main_Screen extends Fragment {
                 }
 
                 //만약 토큰이 있다면?
+
+                Modification_Check_RetrofitInterface r1 = modification_check_retrofitClient.getApiService(sc.getToken());
                 r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc));
 
             }
