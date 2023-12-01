@@ -71,7 +71,7 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
 
         //리사이클러뷰 어댑터 초기화
         ior_list.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        iorType_recycler = new Inquiry_of_Reservation_Information_recyclerAdapter(ior_text1, ior_text2, ior_text3, ior_text4);
+        iorType_recycler = new Inquiry_of_Reservation_Information_recyclerAdapter(ior_text1, ior_text2, ior_text3, ior_text4, getContext());
         ior_list.setAdapter(iorType_recycler);
 
         //리사이클러뷰 어댑터 가로 스크롤바 없애기

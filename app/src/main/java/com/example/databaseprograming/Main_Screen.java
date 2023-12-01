@@ -161,7 +161,7 @@ public class Main_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //예약정보 이미지를 눌렀을 때
-                sc.replaceFragment(new Reservation_Screen());
+                sc.replaceFragment(new Inquiry_of_Reservation_Information_Screen());
 
             }
         });

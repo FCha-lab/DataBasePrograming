@@ -33,13 +33,10 @@ public class Hospital_Search_Results_Screen extends Fragment {
     Hospital_Search_Results_recyclerAdapter hsrType_recycler;
     ArrayList<String> hsr_text1;
     ArrayList<String> hsr_text2;
-    ArrayList<String> hsr_text3;
+    ArrayList<Integer> hsr_text3; // 좋아요 수를 저장하는 리스트
     ArrayList<String> hsr_text4;
     ArrayList<String> hsr_text5;
     ArrayList<String> hsr_text6;
-
-    // 좋아요 개수
-    private TextView like_count;
 
     //검색창
     EditText search_bar;
@@ -47,12 +44,6 @@ public class Hospital_Search_Results_Screen extends Fragment {
 
     //페이지 관련 위젯 변수 선언
     private ImageView page_back;
-
-    //상호작용 관련 위젯 변수 선언
-    private ImageButton hospital_like;
-
-    //페이지 내 처리 변수 선언
-    private boolean isHospitalLiked;
 
     public Hospital_Search_Results_Screen(){
 
@@ -71,7 +62,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
                 Arrays.asList("내과","비뇨기과","이비인후과")
         );
         hsr_text3 = new ArrayList<>(
-                Arrays.asList("50","60","70")
+                Arrays.asList(50,60,70)
         );
         hsr_text4 = new ArrayList<>(
                 Arrays.asList("09:00~18:00","10:00~18:00","11:00~19:00")
@@ -98,30 +89,11 @@ public class Hospital_Search_Results_Screen extends Fragment {
         //위젯을 연결
         search_bar = rootView.findViewById(R.id.search_textview);
         search_button = rootView.findViewById(R.id.search_button);
-        hospital_like = rootView.findViewById(R.id.hospital_like);
         
         //뒤로가기 버튼 연결
         page_back = rootView.findViewById(R.id.page_back);
 
-        //페이지 내 처리 변수 초기화
-        isHospitalLiked = false;
-
         //버튼에 대한 리스너 등록
-        hospital_like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //좋아요 버튼을 눌렀을 때
-                if (isHospitalLiked) {
-                    //만약 이미 좋아요 상태라면?
-                    hospital_like.setImageResource(R.drawable.heart_empty);
-                    like_count.setText("");
-                } else {
-                    //만약 좋아요를 누르지 않은 상태였다면?
-                    hospital_like.setImageResource(R.drawable.heart_full);
-                    like_count.setText("");
-                }
-            }
-        });
 
         //상단 툴바 뒤로가기 버튼을 누를 경우
         page_back.setOnClickListener(new View.OnClickListener() {

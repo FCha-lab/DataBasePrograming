@@ -1,15 +1,17 @@
 package com.example.databaseprograming;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 public class Inquiry_of_Reservation_Information_recyclerAdapter extends RecyclerView.Adapter<Inquiry_of_Reservation_Information_recyclerAdapter.ViewHolder>{
 
@@ -18,6 +20,8 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
     private List<String> nameText = null;
     private List<String> addrText = null;
     private List<String> timeText = null;
+
+    private Context context;
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -43,13 +47,13 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
 
     }
 
-    Inquiry_of_Reservation_Information_recyclerAdapter(ArrayList<String> aaText, ArrayList<String> bbText, ArrayList<String> ccText, ArrayList<String> ddText) {
+    Inquiry_of_Reservation_Information_recyclerAdapter(ArrayList<String> aaText, ArrayList<String> bbText, ArrayList<String> ccText, ArrayList<String> ddText, Context context) {
 
         statText = aaText;
         nameText = bbText;
         addrText = ccText;
         timeText = ddText;
-
+        this.context = context;
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
@@ -96,9 +100,37 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
         holder.imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // AlertDialog.Builder를 사용하여 팝업 창을 생성합니다.
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
+                // 팝업 창의 제목과 메시지를 설정합니다.
+                builder.setTitle("예약 취소");
+                builder.setMessage("정말로 취소하시겠습니까?");
+
+                // '예' 버튼을 눌렀을 때의 동작을 정의합니다.
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // 예 버튼을 눌렀을 때 수행할 동작을 여기에 추가
+                        Toast.makeText(context, "예약이 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                // '아니오' 버튼을 눌렀을 때의 동작을 정의합니다.
+                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // 아니오 버튼을 눌렀을 때 수행할 동작을 여기에 추가
+                        dialogInterface.dismiss(); // 팝업 창을 닫습니다.
+                    }
+                });
+
+                // 팝업 창을 생성하고 표시합니다.
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
+
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

@@ -152,7 +152,7 @@ public class Screen_controller extends AppCompatActivity {
                 finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
                 android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
 
-            } else if (current_page instanceof Login_Screen || current_page instanceof Reservation_Screen) {
+            } else if (current_page instanceof Login_Screen || current_page instanceof Inquiry_of_Reservation_Information_Screen|| current_page instanceof Medical_Records_Inquiry_Screen) {
 
                 replaceFragment(main_screen);
 
