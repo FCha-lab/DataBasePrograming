@@ -7,14 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Main_recommend_hospital_recyclerAdapter extends RecyclerView.Adapter<Main_recommend_hospital_recyclerAdapter.ViewHolder>{
 
 
-    private List<String> typeText = null;
-    private List<String> nameText = null;
-    private List<String> infoText = null;
+    private ArrayList<Main_Recommend_Response> recommendList;
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -34,10 +31,8 @@ public class Main_recommend_hospital_recyclerAdapter extends RecyclerView.Adapte
 
     }
 
-    Main_recommend_hospital_recyclerAdapter(ArrayList<String> tText, ArrayList<String> nText, ArrayList<String> iText) {
-        typeText = tText;
-        nameText = nText;
-        infoText = iText;
+    Main_recommend_hospital_recyclerAdapter(ArrayList<Main_Recommend_Response> list) {
+        recommendList = list;
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
@@ -55,14 +50,12 @@ public class Main_recommend_hospital_recyclerAdapter extends RecyclerView.Adapte
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(Main_recommend_hospital_recyclerAdapter.ViewHolder holder, int position) {
-        String text1 = typeText.get(position);
-        String text2 = nameText.get(position);
-        String text3 = infoText.get(position);
+        Main_Recommend_Response item = recommendList.get(position);
 
 
-        holder.textView1.setText(text1);
-        holder.textView2.setText(text2);
-        holder.textView3.setText(text3);
+        holder.textView1.setText(item.getDepartment());
+        holder.textView2.setText(item.getHName());
+        holder.textView3.setText(item.getAddress());
 
         holder.textView1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +82,6 @@ public class Main_recommend_hospital_recyclerAdapter extends RecyclerView.Adapte
     // getItemCount() - 전체 데이터 갯수 리턴.
     @Override
     public int getItemCount() {
-        return nameText.size() ;
+        return recommendList.size() ;
     }
 }

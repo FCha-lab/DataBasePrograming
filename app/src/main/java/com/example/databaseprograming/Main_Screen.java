@@ -2,14 +2,12 @@ package com.example.databaseprograming;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Debug;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,8 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -43,9 +43,6 @@ public class Main_Screen extends Fragment {
     //리사이클러뷰 - 추천
     RecyclerView recomend_list;
     Main_recommend_hospital_recyclerAdapter rList_recycler;
-    ArrayList<String> recomend_type;
-    ArrayList<String> recomend_name;
-    ArrayList<String> recomend_info;
 
     //상단 아이콘
     ImageButton user_info_mani;
@@ -61,6 +58,7 @@ public class Main_Screen extends Fragment {
 
     //서버 관련 변수 선언
     Modification_Check_RetrofitClient modification_check_retrofitClient;
+    Main_Recommend_RetrofitClient main_recommend_retrofitClient;
 
 
     @Nullable
@@ -86,16 +84,6 @@ public class Main_Screen extends Fragment {
                 Arrays.asList("이비인후과", "내과", "정형외과", "안과", "소아청소년과", "산부인과", "신경외과", "피부과", "정신건강의학과")
         );
 
-        //추천 병원 recyclerview 리스트 추가
-        recomend_type = new ArrayList<>(
-                Arrays.asList("이비인후과", "이비인후과", "이비인후과")
-        );
-        recomend_name = new ArrayList<>(
-                Arrays.asList("병원이에용", "한의원이에용", "모르겠어용")
-        );
-        recomend_info = new ArrayList<>(
-                Arrays.asList("정보에양", "뭐일까용", "요구사항이 ㅈㄴ 많아영")
-        );
 
 
         //리사이클러뷰 연결
@@ -107,10 +95,7 @@ public class Main_Screen extends Fragment {
         hType_recycler = new Main_hospital_type_recyclerAdapter(hospital_icon, hospital_text);
         hospital_list.setAdapter(hType_recycler);
 
-
         recomend_list.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        rList_recycler = new Main_recommend_hospital_recyclerAdapter(recomend_type, recomend_name, recomend_info);
-        recomend_list.setAdapter(rList_recycler);
 
         //리사이클러뷰 어댑터 가로 스크롤바 없애기
         hospital_list.setHorizontalScrollBarEnabled(false);
@@ -129,6 +114,7 @@ public class Main_Screen extends Fragment {
 
         //서버 관련 변수 초기화
         modification_check_retrofitClient = new Modification_Check_RetrofitClient();
+        main_recommend_retrofitClient = new Main_Recommend_RetrofitClient();
 
 
         //버튼에 대한 리스너 등록
@@ -252,6 +238,89 @@ public class Main_Screen extends Fragment {
             //서버에 문제가 있을 경우
             Log.d("통신 확인", "onfailure 실패 ");
         }
+    }
+
+    //top3 추천 병원 초기화
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Main_Recommend_RetrofitInterface r1 = main_recommend_retrofitClient.getApiService();
+        r1.getTopH().enqueue(new Callback<ArrayList<Main_Recommend_Response>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Main_Recommend_Response>> call, Response<ArrayList<Main_Recommend_Response>> response) {
+                //정상적인 통신이 진행될 경우
+                Log.d("통신 확인", response.toString());
+                if (response.isSuccessful() || response.body() != null) {
+                    //정상적으로 토큰이 확인되었을 경우
+                    ArrayList<Main_Recommend_Response> result = (ArrayList<Main_Recommend_Response>) response.body();
+                    Log.d("통신 확인", result.toString());
+
+                    rList_recycler = new Main_recommend_hospital_recyclerAdapter(result);
+                    recomend_list.setAdapter(rList_recycler);
+
+                } else {
+                    //토큰에 문제가 생겼을 경우
+                    //오류 정보를 받아오기
+                    ArrayList<Main_Recommend_Response> errorObject = null;
+                    ResponseBody rb = response.errorBody();
+                    if (rb != null) {
+                        try {
+                            // 오류 응답을 문자열로 읽어옴
+                            String errorResponse = rb.string();
+
+                            // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                            Gson gson = new Gson();
+                            Type listType = new TypeToken<ArrayList<Main_Recommend_Response>>(){}.getType();
+                            errorObject = gson.fromJson(errorResponse, listType);
+
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (rb != null) {
+                                rb.close(); // 반드시 닫아주어야 함
+                            }
+                        }
+
+                        if (errorObject != null) {
+                            // 오류 응답 처리
+                            ArrayList<Main_Recommend_Response> item = new ArrayList<>();
+                            Main_Recommend_Response daemi = new Main_Recommend_Response();
+                            daemi.setId("null");
+                            daemi.setName("잘못된 요청입니다.");
+                            daemi.setDepartment("조회오류");
+                            daemi.setAddress("잘못된 요청이 진행되었습니다.");
+
+                            item.add(daemi);
+
+                            rList_recycler = new Main_recommend_hospital_recyclerAdapter(item);
+                            recomend_list.setAdapter(rList_recycler);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Main_Recommend_Response>> call, Throwable t) {
+                //서버에 문제가 있을 경우
+                Log.d("통신 확인", "onfailure 실패 ");
+                ArrayList<Main_Recommend_Response> item = new ArrayList<>();
+                Main_Recommend_Response daemi = new Main_Recommend_Response();
+                daemi.setId("null");
+                daemi.setName("서버 연결이 원할하지 않습니다.");
+                daemi.setDepartment("통신 장애");
+                daemi.setAddress("서버 연결 상황을 다시 확인해 주세요.");
+
+                item.add(daemi);
+
+                rList_recycler = new Main_recommend_hospital_recyclerAdapter(item);
+                recomend_list.setAdapter(rList_recycler);
+
+            }
+        });
+
+
     }
 
     //Screen Controller 초기화 및 메모리 해제
