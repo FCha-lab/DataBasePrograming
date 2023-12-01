@@ -46,6 +46,7 @@ dependencies {
     implementation "androidx.security:security-app-authenticator:1.0.0-alpha02"
     implementation 'androidx.activity:activity:1.8.1'
 
+
     // For App Authentication API testing
 
     testImplementation 'junit:junit:4.13.2'

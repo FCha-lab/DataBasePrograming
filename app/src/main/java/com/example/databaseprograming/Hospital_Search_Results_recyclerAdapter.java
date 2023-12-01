@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -15,15 +17,10 @@ import java.util.List;
 
 public class Hospital_Search_Results_recyclerAdapter extends RecyclerView.Adapter<Hospital_Search_Results_recyclerAdapter.ViewHolder>{
 
-    private List<String> nameText = null;
-    private List<String> kindText = null;
-    private List<Integer> likeCountList = null; // 좋아요 수를 저장하는 리스트
-    private List<String> timeText = null;
-    private List<String> pnumText = null;
-    private List<String> addrText = null;
+    private List<Hospital_Search_Result> resultList;
 
-    // 각 아이템의 좋아요 상태를 저장하는 리스트
-    private List<Boolean> isHospitalLikedList;
+    private Screen_controller sc;
+
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -33,10 +30,10 @@ public class Hospital_Search_Results_recyclerAdapter extends RecyclerView.Adapte
         TextView textView4;
         TextView textView5;
         TextView textView6;
-        ImageButton imageButton1;
+        ImageView imageView1;
 
-        // 좋아요 상태를 저장하는 변수
-        boolean isHospitalLiked;
+        LinearLayout frame;
+
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -48,20 +45,18 @@ public class Hospital_Search_Results_recyclerAdapter extends RecyclerView.Adapte
             textView4 = itemView.findViewById(R.id.hospital_operation_time);
             textView5 = itemView.findViewById(R.id.hospital_phone_number);
             textView6 = itemView.findViewById(R.id.hospital_adress);
-            imageButton1 = itemView.findViewById(R.id.hospital_like);
+            imageView1 = itemView.findViewById(R.id.hospital_like);
+
+            frame = itemView.findViewById(R.id.hsr_button_1);
+
         }
     }
 
-    Hospital_Search_Results_recyclerAdapter(ArrayList<String> aText, ArrayList<String> bText, ArrayList<Integer> likeCountList, ArrayList<String> dText, ArrayList<String> eText, ArrayList<String> fText) {
-        nameText = aText;
-        kindText = bText;
-        this.likeCountList = likeCountList;
-        timeText = dText;
-        pnumText = eText;
-        addrText = fText;
+    Hospital_Search_Results_recyclerAdapter(ArrayList<Hospital_Search_Result> list, Screen_controller sc) {
+        resultList = list;
 
-        // 각 아이템의 좋아요 상태를 초기화하는 코드 추가
-        isHospitalLikedList = new ArrayList<>(Collections.nCopies(nameText.size(), false));
+        this.sc = sc;
+
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
@@ -78,72 +73,28 @@ public class Hospital_Search_Results_recyclerAdapter extends RecyclerView.Adapte
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(Hospital_Search_Results_recyclerAdapter.ViewHolder holder, int position) {
-        String text1 = nameText.get(position);
-        String text2 = kindText.get(position);
-        int likeCount = likeCountList.get(position);
-        String text4 = timeText.get(position);
-        String text5 = pnumText.get(position);
-        String text6 = addrText.get(position);
+        Hospital_Search_Result item = resultList.get(position);
 
-        holder.textView1.setText(text1);
-        holder.textView2.setText(text2);
-        holder.textView3.setText(String.valueOf(likeCount));
-        holder.textView4.setText(text4);
-        holder.textView5.setText(text5);
-        holder.textView6.setText(text6);
+        holder.textView1.setText(item.getName());
+        holder.textView2.setText(item.getDepartment());
+        holder.textView3.setText(String.valueOf(item.getLikeCount()));
+        holder.textView4.setText(item.getOperatingHours());
+        holder.textView5.setText(item.getPhoneNumber());
+        holder.textView6.setText(item.getAddress());
 
-        // 각 아이템에 대한 좋아요 상태를 가져오기
-        holder.isHospitalLiked = isHospitalLikedList.get(position);
-
-        holder.textView1.setOnClickListener(new View.OnClickListener() {
+        holder.frame.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // 아이템을 클릭했을 때 수행할 작업 추가
+            public void onClick(View v) {
+                //개체를 눌렀을 때
             }
         });
 
-        holder.textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 아이템을 클릭했을 때 수행할 작업 추가
-            }
-        });
-
-        holder.imageButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int clickedPosition = holder.getAdapterPosition();
-
-                // 좋아요 상태를 먼저 반전시키고 UI 업데이트 수행
-                boolean newLikedState = !holder.isHospitalLiked;
-
-                // 좋아요 수 증가 또는 감소
-                if (newLikedState) {
-                    likeCountList.set(clickedPosition, likeCountList.get(clickedPosition) + 1);
-                } else {
-                    likeCountList.set(clickedPosition, likeCountList.get(clickedPosition) - 1);
-                }
-
-                // 좋아요 상태에 따라 UI 업데이트
-                if (newLikedState) {
-                    holder.imageButton1.setImageResource(R.drawable.heart_full);
-                } else {
-                    holder.imageButton1.setImageResource(R.drawable.heart_empty);
-                }
-
-                // 좋아요 수 업데이트
-                holder.textView3.setText(String.valueOf(likeCountList.get(clickedPosition)));
-
-                // 최종적으로 상태 업데이트
-                holder.isHospitalLiked = newLikedState;
-            }
-        });
     }
 
     // getItemCount() - 전체 데이터 개수 리턴.
     @Override
     public int getItemCount() {
-        return nameText.size();
+        return resultList.size();
     }
 }
 

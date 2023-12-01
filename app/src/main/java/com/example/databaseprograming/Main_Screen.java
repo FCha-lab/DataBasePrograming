@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -139,6 +140,14 @@ public class Main_Screen extends Fragment {
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //검색 버튼을 눌렀을 경우
+                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
+                //번들에 넘길 값 저장
+                bundle.putString("searchInfo", search_bar.getText().toString());
+                Fragment target = sc.getScreen(new Hospital_Search_Results_Screen());//프래그먼트 선언
+                target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
+
+                sc.replaceFragment(new Hospital_Search_Results_Screen());
 
             }
         });
@@ -240,11 +249,15 @@ public class Main_Screen extends Fragment {
         }
     }
 
-    //top3 추천 병원 초기화
+
     @Override
     public void onResume() {
         super.onResume();
+        
+        //검색창 초기화
+        search_bar.setText("");
 
+        //top3 추천 병원 초기화
         Main_Recommend_RetrofitInterface r1 = main_recommend_retrofitClient.getApiService();
         r1.getTopH().enqueue(new Callback<ArrayList<Main_Recommend_Response>>() {
             @Override

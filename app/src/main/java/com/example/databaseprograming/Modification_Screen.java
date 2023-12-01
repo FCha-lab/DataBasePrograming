@@ -113,29 +113,6 @@ public class Modification_Screen extends Fragment {
 
         //페이지 필요 변수 초기화
         id_input.setEnabled(false);
-        if (getArguments() != null)
-        {
-            String userName = getArguments().getString("userName"); // main 화면에서 받아온 값 넣기
-            name_input.setText(userName);
-
-            String userId = getArguments().getString("userId"); // main 화면에서 받아온 값 넣기
-            id_input.setText(userId);
-
-            String phoneNumber = getArguments().getString("phoneNumber"); // main 화면에서 받아온 값 넣기
-            StringTokenizer phone = new StringTokenizer(phoneNumber, "-");
-            first_phone_input.setText(phone.nextToken());
-            middle_phone_input.setText(phone.nextToken());
-            last_phone_input.setText(phone.nextToken());
-            phone = null;
-
-            String birthDate = getArguments().getString("birthDate"); // main 화면에서 받아온 값 넣기
-            StringTokenizer birth = new StringTokenizer(birthDate, "-");
-            birthDate = birth.nextToken() + birth.nextToken() + birth.nextToken();
-            birthday_input.setText(birthDate);
-            birth = null;
-
-        }
-        setArguments(null);
 
         //서버 관련 변수 초기화
         modification_request_retrofitClient = new Modification_Request_RetrofitClient();
@@ -283,6 +260,34 @@ public class Modification_Screen extends Fragment {
         });
 
         return rootView;
+    }
+
+    //edittext 초기화
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getArguments() != null)
+        {
+            String userName = getArguments().getString("userName"); // main 화면에서 받아온 값 넣기
+            name_input.setText(userName);
+
+            String userId = getArguments().getString("userId"); // main 화면에서 받아온 값 넣기
+            id_input.setText(userId);
+
+            String phoneNumber = getArguments().getString("phoneNumber"); // main 화면에서 받아온 값 넣기
+            StringTokenizer phone = new StringTokenizer(phoneNumber, "-");
+            first_phone_input.setText(phone.nextToken());
+            middle_phone_input.setText(phone.nextToken());
+            last_phone_input.setText(phone.nextToken());
+            phone = null;
+
+            String birthDate = getArguments().getString("birthDate"); // main 화면에서 받아온 값 넣기
+            StringTokenizer birth = new StringTokenizer(birthDate, "-");
+            birthDate = birth.nextToken() + birth.nextToken() + birth.nextToken();
+            birthday_input.setText(birthDate);
+            birth = null;
+
+        }
     }
 
     //Screen Controller 초기화 및 메모리 해제
