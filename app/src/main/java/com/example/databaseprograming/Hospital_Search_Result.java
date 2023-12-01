@@ -32,6 +32,14 @@ public class Hospital_Search_Result {
     @SerializedName("likeCount")
     private int likeCount;
 
+    //병원 좋아요 수
+    @SerializedName("message")
+    private String message;
+
+    //병원 좋아요 수
+    @SerializedName("status")
+    private int status;
+
     public void setId(String id) {
         this.id = id;
     }
@@ -46,7 +54,6 @@ public class Hospital_Search_Result {
     public void setAddress(String address) {
         this.address = address;
     }
-
     public void setDepartment(String department) {
         this.department = department;
     }
@@ -85,5 +92,13 @@ public class Hospital_Search_Result {
 
     public int getLikeCount() {
         return likeCount;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public int getStatus() {
+        return status;
     }
 }

@@ -1,18 +1,21 @@
 package com.example.databaseprograming;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class Main_hospital_type_recyclerAdapter extends RecyclerView.Adapter<Main_hospital_type_recyclerAdapter.ViewHolder>{
 
+    private Screen_controller sc;
     private ArrayList<Integer> typeIcon = null;
     private ArrayList<String> typeText = null;
 
@@ -32,9 +35,10 @@ public class Main_hospital_type_recyclerAdapter extends RecyclerView.Adapter<Mai
 
     }
 
-    Main_hospital_type_recyclerAdapter(ArrayList<Integer> tIcon, ArrayList<String> tText) {
+    Main_hospital_type_recyclerAdapter(ArrayList<Integer> tIcon, ArrayList<String> tText, Screen_controller sc) {
          typeIcon = tIcon;
          typeText = tText;
+         this.sc = sc;
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
@@ -61,16 +65,19 @@ public class Main_hospital_type_recyclerAdapter extends RecyclerView.Adapter<Mai
         holder.imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //버튼을 누른다면?
+                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
+                //번들에 넘길 값 저장
+                bundle.putString("searchInfo", text);
+                bundle.putBoolean("isSearchBar", false);
+                Fragment target = sc.getScreen(new Hospital_Search_Results_Screen());//프래그먼트 선언
+                target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
+
+                sc.replaceFragment(new Hospital_Search_Results_Screen());
 
             }
         });
 
-        holder.textView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.

@@ -93,7 +93,7 @@ public class Main_Screen extends Fragment {
 
         //리사이클러뷰 어댑터 초기화
         hospital_list.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        hType_recycler = new Main_hospital_type_recyclerAdapter(hospital_icon, hospital_text);
+        hType_recycler = new Main_hospital_type_recyclerAdapter(hospital_icon, hospital_text, sc);
         hospital_list.setAdapter(hType_recycler);
 
         recomend_list.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
@@ -144,6 +144,7 @@ public class Main_Screen extends Fragment {
                 Bundle bundle = new Bundle(); // 번들을 통해 값 전달
                 //번들에 넘길 값 저장
                 bundle.putString("searchInfo", search_bar.getText().toString());
+                bundle.putBoolean("isSearchBar", true);
                 Fragment target = sc.getScreen(new Hospital_Search_Results_Screen());//프래그먼트 선언
                 target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
