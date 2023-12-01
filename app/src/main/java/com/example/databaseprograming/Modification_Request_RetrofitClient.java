@@ -28,7 +28,6 @@ public class Modification_Request_RetrofitClient {
 
                     return chain.proceed(newRequest);
                 })
-
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)) // 이 부분이 네트워크 로깅을 활성화하는 부분
                 .build();
 

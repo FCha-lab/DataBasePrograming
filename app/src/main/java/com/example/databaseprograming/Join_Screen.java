@@ -1,9 +1,12 @@
 package com.example.databaseprograming;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -51,9 +55,16 @@ public class Join_Screen extends Fragment {
     //비밀번호 보이기 관련 위젯 선언
     private ImageButton show_pw_button;
 
-
     //서버 관련 변수 선언
     private Join_RetrofitClient join_retrofitClient;
+    private Join_Check_RetrofitClient join_check_retrofitClient;
+
+    //입력 관련 설명 textview 변수 선언
+    private TextView warning_id;
+    private TextView warning_pw;
+
+    //페이지 관련 변수 선언
+    private boolean isIdChecked = false;
 
     @Nullable
     @Override
@@ -77,6 +88,9 @@ public class Join_Screen extends Fragment {
         check_duplicate = rootView.findViewById(R.id.check_duplicate);
 
         show_pw_button = rootView.findViewById(R.id.show_pw_button);
+
+        warning_id = rootView.findViewById(R.id.warning_id);
+        warning_pw = rootView.findViewById(R.id.warning_pw);
 
         //공백 관련 필터 선언
         InputFilter filter[] =  new InputFilter[]{
@@ -106,6 +120,7 @@ public class Join_Screen extends Fragment {
 
         //서버 관련 처리
         join_retrofitClient = new Join_RetrofitClient();
+        join_check_retrofitClient = new Join_Check_RetrofitClient();
 
         //버튼에 대한 리스너 등록
         page_back.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +134,11 @@ public class Join_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //회원가입 버튼을 누를 경우
+
+                if(!isIdChecked){
+                    Toast.makeText(sc.getApplicationContext(), "아이디 중복을 확인해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 Join_RetrofitInterface r1 = join_retrofitClient.getApiService();
                 //입력된 회원가입 정보를 저장
@@ -204,7 +224,67 @@ public class Join_Screen extends Fragment {
         check_duplicate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //중복 체크를 할 경우
+                Join_Check_RetrofitInterface r1 = join_check_retrofitClient.getApiService();
 
+                r1.getDuplicationCheck(id_input.getText().toString()).enqueue(new Callback<Join_Duplication>() {
+                    @Override
+                    public void onResponse(Call<Join_Duplication> call, Response<Join_Duplication> response) {
+                        //정상적인 통신이 진행될 경우
+                        Log.d("통신 확인", response.toString());
+                        if (response.isSuccessful() || response.body() != null) {
+                            Join_Duplication result = response.body();
+                            Log.d("통신 확인", result.toString());
+
+                            Log.d("통신 확인", "검사 완료!!" + result.toString());
+
+                            if(result.getAvailable()){
+                                isIdChecked = true;
+                                Toast.makeText(sc.getApplicationContext(), "사용 가능한 아이디입니다!", Toast.LENGTH_SHORT).show();
+                                warning_id.setText("✓ 사용 가능한 아이디입니다");
+                                warning_id.setTextColor(Color.parseColor("#3F8CFF"));
+                            }else{
+                                Toast.makeText(sc.getApplicationContext(), "이미 존재하는 아이디입니다!", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        } else {
+                            //오류 처리
+                            Join_Duplication errorObject = null;
+                            ResponseBody rb = response.errorBody();
+                            if (rb != null) {
+                                try {
+                                    // 오류 응답을 문자열로 읽어옴
+                                    String errorResponse = rb.string();
+
+                                    // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                                    Gson gson = new Gson();
+                                    errorObject = gson.fromJson(errorResponse, Join_Duplication.class);
+
+                                    Log.d("통신 확인", "오류 응답: " + errorResponse);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    if (rb != null) {
+                                        rb.close(); // 반드시 닫아주어야 함
+                                    }
+                                }
+
+                                if (errorObject != null) {
+                                    // 오류 응답 처리
+                                    Log.d("통신 확인", "오류 응답: " + errorObject.toString());
+                                }
+                                Toast.makeText(sc.getApplicationContext(), errorObject.getStatus() + ", " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Join_Duplication> call, Throwable t) {
+                        //서버에 문제가 있을 경우
+                        Log.d("통신 확인", "onfailure 실패 ");
+                    }
+                });
             }
         });
 
@@ -226,7 +306,77 @@ public class Join_Screen extends Fragment {
         });
 
 
+        //입력 관련 설명 textview 리스너 등록
+        //아이디 입력 관련 설명
+        id_input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                isIdChecked = false;
+                if(s.length() == 0){
+                    //비어있을 경우
+                    warning_id.setText("✓ 아이디를 입력해주세요");
+                    warning_id.setTextColor(Color.parseColor("#FF6E65"));
+                }else {
+                    //이외에
+                    warning_id.setText("✓ 중복 확인을 해주세요");
+                    warning_id.setTextColor(Color.parseColor("#FF6E65"));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        //비밀번호 입력 관련 설명
+        pw_input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() < 8){
+                    //8자보다 적을 경우
+                    warning_pw.setTextColor(Color.parseColor("#FF6E65"));
+                }else {
+                    //8자보다 많을 경우
+                    warning_pw.setTextColor(Color.parseColor("#3F8CFF"));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return rootView;
+    }
+
+    //회원가입 에디터텍스트 초기화
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        id_input.setText("");
+        pw_input.setText("");
+
+        name_input.setText("");
+        birthday_input.setText("");
+
+        first_phone_input.setText("");
+        middle_phone_input.setText("");
+        last_phone_input.setText("");
+
+        isIdChecked = false;
     }
 
     @Override

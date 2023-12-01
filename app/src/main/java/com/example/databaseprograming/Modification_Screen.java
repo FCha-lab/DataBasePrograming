@@ -1,8 +1,11 @@
 package com.example.databaseprograming;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,9 +51,13 @@ public class Modification_Screen extends Fragment {
     //버튼 위젯 선언
     private ImageButton page_back;
     private Button modification_button;
+    private Button logout_button;
 
     //비밀번호 보이기 관련 위젯 선언
     private ImageButton show_pw_button;
+
+    //입력 관련 설명 textview 변수 선언
+    private TextView warning_pw;
 
     //서버 관련 변수 선언
     Modification_Request_RetrofitClient modification_request_retrofitClient;
@@ -73,8 +81,11 @@ public class Modification_Screen extends Fragment {
 
         page_back = rootView.findViewById(R.id.page_back);
         modification_button = rootView.findViewById(R.id.modification_button);
+        logout_button = rootView.findViewById(R.id.logout_button);
 
         show_pw_button = rootView.findViewById(R.id.show_pw_button);
+
+        warning_pw = rootView.findViewById(R.id.warning_pw);
 
         //공백 관련 필터 선언
         InputFilter filter[] =  new InputFilter[]{
@@ -221,6 +232,15 @@ public class Modification_Screen extends Fragment {
             }
         });
 
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(sc.getApplicationContext(), "로그아웃이 완료되었습니다!", Toast.LENGTH_SHORT).show();
+                sc.setToken(null);
+                sc.replaceFragment(new Main_Screen());
+            }
+        });
+
         show_pw_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -235,6 +255,30 @@ public class Modification_Screen extends Fragment {
                     pw_input.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
                 //출처: https://gooners0304.tistory.com/entry/EditText-비밀번호-보이기숨기기 [괴발개발 개발새발:티스토리]
+            }
+        });
+
+        //비밀번호 입력 관련 설명
+        pw_input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() < 8){
+                    //8자보다 적을 경우
+                    warning_pw.setTextColor(Color.parseColor("#FF6E65"));
+                }else {
+                    //8자보다 많을 경우
+                    warning_pw.setTextColor(Color.parseColor("#3F8CFF"));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 

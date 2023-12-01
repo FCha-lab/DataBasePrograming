@@ -160,7 +160,11 @@ public class Screen_controller extends AppCompatActivity {
 
                 replaceFragment(medical_records_inquiry_screen);
 
-            } else if (previous_page instanceof Login_Screen) {
+            } else if (previous_page instanceof Main_Screen) {
+
+                replaceFragment(main_screen);
+
+            }else if (previous_page instanceof Login_Screen) {
 
                 replaceFragment(login_screen);
 

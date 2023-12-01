@@ -199,6 +199,16 @@ public class Login_Screen extends Fragment {
         return rootView;
     }
 
+    //로그인 에디터텍스트 초기화
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        id_textview.setText("");
+        pw_textview.setText("");
+    }
+
+    //Screen Controller 초기화 및 메모리 해제
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
