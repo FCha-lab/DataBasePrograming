@@ -60,6 +60,7 @@ public class Hospital_Info_Screen extends Fragment {
 
     //페이지 내 처리 변수 선언
     private boolean isHospitalLiked;
+    private String hospital_id;
 
     //서버 관련 변수 선언
     private Hospital_Info_RetrofitClient hospital_info_retrofitClient;
@@ -117,13 +118,22 @@ public class Hospital_Info_Screen extends Fragment {
         reservation_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //검색 버튼을 눌렀을 경우
+                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
+                //번들에 넘길 값 저장
+                bundle.putString("hospitalId", hospital_id);
+                Fragment target = sc.getScreen(new Reservation_Screen());//프래그먼트 선언
+                target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
+                sc.replaceFragment(new Reservation_Screen());
+                sc.replaceFragment(new Reservation_Screen());
             }
         });
 
         page_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setArguments(null);
                 sc.onBackPressed();
             }
         });
@@ -151,7 +161,7 @@ public class Hospital_Info_Screen extends Fragment {
         //페이지 내 처리 변수 초기화
         isHospitalLiked = false;
 
-        String hospital_id = null;
+        hospital_id = null;
 
         //페이지 열람시 전송된 정보 저장하기
         if (getArguments() != null) {
@@ -163,7 +173,6 @@ public class Hospital_Info_Screen extends Fragment {
             // 페이지에 검색어 정보가 없을 경우
             Toast.makeText(sc.getApplicationContext(), "병원 정보를 불러오는데 실패했습니다!", Toast.LENGTH_SHORT).show();
         }
-        setArguments(null);
 
         if(hospital_id != null){
             Hospital_Info_RetrofitInterface r1 = hospital_info_retrofitClient.getApiService(sc.getToken());

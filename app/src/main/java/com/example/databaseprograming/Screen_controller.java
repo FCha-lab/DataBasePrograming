@@ -166,6 +166,10 @@ public class Screen_controller extends AppCompatActivity {
 
                 replaceFragment(hospital_search_results_screen);
 
+            } else if (current_page instanceof Reservation_Screen) {
+
+                replaceFragment(hospital_info_screen);
+
             } else if (previous_page instanceof Main_Screen) {
 
                 replaceFragment(main_screen);

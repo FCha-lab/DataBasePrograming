@@ -10,11 +10,24 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Reservation_Screen extends Fragment {
 
@@ -34,6 +47,74 @@ public class Reservation_Screen extends Fragment {
 
     //페이지 관련 위젯 변수 선언
     private ImageView page_back;
+    private String hospital_id;
+
+    //서버 관련 변수 선언
+    private Reservation_Available_Time_RetrofitClient reservation_available_time_retrofitClient;
+    private Reservation_RetrofitClient reservation_retrofitClient;
+    private retrofit2.Callback<Reservation_Available_Time_Response> check_time = new Callback<Reservation_Available_Time_Response>() {
+        @Override
+        public void onResponse(Call<Reservation_Available_Time_Response> call, Response<Reservation_Available_Time_Response> response) {
+            //정상적인 통신이 진행될 경우
+            Log.d("통신 확인", response.toString());
+            if (response.isSuccessful() || response.body() != null) {
+                //정상적으로 토큰이 확인되었을 경우
+                Reservation_Available_Time_Response result = (Reservation_Available_Time_Response) response.body();
+                Log.d("통신 확인", result.toString());
+
+                //병원 이름 설정
+                hospital_name.setText(result.getHospitalName());
+
+                //버튼 비활성화 여부 확인
+                for(int i=0; i<buttonList.length;i++){
+                    for(int j=0;j<result.getAvailableTime().size();j++){
+                        if(buttonList[i].getText().toString().equals(result.getAvailableTime().get(j).getTime())){
+                            if(result.getAvailableTime().get(j).getAvailableSlots() != 0){
+                                buttonList[i].setEnabled(true);
+                            }
+                            break;
+                        }
+                    }
+                }
+
+            } else {
+                //토큰에 문제가 생겼을 경우
+                //오류 정보를 받아오기
+                Reservation_Available_Time_Response errorObject = null;
+                ResponseBody rb = response.errorBody();
+                if (rb != null) {
+                    try {
+                        // 오류 응답을 문자열로 읽어옴
+                        String errorResponse = rb.string();
+
+                        // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                        Gson gson = new Gson();
+                        errorObject = gson.fromJson(errorResponse, Reservation_Available_Time_Response.class);
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (rb != null) {
+                            rb.close(); // 반드시 닫아주어야 함
+                        }
+                    }
+
+                    if (errorObject != null) {
+                        // 오류 응답 처리
+                        Toast.makeText(sc.getApplicationContext(), "조회 실패 : name-"+ errorObject.getHospitalName() + ", 해당 병원에 대한 정보 - " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onFailure(Call<Reservation_Available_Time_Response> call, Throwable t) {
+            //서버에 문제가 있을 경우
+            Log.d("통신 확인", "onfailure 실패 ");
+        }
+    };
 
 
     @Nullable
@@ -48,23 +129,22 @@ public class Reservation_Screen extends Fragment {
 
         select_date =  rootView.findViewById(R.id.select_date);
 
-        buttonList = new RadioButton[16];
+        buttonList = new RadioButton[15];
         buttonList[0] = rootView.findViewById(R.id.am1);
         buttonList[1] = rootView.findViewById(R.id.am2);
         buttonList[2] = rootView.findViewById(R.id.am3);
         buttonList[3] = rootView.findViewById(R.id.am4);
-        buttonList[4] = rootView.findViewById(R.id.am5);
-        buttonList[5] = rootView.findViewById(R.id.am6);
-        buttonList[6] = rootView.findViewById(R.id.am7);
-        buttonList[7] = rootView.findViewById(R.id.am8);
-        buttonList[8] = rootView.findViewById(R.id.pm1);
-        buttonList[9] = rootView.findViewById(R.id.pm2);
-        buttonList[10] = rootView.findViewById(R.id.pm3);
-        buttonList[11] = rootView.findViewById(R.id.pm4);
-        buttonList[12] = rootView.findViewById(R.id.pm5);
-        buttonList[13] = rootView.findViewById(R.id.pm6);
-        buttonList[14] = rootView.findViewById(R.id.pm7);
-        buttonList[15] = rootView.findViewById(R.id.pm8);
+        buttonList[4] = rootView.findViewById(R.id.pm1);
+        buttonList[5] = rootView.findViewById(R.id.pm2);
+        buttonList[6] = rootView.findViewById(R.id.pm3);
+        buttonList[7] = rootView.findViewById(R.id.pm4);
+        buttonList[8] = rootView.findViewById(R.id.pm5);
+        buttonList[9] = rootView.findViewById(R.id.pm6);
+        buttonList[10] = rootView.findViewById(R.id.pm7);
+        buttonList[11] = rootView.findViewById(R.id.pm8);
+        buttonList[12] = rootView.findViewById(R.id.pm9);
+        buttonList[13] = rootView.findViewById(R.id.pm10);
+        buttonList[14] = rootView.findViewById(R.id.pm11);
 
         reservation_button = rootView.findViewById(R.id.reservation_button);
 
@@ -73,6 +153,10 @@ public class Reservation_Screen extends Fragment {
         //페이지 관련 변수 초기화
         current_button = null;
         hospital_name.setText("병원 이름");
+
+        //서버 관련 변수 초기화
+        reservation_available_time_retrofitClient = new Reservation_Available_Time_RetrofitClient();
+        reservation_retrofitClient = new Reservation_RetrofitClient();
 
 
         //버튼에 대한 리스너 등록
@@ -108,6 +192,110 @@ public class Reservation_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //예약 버튼을 눌렀을 때
+                if(current_button == null){
+                    //선택한 버튼이 없을 경우
+                    Toast.makeText(sc.getApplicationContext(), "시간을 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 선택된 날짜로 Calendar 객체 생성
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.setTimeInMillis(select_date.getDate());
+                // 날짜 포맷 지정
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                String date = sdf.format(selectedDate.getTime());
+
+                Reservation_Request body = new Reservation_Request();
+                body.setDate(date);
+                body.setTime(current_button.getText().toString());
+                body.setHospitalId(hospital_id);
+
+                Reservation_RetrofitInterface r1 = reservation_retrofitClient.getApiService(sc.getToken());
+
+                r1.setReservation(body).enqueue(new Callback<Reservation_Response>() {
+                    @Override
+                    public void onResponse(Call<Reservation_Response> call, Response<Reservation_Response> response) {
+                        //정상적인 통신이 진행될 경우
+                        Log.d("통신 확인", response.toString());
+                        if (response.isSuccessful() || response.body() != null) {
+                            //정상적으로 토큰이 확인되었을 경우
+                            Reservation_Response result = (Reservation_Response) response.body();
+                            Log.d("통신 확인", result.toString());
+
+
+                            Toast.makeText(sc.getApplicationContext(), result.getDate() + " " + result.getTime() + " " + hospital_name.getText().toString() + " 예약되었습니다!", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            //토큰에 문제가 생겼을 경우
+                            //오류 정보를 받아오기
+                            Reservation_Response errorObject = null;
+                            ResponseBody rb = response.errorBody();
+                            if (rb != null) {
+                                try {
+                                    // 오류 응답을 문자열로 읽어옴
+                                    String errorResponse = rb.string();
+
+                                    // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                                    Gson gson = new Gson();
+                                    errorObject = gson.fromJson(errorResponse, Reservation_Response.class);
+
+
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    if (rb != null) {
+                                        rb.close(); // 반드시 닫아주어야 함
+                                    }
+                                }
+
+                                if (errorObject != null) {
+                                    // 오류 응답 처리
+                                    Toast.makeText(sc.getApplicationContext(), "status:"+errorObject.getStatus() +", message:" +errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Reservation_Response> call, Throwable t) {
+                        //서버에 문제가 있을 경우
+                        Log.d("통신 확인", "onfailure 실패 ");
+                    }
+                });
+
+            }
+        });
+
+        //캘린더 뷰에 대한 리스너 등록
+        select_date.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                //페이지 관련 변수 초기화
+                if(current_button != null){
+                    current_button.setChecked(false);
+                    current_button = null;
+                }
+
+                //라디오버튼 전체 비활성화
+                for(int i =0 ;i<buttonList.length;i++){
+                    buttonList[i].setEnabled(false);
+                }
+
+                // 선택된 날짜로 Calendar 객체 생성
+                Calendar selectedDate = Calendar.getInstance();
+                selectedDate.set(year, month, dayOfMonth);
+
+                // 날짜 포맷 지정
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+                // 포맷된 날짜 문자열 가져오기
+                String date = sdf.format(selectedDate.getTime());
+
+                Reservation_Available_Time_RetrofitInterface r1 = reservation_available_time_retrofitClient.getApiService();
+
+                r1.getAvailableTime(hospital_id, date).enqueue(check_time);
+
 
             }
         });
@@ -115,6 +303,35 @@ public class Reservation_Screen extends Fragment {
         return  rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //페이지 관련 변수 초기화
+        current_button = null;
+        hospital_id = null;
+
+        //라디오버튼 전체 비활성화
+        for(int i =0 ;i<buttonList.length;i++){
+            buttonList[i].setEnabled(false);
+        }
+
+        if(getArguments() != null){
+            hospital_id = getArguments().getString("hospitalId");
+        }
+
+        if(hospital_id != null){
+            Reservation_Available_Time_RetrofitInterface r1 = reservation_available_time_retrofitClient.getApiService();
+            // 선택된 날짜로 Calendar 객체 생성
+            Calendar selectedDate = Calendar.getInstance();
+            selectedDate.setTimeInMillis(select_date.getDate());
+            // 날짜 포맷 지정
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            String date = sdf.format(selectedDate.getTime());
+
+            r1.getAvailableTime(hospital_id, date).enqueue(check_time);
+        }
+    }
 
     //Screen Controller 초기화 및 메모리 해제
     @Override
