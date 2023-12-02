@@ -2,12 +2,14 @@ package com.example.databaseprograming;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,8 +17,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class Hospital_Info_Screen extends Fragment {
@@ -44,10 +56,13 @@ public class Hospital_Info_Screen extends Fragment {
     //상호작용 관련 위젯 변수 선언
     private ImageButton hospital_like;
     private Button reservation_button;
+    private ImageButton page_back;
 
     //페이지 내 처리 변수 선언
-
     private boolean isHospitalLiked;
+
+    //서버 관련 변수 선언
+    private Hospital_Info_RetrofitClient hospital_info_retrofitClient;
 
     @Nullable
     @Override
@@ -55,32 +70,13 @@ public class Hospital_Info_Screen extends Fragment {
 
         View rootView = inflater.inflate(R.layout.hospital_info_screen, container, false);
 
-        ArrayList<Boolean> gender = new ArrayList<Boolean>() {
-            {
-                add(false);
-                add(true);
-                add(true);
-            }
-        };
-
-        ArrayList<String> name = new ArrayList<String>(
-                Arrays.asList("장현희", "조승훈", "정동주")
-        );
-
-        ArrayList<String> university = new ArrayList<String>(
-                Arrays.asList("공주대학교", "충남대학교", "서울대학교")
-        );
-
-
         //리사이클러뷰 연결
         hospital_doctor_list = rootView.findViewById(R.id.hospital_doctor_recycle);
 
         //리사이클러뷰 어댑터 초기화
         hospital_doctor_list.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        hDoctor_recycler = new Hospital_info_doctor_recyclerAdapter(gender, name, university);
-        hospital_doctor_list.setAdapter(hDoctor_recycler);
 
-        //리사이클러뷰 어댑터 가로 스크롤바 없애기
+        //리사이클러뷰 어댑터 세로 스크롤바 없애기
         hospital_doctor_list.setVerticalScrollBarEnabled(false);
 
         //위젯을 연결
@@ -97,6 +93,48 @@ public class Hospital_Info_Screen extends Fragment {
 
         hospital_like = rootView.findViewById(R.id.hospital_like);
         reservation_button = rootView.findViewById(R.id.reservation_button);
+        page_back = rootView.findViewById(R.id.page_back);
+
+        //서버 관련 변수 초기화
+        hospital_info_retrofitClient = new Hospital_Info_RetrofitClient();
+
+
+        //버튼에 대한 리스너 등록
+        hospital_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //좋아요 버튼을 눌렀을 때
+                if (isHospitalLiked) {
+                    //만약 이미 좋아요 상태라면?
+                    hospital_like.setImageResource(R.drawable.heart_empty);
+                } else {
+                    //만약 좋아요를 누르지 않은 상태였다면?
+                    hospital_like.setImageResource(R.drawable.heart_full);
+                }
+            }
+        });
+
+        reservation_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        page_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sc.onBackPressed();
+            }
+        });
+
+
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
         //위젯의 정보 초기화
         opening_hour.setText("");
@@ -113,33 +151,127 @@ public class Hospital_Info_Screen extends Fragment {
         //페이지 내 처리 변수 초기화
         isHospitalLiked = false;
 
+        String hospital_id = null;
 
-        //버튼에 대한 리스너 등록
-        hospital_like.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //좋아요 버튼을 눌렀을 때
-                if (isHospitalLiked) {
-                    //만약 이미 좋아요 상태라면?
-                    hospital_like.setImageResource(R.drawable.heart_full);
-                    like_count.setText("");
-                } else {
-                    //만약 좋아요를 누르지 않은 상태였다면?
-                    hospital_like.setImageResource(R.drawable.heart_empty);
-                    like_count.setText("");
+        //페이지 열람시 전송된 정보 저장하기
+        if (getArguments() != null) {
+            // 페이지에 검색어 정보가 있을 경우
+            // 병원 정보 받아 넣기
+            hospital_id = getArguments().getString("id");
+
+        } else {
+            // 페이지에 검색어 정보가 없을 경우
+            Toast.makeText(sc.getApplicationContext(), "병원 정보를 불러오는데 실패했습니다!", Toast.LENGTH_SHORT).show();
+        }
+        setArguments(null);
+
+        if(hospital_id != null){
+            Hospital_Info_RetrofitInterface r1 = hospital_info_retrofitClient.getApiService(sc.getToken());
+
+            r1.getHospitalInfo(hospital_id).enqueue(new Callback<Hospital_Info_Response>() {
+                @Override
+                public void onResponse(Call<Hospital_Info_Response> call, Response<Hospital_Info_Response> response) {
+                    //정상적인 통신이 진행될 경우
+                    Log.d("통신 확인", response.toString());
+                    if (response.isSuccessful() || response.body() != null) {
+                        //정상적으로 토큰이 확인되었을 경우
+                        Hospital_Info_Response result = (Hospital_Info_Response) response.body();
+                        Log.d("통신 확인", result.toString());
+
+                        //병원 정보 입력
+                        like_count.setText(String.valueOf(result.getLikesCount()));
+                        hospital_open_date.setText(result.getOpenDate());
+                        hospital_breaktime.setText(result.getBreakTime());
+
+                        hospital_name.setText(result.getHospitalName());
+                        hospital_type.setText(result.getDepartment());
+                        hospital_opening_hour.setText(result.getOperatingHours());
+                        hospital_phone_number.setText(result.getPhoneNumber());
+                        hospital_adress.setText(result.getAddress());
+
+                        //좋아요를 눌렀는지 확인
+                        isHospitalLiked = result.isLikedByUser();
+                        if (isHospitalLiked) {
+                            //만약 이미 좋아요 상태라면?
+                            hospital_like.setImageResource(R.drawable.heart_full);
+                        } else {
+                            //만약 좋아요를 누르지 않은 상태라면?
+                            hospital_like.setImageResource(R.drawable.heart_empty);
+                        }
+
+                        //운영중인지 영업 종료상태인지 확인
+                        String[] parts = result.getOperatingHours().split("~");
+                        LocalTime startTime = LocalTime.parse(parts[0], DateTimeFormatter.ofPattern("HH:mm"));
+                        LocalTime endTime = LocalTime.parse(parts[1], DateTimeFormatter.ofPattern("HH:mm"));
+
+                        LocalDateTime now = LocalDateTime.now();
+                        LocalTime currentTime = now.toLocalTime();
+
+                        // 현재 시간이 주어진 시간대에 속하는지 확인
+                        if (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) {
+                            //운영중인 경우
+                            opening_hour.setText("운영중");
+                        } else {
+                            //영업 종료인 경우
+                            opening_hour.setText("영업 종료");
+                        }
+
+                        //리사이클러뷰 초기화
+                        hDoctor_recycler = new Hospital_info_doctor_recyclerAdapter(result.getDoctors());
+                        hospital_doctor_list.setAdapter(hDoctor_recycler);
+
+                    } else {
+                        //토큰에 문제가 생겼을 경우
+                        //오류 정보를 받아오기
+                        Hospital_Info_Response errorObject = null;
+                        ResponseBody rb = response.errorBody();
+                        if (rb != null) {
+                            try {
+                                // 오류 응답을 문자열로 읽어옴
+                                String errorResponse = rb.string();
+
+                                // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                                Gson gson = new Gson();
+                                errorObject = gson.fromJson(errorResponse, Hospital_Info_Response.class);
+
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } finally {
+                                if (rb != null) {
+                                    rb.close(); // 반드시 닫아주어야 함
+                                }
+                            }
+
+                            if (errorObject != null) {
+                                // 오류 응답 처리
+                                hospital_type.setText("조회 에러");
+                                hospital_name.setText("해당 병원이 존재하지 않습니다");
+
+                                Toast.makeText(sc.getApplicationContext(), "조회 실패 : id-"+ errorObject.getHospitalId() + ", 해당 아이디에 대한 정보 - " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    }
                 }
-            }
-        });
 
-        reservation_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                @Override
+                public void onFailure(Call<Hospital_Info_Response> call, Throwable t) {
+                    //서버에 문제가 있을 경우
+                    Log.d("통신 확인", "onfailure 실패 ");
+                    ArrayList<Hospital_Info_Response.Doctor_Info> item = new ArrayList<>();
+                    Hospital_Info_Response.Doctor_Info daemi = new Hospital_Info_Response.Doctor_Info();
+                    daemi.setDoctorName("정보 없음");
+                    daemi.setBiography("통신 에러");
+                    daemi.setGender("M");
 
-            }
-        });
+                    item.add(daemi);
 
-
-        return rootView;
+                    hDoctor_recycler = new Hospital_info_doctor_recyclerAdapter(item);
+                    hospital_doctor_list.setAdapter(hDoctor_recycler);
+                }
+            });
+        }
     }
 
     //Screen Controller 초기화 및 메모리 해제

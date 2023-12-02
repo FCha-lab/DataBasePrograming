@@ -125,7 +125,9 @@ public class Screen_controller extends AppCompatActivity {
             return reservation_screen;
         } else if (target instanceof Hospital_Search_Results_Screen) {
             return hospital_search_results_screen;
-        } else if (target instanceof Inquiry_of_Reservation_Information_Screen) {
+        } else if(target instanceof Hospital_Info_Screen) {
+            return hospital_info_screen;
+        }else if (target instanceof Inquiry_of_Reservation_Information_Screen) {
             return inquiry_of_reservation_information_screen;
         } else if (target instanceof Medical_Records_Screen) {
             return medical_records_screen;
@@ -160,11 +162,15 @@ public class Screen_controller extends AppCompatActivity {
 
                 replaceFragment(medical_records_inquiry_screen);
 
+            } else if (current_page instanceof Hospital_Info_Screen) {
+
+                replaceFragment(hospital_search_results_screen);
+
             } else if (previous_page instanceof Main_Screen) {
 
                 replaceFragment(main_screen);
 
-            }else if (previous_page instanceof Login_Screen) {
+            } else if (previous_page instanceof Login_Screen) {
 
                 replaceFragment(login_screen);
 

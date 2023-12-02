@@ -13,9 +13,7 @@ import java.util.ArrayList;
 
 public class Hospital_info_doctor_recyclerAdapter extends RecyclerView.Adapter<Hospital_info_doctor_recyclerAdapter.ViewHolder> {
 
-    private ArrayList<Boolean> isMaleList = null;
-    private ArrayList<String> nameList = null;
-    private ArrayList<String> universityList = null;
+    private ArrayList<Hospital_Info_Response.Doctor_Info> doctor_info_list;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView1;
@@ -35,10 +33,8 @@ public class Hospital_info_doctor_recyclerAdapter extends RecyclerView.Adapter<H
 
     }
 
-    Hospital_info_doctor_recyclerAdapter(ArrayList<Boolean> gender, ArrayList<String> name, ArrayList<String> university) {
-        isMaleList = gender;
-        nameList = name;
-        universityList = university;
+    Hospital_info_doctor_recyclerAdapter(ArrayList<Hospital_Info_Response.Doctor_Info> list) {
+        doctor_info_list = list;
     }
 
 
@@ -57,24 +53,24 @@ public class Hospital_info_doctor_recyclerAdapter extends RecyclerView.Adapter<H
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(Hospital_info_doctor_recyclerAdapter.ViewHolder holder, int position) {
-        Boolean gender = isMaleList.get(position);
-        String name = nameList.get(position);
-        String university = universityList.get(position);
+        Hospital_Info_Response.Doctor_Info item = doctor_info_list.get(position);
 
-        if (gender) {
+        if (item.getGender().equals("M")) {
+            //남자일 경우
             holder.imageView1.setImageResource(R.drawable.blue_dot);
-        } else {
+        } else if(item.getGender().equals("F")){
+            //여자일 경우
             holder.imageView1.setImageResource(R.drawable.red_dot);
         }
-        holder.textView1.setText(name);
-        holder.textView2.setText(university);
+        holder.textView1.setText(item.getDoctorName());
+        holder.textView2.setText(item.getBiography());
 
     }
 
     // getItemCount() - 전체 데이터 갯수 리턴.
     @Override
     public int getItemCount() {
-        return isMaleList.size();
+        return doctor_info_list.size();
     }
 
 }

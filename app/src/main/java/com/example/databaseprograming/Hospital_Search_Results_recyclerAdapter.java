@@ -3,6 +3,7 @@ package com.example.databaseprograming;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Collections;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,6 +89,14 @@ public class Hospital_Search_Results_recyclerAdapter extends RecyclerView.Adapte
             @Override
             public void onClick(View v) {
                 //개체를 눌렀을 때
+
+                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
+                //번들에 넘길 값 저장
+                bundle.putString("id", item.getId());
+                Fragment target = sc.getScreen(new Hospital_Info_Screen());//프래그먼트 선언
+                target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
+
+                sc.replaceFragment(new Hospital_Info_Screen());
             }
         });
 
