@@ -250,7 +250,17 @@ public class Reservation_Screen extends Fragment {
 
                                 if (errorObject != null) {
                                     // 오류 응답 처리
-                                    Toast.makeText(sc.getApplicationContext(), "status:"+errorObject.getStatus() +", message:" +errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                    int status = response.code();
+                                    if(status == 401){
+                                        if(errorObject.getError() == null){
+                                            Toast.makeText(sc.getApplicationContext(), "로그인 만료! 다시 로그인 해주세요! message:" + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            Toast.makeText(sc.getApplicationContext(), errorObject.getError() + ", 로그인을 해주세요!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }else{
+                                        Toast.makeText(sc.getApplicationContext(), "status:"+errorObject.getStatus() +", message:" +errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+
 
                                 }
                             }
@@ -313,6 +323,7 @@ public class Reservation_Screen extends Fragment {
 
         //라디오버튼 전체 비활성화
         for(int i =0 ;i<buttonList.length;i++){
+            buttonList[i].setChecked(false);
             buttonList[i].setEnabled(false);
         }
 

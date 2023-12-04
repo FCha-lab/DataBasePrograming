@@ -27,10 +27,18 @@ public class Reservation_Response {
 
     //통신 상태
     @SerializedName("status")
-    private String status;
+    private int status;
+
+    //통신 상태
+    @SerializedName("error")
+    private String error;
 
     public String getDate() {
         return date;
+    }
+
+    public String getError() {
+        return error;
     }
 
     public String getHospitalId() {
@@ -49,7 +57,7 @@ public class Reservation_Response {
         return message;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 }

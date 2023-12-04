@@ -271,7 +271,7 @@ public class Main_Screen extends Fragment {
                     ArrayList<Main_Recommend_Response> result = (ArrayList<Main_Recommend_Response>) response.body();
                     Log.d("통신 확인", result.toString());
 
-                    rList_recycler = new Main_recommend_hospital_recyclerAdapter(result);
+                    rList_recycler = new Main_recommend_hospital_recyclerAdapter(result, sc, true);
                     recomend_list.setAdapter(rList_recycler);
 
                 } else {
@@ -309,7 +309,7 @@ public class Main_Screen extends Fragment {
 
                             item.add(daemi);
 
-                            rList_recycler = new Main_recommend_hospital_recyclerAdapter(item);
+                            rList_recycler = new Main_recommend_hospital_recyclerAdapter(item, sc, false);
                             recomend_list.setAdapter(rList_recycler);
                         }
                     }
@@ -329,7 +329,7 @@ public class Main_Screen extends Fragment {
 
                 item.add(daemi);
 
-                rList_recycler = new Main_recommend_hospital_recyclerAdapter(item);
+                rList_recycler = new Main_recommend_hospital_recyclerAdapter(item, sc, false);
                 recomend_list.setAdapter(rList_recycler);
 
             }

@@ -154,6 +154,10 @@ public class Screen_controller extends AppCompatActivity {
                 finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
                 android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
 
+            } else if (previous_page instanceof Main_Screen) {
+
+                replaceFragment(main_screen);
+
             } else if (current_page instanceof Login_Screen || current_page instanceof Inquiry_of_Reservation_Information_Screen|| current_page instanceof Medical_Records_Inquiry_Screen) {
 
                 replaceFragment(main_screen);
@@ -162,6 +166,10 @@ public class Screen_controller extends AppCompatActivity {
 
                 replaceFragment(medical_records_inquiry_screen);
 
+            } else if (current_page instanceof Hospital_Search_Results_Screen) {
+
+                replaceFragment(main_screen);
+
             } else if (current_page instanceof Hospital_Info_Screen) {
 
                 replaceFragment(hospital_search_results_screen);
@@ -169,10 +177,6 @@ public class Screen_controller extends AppCompatActivity {
             } else if (current_page instanceof Reservation_Screen) {
 
                 replaceFragment(hospital_info_screen);
-
-            } else if (previous_page instanceof Main_Screen) {
-
-                replaceFragment(main_screen);
 
             } else if (previous_page instanceof Login_Screen) {
 
