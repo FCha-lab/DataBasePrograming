@@ -67,7 +67,7 @@
                     android:textSize="25dp" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/sky_round_border"
                     android:orientation="vertical"
@@ -75,7 +75,7 @@
 
                     <CalendarView
                         android:id="@+id/select_date"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null" />
                 </LinearLayout>

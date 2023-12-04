@@ -113,7 +113,7 @@ public class Main_Screen extends Fragment {
 
         reserve_info = rootView.findViewById(R.id.reserve_info);
         diagno_info = rootView.findViewById(R.id.diagno_info);
-        favorites = rootView.findViewById(R.id.favorites);
+//        favorites = rootView.findViewById(R.id.favorites);
 
         //서버 관련 변수 초기화
         modification_check_retrofitClient = new Modification_Check_RetrofitClient();
@@ -170,12 +170,12 @@ public class Main_Screen extends Fragment {
             }
         });
 
-        favorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sc.replaceFragment(new Hospital_Search_Results_Screen());
-            }
-        });
+//        favorites.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                sc.replaceFragment(new Hospital_Search_Results_Screen());
+//            }
+//        });
 
 
         return rootView;

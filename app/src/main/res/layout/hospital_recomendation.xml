@@ -5,9 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:layout_marginRight="30dp"
-    android:background="@drawable/round_border"
-    android:id="@+id/frame"
-    >
+    android:background="@drawable/round_border">
 
     <TextView
         android:id="@+id/recomend_hospital_type"
