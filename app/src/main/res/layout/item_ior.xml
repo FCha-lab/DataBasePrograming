@@ -70,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="5dp"
             android:orientation="vertical">
 
@@ -98,9 +98,19 @@
                 android:id="@+id/hospital_ior_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2023.10.31 14:00"
+                android:text="2023.10.31"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="100dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="10dp"
+                android:textColor="#4B4B4B"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/hospital_ior_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="14:00"
+                android:layout_marginTop="10dp"
                 android:textColor="#4B4B4B"
                 android:textSize="16dp" />
 

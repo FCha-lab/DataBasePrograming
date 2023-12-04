@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
+import okhttp3.Headers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -158,7 +160,6 @@ public class Main_Screen extends Fragment {
             public void onClick(View view) {
                 //예약정보 이미지를 눌렀을 때
                 sc.replaceFragment(new Inquiry_of_Reservation_Information_Screen());
-
             }
         });
 

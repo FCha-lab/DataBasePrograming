@@ -16,10 +16,7 @@ import android.content.DialogInterface;
 public class Inquiry_of_Reservation_Information_recyclerAdapter extends RecyclerView.Adapter<Inquiry_of_Reservation_Information_recyclerAdapter.ViewHolder>{
 
 
-    private List<String> statText = null;
-    private List<String> nameText = null;
-    private List<String> addrText = null;
-    private List<String> timeText = null;
+    private ArrayList<Inquiry_of_Reservation_Informaion_Response> ior;
 
     private Context context;
 
@@ -29,6 +26,7 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
         TextView textView2 ;
         TextView textView3 ;
         TextView textView4 ;
+        TextView textView5 ;
         ImageButton imageButton1 ;
 
         ViewHolder(View itemView) {
@@ -39,20 +37,16 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
             textView2 = itemView.findViewById(R.id.hospital_name);
             textView3 = itemView.findViewById(R.id.hospital_address);
             textView4 = itemView.findViewById(R.id.hospital_ior_date);
+            textView5 = itemView.findViewById(R.id.hospital_ior_time);
             imageButton1 = itemView.findViewById(R.id.x_red);
-
 
         }
 
-
     }
 
-    Inquiry_of_Reservation_Information_recyclerAdapter(ArrayList<String> aaText, ArrayList<String> bbText, ArrayList<String> ccText, ArrayList<String> ddText, Context context) {
+    Inquiry_of_Reservation_Information_recyclerAdapter(ArrayList<Inquiry_of_Reservation_Informaion_Response> ior, Context context) {
 
-        statText = aaText;
-        nameText = bbText;
-        addrText = ccText;
-        timeText = ddText;
+        this.ior = ior;
         this.context = context;
     }
 
@@ -71,17 +65,13 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(Inquiry_of_Reservation_Information_recyclerAdapter.ViewHolder holder, int position) {
-        String text1 = statText.get(position);
-        String text2 = nameText.get(position);
-        String text3 = addrText.get(position);
-        String text4 = timeText.get(position);
+        Inquiry_of_Reservation_Informaion_Response target = ior.get(position);
 
-
-        holder.textView1.setText(text1);
-        holder.textView2.setText(text2);
-        holder.textView3.setText(text3);
-        holder.textView4.setText(text4);
-
+        holder.textView1.setText(target.getStatus());
+        holder.textView2.setText(target.getHospitalName());
+        holder.textView3.setText(target.getHospitalAddress());
+        holder.textView4.setText(target.getDate());
+        holder.textView5.setText(target.getTime());
 
         holder.textView1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +126,6 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
     // getItemCount() - 전체 데이터 갯수 리턴.
     @Override
     public int getItemCount() {
-        return nameText.size() ;
+        return ior.size() ;
     }
 }
