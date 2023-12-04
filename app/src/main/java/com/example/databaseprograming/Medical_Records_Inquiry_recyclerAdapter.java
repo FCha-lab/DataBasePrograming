@@ -1,11 +1,9 @@
 package com.example.databaseprograming;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
@@ -13,10 +11,7 @@ import java.util.List;
 
 public class Medical_Records_Inquiry_recyclerAdapter extends RecyclerView.Adapter<Medical_Records_Inquiry_recyclerAdapter.ViewHolder>{
 
-
-    private List<String> timeText = null;
-    private List<String> hos_nameText = null;
-    private List<String> doc_nameText = null;
+    private ArrayList<Medical_Records_Inquiry_Response> mri;
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -36,11 +31,9 @@ public class Medical_Records_Inquiry_recyclerAdapter extends RecyclerView.Adapte
 
     }
 
-    Medical_Records_Inquiry_recyclerAdapter(ArrayList<String> aText, ArrayList<String> bText, ArrayList<String> cText) {
+    Medical_Records_Inquiry_recyclerAdapter(ArrayList<Medical_Records_Inquiry_Response> mri) {
 
-        timeText = aText;
-        hos_nameText = bText;
-        doc_nameText = cText;
+        this.mri = mri;
 
     }
 
@@ -59,13 +52,11 @@ public class Medical_Records_Inquiry_recyclerAdapter extends RecyclerView.Adapte
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(Medical_Records_Inquiry_recyclerAdapter.ViewHolder holder, int position) {
-        String text1 = timeText.get(position);
-        String text2 = hos_nameText.get(position);
-        String text3 = doc_nameText.get(position);
+        Medical_Records_Inquiry_Response target = mri.get(position);
 
-        holder.textView1.setText(text1);
-        holder.textView2.setText(text2);
-        holder.textView3.setText(text3);
+        holder.textView1.setText(target.getRecordDate());
+        holder.textView2.setText(target.getHospitalName());
+        holder.textView3.setText(target.getDoctorName());
 
 
         holder.textView1.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +79,6 @@ public class Medical_Records_Inquiry_recyclerAdapter extends RecyclerView.Adapte
     // getItemCount() - 전체 데이터 갯수 리턴.
     @Override
     public int getItemCount() {
-        return timeText.size() ;
+        return mri.size() ;
     }
 }

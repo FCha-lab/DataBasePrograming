@@ -2,7 +2,7 @@ package com.example.databaseprograming;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Inquiry_of_Reservation_Informaion_Response {
+public class Inquiry_of_Reservation_Information_Response {
     //상세페이지 열람 시 서버에서 응답하는 병원 JSON 정보
 
     //아이디
@@ -66,7 +66,6 @@ public class Inquiry_of_Reservation_Informaion_Response {
     public void setUserName(String userName) {
         this.userName = userName;
     }
-
 
     public String getDate() {
         return date;

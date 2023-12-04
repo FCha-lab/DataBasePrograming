@@ -6,13 +6,13 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Inquiry_of_Reservation_Information_RetrofitClient {
+public class Inquiry_of_Reservation_Information_Retrofit_Client {
     private static final String BASE_URL = "http://3.36.79.34:8080/reservations/check/";
 
     private Retrofit retrofit;
 
-    public Inquiry_of_Reservation_Informaion_RetrofitInterface getApiService(String token) {
-        return getInstance(token).create(Inquiry_of_Reservation_Informaion_RetrofitInterface.class);
+    public Inquiry_of_Reservation_Information_Retrofit_Interface getApiService(String token) {
+        return getInstance(token).create(Inquiry_of_Reservation_Information_Retrofit_Interface.class);
     } // api 콜
 
     private Retrofit getInstance(String token) {

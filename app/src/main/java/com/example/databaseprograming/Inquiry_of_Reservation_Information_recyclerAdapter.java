@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.List;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 public class Inquiry_of_Reservation_Information_recyclerAdapter extends RecyclerView.Adapter<Inquiry_of_Reservation_Information_recyclerAdapter.ViewHolder>{
 
 
-    private ArrayList<Inquiry_of_Reservation_Informaion_Response> ior;
+    private ArrayList<Inquiry_of_Reservation_Information_Response> ior;
 
     private Context context;
 
@@ -44,7 +44,7 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
 
     }
 
-    Inquiry_of_Reservation_Information_recyclerAdapter(ArrayList<Inquiry_of_Reservation_Informaion_Response> ior, Context context) {
+    Inquiry_of_Reservation_Information_recyclerAdapter(ArrayList<Inquiry_of_Reservation_Information_Response> ior, Context context) {
 
         this.ior = ior;
         this.context = context;
@@ -65,7 +65,7 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
     // onBindViewHolder() - position에 해당하는 데이터를 뷰홀더의 아이템뷰에 표시.
     @Override
     public void onBindViewHolder(Inquiry_of_Reservation_Information_recyclerAdapter.ViewHolder holder, int position) {
-        Inquiry_of_Reservation_Informaion_Response target = ior.get(position);
+        Inquiry_of_Reservation_Information_Response target = ior.get(position);
 
         holder.textView1.setText(target.getStatus());
         holder.textView2.setText(target.getHospitalName());
