@@ -51,6 +51,85 @@ public class Hospital_Search_Results_Screen extends Fragment {
     //서버 관련 변수 선언
     private Hospital_Search_RetrofitClient hospital_search_retrofitClient;
     private Main_Type_Search_RetrofitClient main_type_search_retrofitClient;
+    private Callback<ArrayList<Hospital_Search_Result>> search = new Callback<ArrayList<Hospital_Search_Result>>() {
+        @Override
+        public void onResponse(Call<ArrayList<Hospital_Search_Result>> call, Response<ArrayList<Hospital_Search_Result>> response) {
+            //정상적인 통신이 진행될 경우
+            Log.d("통신 확인", response.toString());
+            if (response.isSuccessful() || response.body() != null) {
+                //정상적으로 토큰이 확인되었을 경우
+                ArrayList<Hospital_Search_Result> result = (ArrayList<Hospital_Search_Result>) response.body();
+                Log.d("통신 확인", result.toString());
+
+                hsrType_recycler = new Hospital_Search_Results_recyclerAdapter(result, sc);
+                hsr_list.setAdapter(hsrType_recycler);
+
+            } else {
+                //토큰에 문제가 생겼을 경우
+                //오류 정보를 받아오기
+                ArrayList<Hospital_Search_Result> errorObject = null;
+                ResponseBody rb = response.errorBody();
+                if (rb != null) {
+                    try {
+                        // 오류 응답을 문자열로 읽어옴
+                        String errorResponse = rb.string();
+
+                        // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                        Gson gson = new Gson();
+                        Type listType = new TypeToken<ArrayList<Hospital_Search_Result>>() {
+                        }.getType();
+                        errorObject = gson.fromJson(errorResponse, listType);
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (rb != null) {
+                            rb.close(); // 반드시 닫아주어야 함
+                        }
+                    }
+
+                    if (errorObject != null) {
+                        // 오류 응답 처리
+                        ArrayList<Hospital_Search_Result> item = new ArrayList<>();
+                        Hospital_Search_Result daemi = new Hospital_Search_Result();
+                        daemi.setId("null");
+                        daemi.setName("에러");
+                        daemi.setDepartment("특수한 결과");
+                        daemi.setOperatingHours("null");
+                        daemi.setLikeCount(0);
+                        daemi.setPhoneNumber("검색 에러");
+                        daemi.setAddress("결과가 불확실합니다..");
+
+                        item.add(daemi);
+
+                        hsrType_recycler = new Hospital_Search_Results_recyclerAdapter(item, sc);
+                        hsr_list.setAdapter(hsrType_recycler);
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ArrayList<Hospital_Search_Result>> call, Throwable t) {
+            //서버에 문제가 있을 경우
+            Log.d("통신 확인", "onfailure 실패 ");
+            ArrayList<Hospital_Search_Result> item = new ArrayList<>();
+            Hospital_Search_Result daemi = new Hospital_Search_Result();
+            daemi.setId("null");
+            daemi.setName("통신이 연결되지 않았습니다");
+            daemi.setDepartment("통신 장애");
+            daemi.setOperatingHours("null");
+            daemi.setLikeCount(0);
+            daemi.setPhoneNumber("통신 장애");
+            daemi.setAddress("서버 연결 상황을 다시 확인해 주세요.");
+
+            item.add(daemi);
+
+            hsrType_recycler = new Hospital_Search_Results_recyclerAdapter(item, sc);
+            hsr_list.setAdapter(hsrType_recycler);
+        }
+    };
 
     public Hospital_Search_Results_Screen() {
 
@@ -85,6 +164,17 @@ public class Hospital_Search_Results_Screen extends Fragment {
         page_back = rootView.findViewById(R.id.page_back);
 
         //버튼에 대한 리스너 등록
+        search_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //검색 버튼을 누를 경우
+                Hospital_Search_RetrofitInterface r1 = hospital_search_retrofitClient.getApiService();
+
+                r1.getSearchResult(search_bar.getText().toString()).enqueue(search);
+
+            }
+        });
+
 
         //상단 툴바 뒤로가기 버튼을 누를 경우
         page_back.setOnClickListener(new View.OnClickListener() {
@@ -121,85 +211,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
                 //만약 검색어를 통한 검색일 경우
                 Hospital_Search_RetrofitInterface r1 = hospital_search_retrofitClient.getApiService();
 
-                r1.getSearchResult(searchInfo).enqueue(new Callback<ArrayList<Hospital_Search_Result>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<Hospital_Search_Result>> call, Response<ArrayList<Hospital_Search_Result>> response) {
-                        //정상적인 통신이 진행될 경우
-                        Log.d("통신 확인", response.toString());
-                        if (response.isSuccessful() || response.body() != null) {
-                            //정상적으로 토큰이 확인되었을 경우
-                            ArrayList<Hospital_Search_Result> result = (ArrayList<Hospital_Search_Result>) response.body();
-                            Log.d("통신 확인", result.toString());
-
-                            hsrType_recycler = new Hospital_Search_Results_recyclerAdapter(result, sc);
-                            hsr_list.setAdapter(hsrType_recycler);
-
-                        } else {
-                            //토큰에 문제가 생겼을 경우
-                            //오류 정보를 받아오기
-                            ArrayList<Hospital_Search_Result> errorObject = null;
-                            ResponseBody rb = response.errorBody();
-                            if (rb != null) {
-                                try {
-                                    // 오류 응답을 문자열로 읽어옴
-                                    String errorResponse = rb.string();
-
-                                    // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
-                                    Gson gson = new Gson();
-                                    Type listType = new TypeToken<ArrayList<Hospital_Search_Result>>() {
-                                    }.getType();
-                                    errorObject = gson.fromJson(errorResponse, listType);
-
-
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    if (rb != null) {
-                                        rb.close(); // 반드시 닫아주어야 함
-                                    }
-                                }
-
-                                if (errorObject != null) {
-                                    // 오류 응답 처리
-                                    ArrayList<Hospital_Search_Result> item = new ArrayList<>();
-                                    Hospital_Search_Result daemi = new Hospital_Search_Result();
-                                    daemi.setId("null");
-                                    daemi.setName("에러");
-                                    daemi.setDepartment("특수한 결과");
-                                    daemi.setOperatingHours("null");
-                                    daemi.setLikeCount(0);
-                                    daemi.setPhoneNumber("검색 에러");
-                                    daemi.setAddress("결과가 불확실합니다..");
-
-                                    item.add(daemi);
-
-                                    hsrType_recycler = new Hospital_Search_Results_recyclerAdapter(item, sc);
-                                    hsr_list.setAdapter(hsrType_recycler);
-                                }
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<Hospital_Search_Result>> call, Throwable t) {
-                        //서버에 문제가 있을 경우
-                        Log.d("통신 확인", "onfailure 실패 ");
-                        ArrayList<Hospital_Search_Result> item = new ArrayList<>();
-                        Hospital_Search_Result daemi = new Hospital_Search_Result();
-                        daemi.setId("null");
-                        daemi.setName("통신이 연결되지 않았습니다");
-                        daemi.setDepartment("통신 장애");
-                        daemi.setOperatingHours("null");
-                        daemi.setLikeCount(0);
-                        daemi.setPhoneNumber("통신 장애");
-                        daemi.setAddress("서버 연결 상황을 다시 확인해 주세요.");
-
-                        item.add(daemi);
-
-                        hsrType_recycler = new Hospital_Search_Results_recyclerAdapter(item, sc);
-                        hsr_list.setAdapter(hsrType_recycler);
-                    }
-                });
+                r1.getSearchResult(searchInfo).enqueue(search);
 
             } else {
                 //만약 이미지 버튼(진료과목)을 통한 검색일 경우
