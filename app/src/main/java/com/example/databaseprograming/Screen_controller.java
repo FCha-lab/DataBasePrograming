@@ -12,11 +12,14 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
+import java.util.Stack;
+
 public class Screen_controller extends AppCompatActivity {
 
     //Fragment 관련 매니져 변수 선언
     private Fragment previous_page;
     private Fragment current_page;
+    private Stack<Fragment> route;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
 
@@ -82,7 +85,7 @@ public class Screen_controller extends AppCompatActivity {
 
         previous_page = main_screen;
         current_page = main_screen;
-
+        route = new Stack<>();
 
     }
 
@@ -99,7 +102,7 @@ public class Screen_controller extends AppCompatActivity {
 
 
     //화면 변환 메서드
-    public void replaceFragment(Fragment t) {
+    public void replaceFragment(Fragment t, boolean onRoute) {
         Fragment target = getScreen(t);
 
         transaction.addToBackStack(null);
@@ -107,6 +110,13 @@ public class Screen_controller extends AppCompatActivity {
         transaction.replace(R.id.screen, target);
         transaction.commit();
 
+        if(route.search(current_page) == -1 && onRoute){
+            route.push(current_page);
+        }
+
+        if(target instanceof Main_Screen){
+            route.clear();
+        }
         previous_page = current_page;
         current_page = target;
     }
@@ -125,9 +135,9 @@ public class Screen_controller extends AppCompatActivity {
             return reservation_screen;
         } else if (target instanceof Hospital_Search_Results_Screen) {
             return hospital_search_results_screen;
-        } else if(target instanceof Hospital_Info_Screen) {
+        } else if (target instanceof Hospital_Info_Screen) {
             return hospital_info_screen;
-        }else if (target instanceof Inquiry_of_Reservation_Information_Screen) {
+        } else if (target instanceof Inquiry_of_Reservation_Information_Screen) {
             return inquiry_of_reservation_information_screen;
         } else if (target instanceof Medical_Records_Screen) {
             return medical_records_screen;
@@ -140,54 +150,30 @@ public class Screen_controller extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //현재 페이지 위치에 따라 뒤로가기 버튼의 이동.
-        if (true) {
-            Log.d("페이지 상태", "\n현재 페이지 : " + current_page.getClass().getSimpleName() + "\n이전 페이지 : " + previous_page.getClass().getSimpleName());
 
-            if (current_page instanceof Main_Screen) {
-                //데이터 해제
-                fragmentManager = null;
-                transaction = null;
-                previous_page = null;
-                current_page = null;
+        Log.d("페이지 상태", "\n현재 페이지 : " + current_page.getClass().getSimpleName() + "\n이전 페이지 : " + previous_page.getClass().getSimpleName());
 
-                moveTaskToBack(true); // 태스크를 백그라운드로 이동
-                finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
-                android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+        if(route.empty()){
+            //데이터 해제
+            fragmentManager = null;
+            transaction = null;
+            previous_page = null;
+            current_page = null;
 
-            } else if (previous_page instanceof Main_Screen) {
+            moveTaskToBack(true); // 태스크를 백그라운드로 이동
+            finishAndRemoveTask(); // 액티비티 종료 + 태스크 리스트에서 지우기
+            android.os.Process.killProcess(android.os.Process.myPid()); // 앱 프로세스 종료
+        }else{
+            Fragment target = route.pop();
 
-                replaceFragment(main_screen);
-
-            } else if (current_page instanceof Login_Screen || current_page instanceof Inquiry_of_Reservation_Information_Screen|| current_page instanceof Medical_Records_Inquiry_Screen) {
-
-                replaceFragment(main_screen);
-
-            } else if (current_page instanceof Medical_Records_Screen) {
-
-                replaceFragment(medical_records_inquiry_screen);
-
-            } else if (current_page instanceof Hospital_Search_Results_Screen) {
-
-                replaceFragment(main_screen);
-
-            } else if (current_page instanceof Hospital_Info_Screen) {
-
-                replaceFragment(hospital_search_results_screen);
-
-            } else if (current_page instanceof Reservation_Screen) {
-
-                replaceFragment(hospital_info_screen);
-
-            } else if (previous_page instanceof Login_Screen) {
-
-                replaceFragment(login_screen);
-
-            }
-        } else {
-            super.onBackPressed();
+            Log.d("페이지 상태", "\n교체 대상 : " + target.getClass().getSimpleName());
+            replaceFragment(target, false);
 
         }
 
+        if(false){
+            super.onBackPressed();
+        }
         return;
     }
 

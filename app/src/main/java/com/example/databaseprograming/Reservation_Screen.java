@@ -224,7 +224,7 @@ public class Reservation_Screen extends Fragment {
 
                             Toast.makeText(sc.getApplicationContext(), result.getDate() + " " + result.getTime() + " " + hospital_name.getText().toString() + " 예약되었습니다!", Toast.LENGTH_SHORT).show();
 
-                            sc.replaceFragment(new Hospital_Info_Screen());
+                            sc.replaceFragment(new Hospital_Info_Screen(), true);
                         } else {
                             //토큰에 문제가 생겼을 경우
                             //오류 정보를 받아오기

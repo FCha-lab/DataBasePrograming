@@ -73,7 +73,7 @@ public class Main_hospital_type_recyclerAdapter extends RecyclerView.Adapter<Mai
                 Fragment target = sc.getScreen(new Hospital_Search_Results_Screen());//프래그먼트 선언
                 target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
-                sc.replaceFragment(new Hospital_Search_Results_Screen());
+                sc.replaceFragment(new Hospital_Search_Results_Screen(), true);
 
             }
         });

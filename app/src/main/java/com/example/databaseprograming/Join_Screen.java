@@ -179,7 +179,7 @@ public class Join_Screen extends Fragment {
                             Log.d("통신 확인", "회원가입 확인 완료!!!!" + result.toString());
 
                             Toast.makeText(sc.getApplicationContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                            sc.replaceFragment(new Login_Screen());
+                            sc.replaceFragment(new Login_Screen(), true);
 
                         } else {
                             //오류 처리

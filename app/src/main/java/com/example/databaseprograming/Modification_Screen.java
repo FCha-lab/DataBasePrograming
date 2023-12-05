@@ -166,7 +166,7 @@ public class Modification_Screen extends Fragment {
                             Log.d("통신 확인", "회원정보 수정 완료!!!!" + result.toString());
 
                             Toast.makeText(sc.getApplicationContext(), "회원정보 수정이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                            sc.replaceFragment(new Main_Screen());
+                            sc.replaceFragment(new Main_Screen(), false);
 
                         } else {
                             //오류 처리
@@ -214,7 +214,7 @@ public class Modification_Screen extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(sc.getApplicationContext(), "로그아웃이 완료되었습니다!", Toast.LENGTH_SHORT).show();
                 sc.setToken(null);
-                sc.replaceFragment(new Main_Screen());
+                sc.replaceFragment(new Main_Screen(),false);
             }
         });
 

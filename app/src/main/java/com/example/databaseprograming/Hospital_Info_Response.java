@@ -38,6 +38,10 @@ public class Hospital_Info_Response {
     @SerializedName("breakTime")
     private String breakTime;
 
+    //병원 운영 상태
+    @SerializedName("hospitalStatus")
+    private String hospitalStatus;
+
     //병원 좋아요 수
     @SerializedName("likesCount")
     private int likesCount;
@@ -81,6 +85,10 @@ public class Hospital_Info_Response {
 
     public String getOperatingHours() {
         return operatingHours;
+    }
+
+    public String getHospitalStatus() {
+        return hospitalStatus;
     }
 
     public String getBreakTime() {

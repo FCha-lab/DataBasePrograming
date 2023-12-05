@@ -20,8 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -125,8 +123,7 @@ public class Hospital_Info_Screen extends Fragment {
                 Fragment target = sc.getScreen(new Reservation_Screen());//프래그먼트 선언
                 target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
-                sc.replaceFragment(new Reservation_Screen());
-                sc.replaceFragment(new Reservation_Screen());
+                sc.replaceFragment(new Reservation_Screen(), true);
             }
         });
 
@@ -208,22 +205,8 @@ public class Hospital_Info_Screen extends Fragment {
                             hospital_like.setImageResource(R.drawable.heart_empty);
                         }
 
-                        //운영중인지 영업 종료상태인지 확인
-                        String[] parts = result.getOperatingHours().split("~");
-                        LocalTime startTime = LocalTime.parse(parts[0], DateTimeFormatter.ofPattern("HH:mm"));
-                        LocalTime endTime = LocalTime.parse(parts[1], DateTimeFormatter.ofPattern("HH:mm"));
-
-                        LocalDateTime now = LocalDateTime.now();
-                        LocalTime currentTime = now.toLocalTime();
-
-                        // 현재 시간이 주어진 시간대에 속하는지 확인
-                        if (currentTime.isAfter(startTime) && currentTime.isBefore(endTime)) {
-                            //운영중인 경우
-                            opening_hour.setText("운영중");
-                        } else {
-                            //영업 종료인 경우
-                            opening_hour.setText("영업 종료");
-                        }
+                        //운영 상태 창 초기화
+                        opening_hour.setText(result.getHospitalStatus());
 
                         //리사이클러뷰 초기화
                         hDoctor_recycler = new Hospital_info_doctor_recyclerAdapter(result.getDoctors());

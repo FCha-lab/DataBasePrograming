@@ -84,7 +84,7 @@ public class Main_recommend_hospital_recyclerAdapter extends RecyclerView.Adapte
                     Fragment target = sc.getScreen(new Hospital_Info_Screen());//프래그먼트 선언
                     target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
-                    sc.replaceFragment(new Hospital_Info_Screen());
+                    sc.replaceFragment(new Hospital_Info_Screen(), true);
                 }
 
             }

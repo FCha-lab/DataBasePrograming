@@ -130,7 +130,7 @@ public class Login_Screen extends Fragment {
 
                             sc.setToken(token);
                             Toast.makeText(sc.getApplicationContext(), "로그인이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                            sc.replaceFragment(new Main_Screen());
+                            sc.replaceFragment(new Main_Screen(), false);
 
                         } else {
                             // 401 오류 처리
@@ -191,7 +191,7 @@ public class Login_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //회원가입 텍스트를 눌렀을 경우
-                sc.replaceFragment(new Join_Screen());
+                sc.replaceFragment(new Join_Screen(), true);
             }
         });
 

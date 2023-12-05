@@ -128,7 +128,7 @@ public class Main_Screen extends Fragment {
                 //회원의 토큰이 null인지 확인
                 if (sc.getToken() == null) {
                     //토큰이 없음, 로그인이 아예 안된 경우
-                    sc.replaceFragment(new Login_Screen());
+                    sc.replaceFragment(new Login_Screen(), true);
                 }
 
                 //만약 토큰이 있다면?
@@ -150,7 +150,7 @@ public class Main_Screen extends Fragment {
                 Fragment target = sc.getScreen(new Hospital_Search_Results_Screen());//프래그먼트 선언
                 target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
-                sc.replaceFragment(new Hospital_Search_Results_Screen());
+                sc.replaceFragment(new Hospital_Search_Results_Screen(), true);
 
             }
         });
@@ -159,14 +159,14 @@ public class Main_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //예약정보 이미지를 눌렀을 때
-                sc.replaceFragment(new Inquiry_of_Reservation_Information_Screen());
+                sc.replaceFragment(new Inquiry_of_Reservation_Information_Screen(), true);
             }
         });
 
         diagno_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sc.replaceFragment(new Medical_Records_Inquiry_Screen());
+                sc.replaceFragment(new Medical_Records_Inquiry_Screen(), true);
             }
         });
 
@@ -209,7 +209,7 @@ public class Main_Screen extends Fragment {
                 Fragment target = sc.getScreen(new Modification_Screen());//프래그먼트 선언
                 target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
-                sc.replaceFragment(new Modification_Screen());
+                sc.replaceFragment(new Modification_Screen(), true);
 
             } else {
                 //토큰에 문제가 생겼을 경우
@@ -239,7 +239,7 @@ public class Main_Screen extends Fragment {
                         Log.d("통신 확인", "오류 응답: " + errorObject.getStatus() + ", " + errorObject.getMessage());
                     }
                     sc.setToken(null);
-                    sc.replaceFragment(new Login_Screen());
+                    sc.replaceFragment(new Login_Screen(), true);
                 }
             }
         }
