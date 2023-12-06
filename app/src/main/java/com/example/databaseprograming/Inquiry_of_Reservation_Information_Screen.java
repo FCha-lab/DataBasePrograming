@@ -109,9 +109,9 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
     public void onResume() {
         super.onResume();
 
-        Inquiry_of_Reservation_Information_Retrofit_Interface inquiry_of_reservation_informaion_retrofit_Interface = inquiry_of_reservation_information_retrofit_client.getApiService(sc.getToken());
+        Inquiry_of_Reservation_Information_Retrofit_Interface inquiry_of_reservation_information_retrofit_interface = inquiry_of_reservation_information_retrofit_client.getApiService(sc.getToken());
 
-        inquiry_of_reservation_informaion_retrofit_Interface.getIOR().enqueue(new Callback<ArrayList<Inquiry_of_Reservation_Information_Response>>() {
+        inquiry_of_reservation_information_retrofit_interface.getIOR().enqueue(new Callback<ArrayList<Inquiry_of_Reservation_Information_Response>>() {
             @Override
             public void onResponse(Call<ArrayList<Inquiry_of_Reservation_Information_Response>> call, Response<ArrayList<Inquiry_of_Reservation_Information_Response>> response) {
                 //정상적인 통신이 진행될 경우
