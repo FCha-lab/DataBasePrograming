@@ -6,13 +6,13 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Hospital_Info_RetrofitClient {
-    private final String BASE_URL = "http://3.36.79.34:8080/hospitals/details/";
+public class Hospital_RetrofitClient {
+    private final String BASE_URL = "http://3.36.79.34:8080/hospitals/";
 
     private Retrofit retrofit;
 
-    public Hospital_Info_RetrofitInterface getApiService(String token) {
-        return getInstance(token).create(Hospital_Info_RetrofitInterface.class);
+    public Hospital_RetrofitInterface getApiService(String token) {
+        return getInstance(token).create(Hospital_RetrofitInterface.class);
     } // api 콜
 
     private Retrofit getInstance(String token) {

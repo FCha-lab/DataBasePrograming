@@ -49,8 +49,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
     private ImageView page_back;
 
     //서버 관련 변수 선언
-    private Hospital_Search_RetrofitClient hospital_search_retrofitClient;
-    private Main_Type_Search_RetrofitClient main_type_search_retrofitClient;
+    private Hospital_RetrofitClient hospital_retrofitClient;
     private Callback<ArrayList<Hospital_Search_Result>> search = new Callback<ArrayList<Hospital_Search_Result>>() {
         @Override
         public void onResponse(Call<ArrayList<Hospital_Search_Result>> call, Response<ArrayList<Hospital_Search_Result>> response) {
@@ -143,8 +142,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
 
 
         //서버 관련 변수 초기화
-        hospital_search_retrofitClient = new Hospital_Search_RetrofitClient();
-        main_type_search_retrofitClient = new Main_Type_Search_RetrofitClient();
+        hospital_retrofitClient = new Hospital_RetrofitClient();
 
         //리사이클러뷰 연결
         hsr_list = rootView.findViewById(R.id.hsr_recycle);
@@ -168,9 +166,9 @@ public class Hospital_Search_Results_Screen extends Fragment {
             @Override
             public void onClick(View v) {
                 //검색 버튼을 누를 경우
-                Hospital_Search_RetrofitInterface r1 = hospital_search_retrofitClient.getApiService();
+                Hospital_RetrofitInterface r1 = hospital_retrofitClient.getApiService(sc.getToken());
 
-                r1.getSearchResult(search_bar.getText().toString()).enqueue(search);
+                r1.getSearchResultByName(search_bar.getText().toString()).enqueue(search);
 
             }
         });
@@ -209,15 +207,15 @@ public class Hospital_Search_Results_Screen extends Fragment {
 
             if (isSearchBar) {
                 //만약 검색어를 통한 검색일 경우
-                Hospital_Search_RetrofitInterface r1 = hospital_search_retrofitClient.getApiService();
+                Hospital_RetrofitInterface r1 = hospital_retrofitClient.getApiService(sc.getToken());
 
-                r1.getSearchResult(searchInfo).enqueue(search);
+                r1.getSearchResultByName(searchInfo).enqueue(search);
 
             } else {
                 //만약 이미지 버튼(진료과목)을 통한 검색일 경우
-                Main_Type_Search_RetrofitInterface r1 = main_type_search_retrofitClient.getApiService();
+                Hospital_RetrofitInterface r1 = hospital_retrofitClient.getApiService(sc.getToken());
 
-                r1.getSearchResult(searchInfo).enqueue(new Callback<ArrayList<Hospital_Search_Result>>() {
+                r1.getSearchResultByDepartment(searchInfo).enqueue(new Callback<ArrayList<Hospital_Search_Result>>() {
                     @Override
                     public void onResponse(Call<ArrayList<Hospital_Search_Result>> call, Response<ArrayList<Hospital_Search_Result>> response) {
                         //정상적인 통신이 진행될 경우

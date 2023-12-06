@@ -61,7 +61,7 @@ public class Hospital_Info_Screen extends Fragment {
     private String hospital_id;
 
     //서버 관련 변수 선언
-    private Hospital_Info_RetrofitClient hospital_info_retrofitClient;
+    private Hospital_RetrofitClient hospital_retrofitClient;
 
     @Nullable
     @Override
@@ -95,7 +95,7 @@ public class Hospital_Info_Screen extends Fragment {
         page_back = rootView.findViewById(R.id.page_back);
 
         //서버 관련 변수 초기화
-        hospital_info_retrofitClient = new Hospital_Info_RetrofitClient();
+        hospital_retrofitClient = new Hospital_RetrofitClient();
 
 
         //버튼에 대한 리스너 등록
@@ -172,7 +172,7 @@ public class Hospital_Info_Screen extends Fragment {
         }
 
         if(hospital_id != null){
-            Hospital_Info_RetrofitInterface r1 = hospital_info_retrofitClient.getApiService(sc.getToken());
+            Hospital_RetrofitInterface r1 = hospital_retrofitClient.getApiService(sc.getToken());
 
             r1.getHospitalInfo(hospital_id).enqueue(new Callback<Hospital_Info_Response>() {
                 @Override

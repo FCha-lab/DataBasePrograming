@@ -61,7 +61,7 @@ public class Main_Screen extends Fragment {
 
     //서버 관련 변수 선언
     Users_RetrofitClient users_retrofitClient;
-    Main_Recommend_RetrofitClient main_recommend_retrofitClient;
+    Hospital_RetrofitClient hospital_retrofitClient;
 
 
     @Nullable
@@ -117,7 +117,7 @@ public class Main_Screen extends Fragment {
 
         //서버 관련 변수 초기화
         users_retrofitClient = new Users_RetrofitClient();
-        main_recommend_retrofitClient = new Main_Recommend_RetrofitClient();
+        hospital_retrofitClient = new Hospital_RetrofitClient();
 
 
         //버튼에 대한 리스너 등록
@@ -260,7 +260,7 @@ public class Main_Screen extends Fragment {
         search_bar.setText("");
 
         //top3 추천 병원 초기화
-        Main_Recommend_RetrofitInterface r1 = main_recommend_retrofitClient.getApiService();
+        Hospital_RetrofitInterface r1 = hospital_retrofitClient.getApiService(sc.getToken());
         r1.getTopH().enqueue(new Callback<ArrayList<Main_Recommend_Response>>() {
             @Override
             public void onResponse(Call<ArrayList<Main_Recommend_Response>> call, Response<ArrayList<Main_Recommend_Response>> response) {
