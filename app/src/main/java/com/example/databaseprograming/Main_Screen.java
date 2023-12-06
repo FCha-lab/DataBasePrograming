@@ -60,7 +60,7 @@ public class Main_Screen extends Fragment {
     ImageButton favorites;
 
     //서버 관련 변수 선언
-    Modification_Check_RetrofitClient modification_check_retrofitClient;
+    Users_RetrofitClient users_retrofitClient;
     Main_Recommend_RetrofitClient main_recommend_retrofitClient;
 
 
@@ -116,7 +116,7 @@ public class Main_Screen extends Fragment {
 //        favorites = rootView.findViewById(R.id.favorites);
 
         //서버 관련 변수 초기화
-        modification_check_retrofitClient = new Modification_Check_RetrofitClient();
+        users_retrofitClient = new Users_RetrofitClient();
         main_recommend_retrofitClient = new Main_Recommend_RetrofitClient();
 
 
@@ -133,7 +133,7 @@ public class Main_Screen extends Fragment {
 
                 //만약 토큰이 있다면?
 
-                Modification_Check_RetrofitInterface r1 = modification_check_retrofitClient.getApiService(sc.getToken());
+                Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
                 r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc));
 
             }

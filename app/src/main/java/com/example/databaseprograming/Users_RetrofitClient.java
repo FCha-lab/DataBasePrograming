@@ -6,13 +6,13 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Modification_Check_RetrofitClient {
-    private final String BASE_URL = "http://3.36.79.34:8080/users/me/";
+public class Users_RetrofitClient {
+    private final String BASE_URL = "http://3.36.79.34:8080/users/";
 
     private Retrofit retrofit;
 
-    public Modification_Check_RetrofitInterface getApiService(String token) {
-        return getInstance(token).create(Modification_Check_RetrofitInterface.class);
+    public Users_RetrofitInterface getApiService(String token) {
+        return getInstance(token).create(Users_RetrofitInterface.class);
     } // api 콜
 
     private Retrofit getInstance(String token) {
@@ -28,7 +28,6 @@ public class Modification_Check_RetrofitClient {
 
                     return chain.proceed(newRequest);
                 })
-
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)) // 이 부분이 네트워크 로깅을 활성화하는 부분
                 .build();
 

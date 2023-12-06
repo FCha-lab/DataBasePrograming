@@ -60,7 +60,7 @@ public class Modification_Screen extends Fragment {
     private TextView warning_pw;
 
     //서버 관련 변수 선언
-    Modification_Request_RetrofitClient modification_request_retrofitClient;
+    Users_RetrofitClient users_retrofitClient;
 
     @Nullable
     @Override
@@ -115,7 +115,7 @@ public class Modification_Screen extends Fragment {
         id_input.setEnabled(false);
 
         //서버 관련 변수 초기화
-        modification_request_retrofitClient = new Modification_Request_RetrofitClient();
+        users_retrofitClient = new Users_RetrofitClient();
 
         //버튼에 대한 리스너 등록
         page_back.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +131,7 @@ public class Modification_Screen extends Fragment {
             public void onClick(View view) {
                 //수정하기 버튼을 눌렀을 경우
 
-                Modification_Request_RetrofitInterface r1 = modification_request_retrofitClient.getApiService(sc.getToken());
+                Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
                 //입력된 정보를 담기
                 String pw = null;
                 String name = null;
@@ -212,9 +212,64 @@ public class Modification_Screen extends Fragment {
         logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(sc.getApplicationContext(), "로그아웃이 완료되었습니다!", Toast.LENGTH_SHORT).show();
-                sc.setToken(null);
-                sc.replaceFragment(new Main_Screen(),false);
+                //로그아웃 버튼을 눌렀을 경우
+
+                Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
+
+                r1.callLogout().enqueue(new Callback<Logout_Response>() {
+                    @Override
+                    public void onResponse(Call<Logout_Response> call, Response<Logout_Response> response) {
+                        //정상적인 통신이 진행될 경우
+                        Log.d("통신 확인", response.toString());
+                        if (response.isSuccessful() || response.body() != null) {
+                            Logout_Response result = response.body();
+                            Log.d("통신 확인", result.toString());
+
+                            Log.d("통신 확인", "로그아웃 완료!!!!" + result.toString());
+
+                            Toast.makeText(sc.getApplicationContext(), "로그아웃이 완료되었습니다!", Toast.LENGTH_SHORT).show();
+                            sc.setToken(null);
+                            sc.replaceFragment(new Main_Screen(),false);
+
+                        } else {
+                            //오류 처리
+                            Logout_Response errorObject = null;
+                            ResponseBody rb = response.errorBody();
+                            if (rb != null) {
+                                try {
+                                    // 오류 응답을 문자열로 읽어옴
+                                    String errorResponse = rb.string();
+
+                                    // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                                    Gson gson = new Gson();
+                                    errorObject = gson.fromJson(errorResponse, Logout_Response.class);
+
+                                    Log.d("통신 확인", "오류 응답: " + errorResponse);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    if (rb != null) {
+                                        rb.close(); // 반드시 닫아주어야 함
+                                    }
+                                }
+
+                                if (errorObject != null) {
+                                    // 오류 응답 처리
+                                    Log.d("통신 확인", "오류 응답: " + errorObject.toString());
+
+                                    Log.d("통신 확인", "오류 응답: " + errorObject.toString());
+                                    Toast.makeText(sc.getApplicationContext(), "로그아웃 실패!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Logout_Response> call, Throwable t) {
+                        //서버에 문제가 있을 경우
+                        Log.d("통신 확인", "onfailure 실패 ");
+                    }
+                });
             }
         });
 

@@ -47,7 +47,7 @@ public class Login_Screen extends Fragment {
     private TextView join;
 
     //서버 관련 변수 선언
-    private Login_RetrofitClient login_retrofitClient;
+    private Users_RetrofitClient users_retrofitClient;
 
     @Nullable
     @Override
@@ -74,6 +74,8 @@ public class Login_Screen extends Fragment {
         id_textview.setFilters(filter);
         pw_textview.setFilters(filter);
 
+        //서버 관련 변수 선언
+        users_retrofitClient = new Users_RetrofitClient();
 
         //버튼에 대한 리스너 등록
         show_pw_button.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +112,7 @@ public class Login_Screen extends Fragment {
                 Login_Request loginRequest = new Login_Request(id, pw);
 
                 //서버 관련 처리
-                Login_RetrofitInterface r1 = login_retrofitClient.getApiService();
+                Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
 
                 //통신 시도
                 r1.getLoginResponse(loginRequest).enqueue(new Callback<Login_Response>() {

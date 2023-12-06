@@ -56,8 +56,7 @@ public class Join_Screen extends Fragment {
     private ImageButton show_pw_button;
 
     //서버 관련 변수 선언
-    private Join_RetrofitClient join_retrofitClient;
-    private Join_Check_RetrofitClient join_check_retrofitClient;
+    private Users_RetrofitClient users_retrofitClient;
 
     //입력 관련 설명 textview 변수 선언
     private TextView warning_id;
@@ -119,8 +118,7 @@ public class Join_Screen extends Fragment {
         //페이지 필요 변수 초기화
 
         //서버 관련 처리
-        join_retrofitClient = new Join_RetrofitClient();
-        join_check_retrofitClient = new Join_Check_RetrofitClient();
+        users_retrofitClient = new Users_RetrofitClient();
 
         //버튼에 대한 리스너 등록
         page_back.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +138,7 @@ public class Join_Screen extends Fragment {
                     return;
                 }
 
-                Join_RetrofitInterface r1 = join_retrofitClient.getApiService();
+                Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
                 //입력된 회원가입 정보를 저장
                 String id = null;
                 String pw = null;
@@ -225,7 +223,7 @@ public class Join_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //중복 체크를 할 경우
-                Join_Check_RetrofitInterface r1 = join_check_retrofitClient.getApiService();
+                Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
 
                 r1.getDuplicationCheck(id_input.getText().toString()).enqueue(new Callback<Join_Duplication>() {
                     @Override
