@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Hospital_RetrofitClient {
-    private final String BASE_URL = "http://3.36.79.34:8080/hospitals/";
+    private final String BASE_URL = "http://3.36.79.34:8080/";
 
     private Retrofit retrofit;
 

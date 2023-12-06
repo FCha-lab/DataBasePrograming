@@ -66,7 +66,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
             } else {
                 //토큰에 문제가 생겼을 경우
                 //오류 정보를 받아오기
-                ArrayList<Hospital_Search_Result> errorObject = null;
+                Hospital_Search_Result errorObject = null;
                 ResponseBody rb = response.errorBody();
                 if (rb != null) {
                     try {
@@ -75,9 +75,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
 
                         // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
                         Gson gson = new Gson();
-                        Type listType = new TypeToken<ArrayList<Hospital_Search_Result>>() {
-                        }.getType();
-                        errorObject = gson.fromJson(errorResponse, listType);
+                        errorObject = gson.fromJson(errorResponse, Hospital_Search_Result.class);
 
 
                     } catch (IOException e) {
@@ -231,7 +229,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
                         } else {
                             //토큰에 문제가 생겼을 경우
                             //오류 정보를 받아오기
-                            ArrayList<Hospital_Search_Result> errorObject = null;
+                            Hospital_Search_Result errorObject = null;
                             ResponseBody rb = response.errorBody();
                             if (rb != null) {
                                 try {
@@ -240,9 +238,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
 
                                     // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
                                     Gson gson = new Gson();
-                                    Type listType = new TypeToken<ArrayList<Hospital_Search_Result>>() {
-                                    }.getType();
-                                    errorObject = gson.fromJson(errorResponse, listType);
+                                    errorObject = gson.fromJson(errorResponse, Hospital_Search_Result.class);
 
 
                                 } catch (IOException e) {
@@ -266,7 +262,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
                                     daemi.setAddress("입력 형식이 잘못되었습니다");
 
                                     item.add(daemi);
-                                    Toast.makeText(sc.getApplicationContext(), "status:"+errorObject.get(0).getStatus() + ", message:" + errorObject.get(0).getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(sc.getApplicationContext(), "status:" + errorObject.getStatus() + ", message:" + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
 
                                     hsrType_recycler = new Hospital_Search_Results_recyclerAdapter(item, sc);
                                     hsr_list.setAdapter(hsrType_recycler);

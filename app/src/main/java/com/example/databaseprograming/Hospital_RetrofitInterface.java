@@ -4,7 +4,10 @@ package com.example.databaseprograming;
 import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -25,6 +28,14 @@ public interface Hospital_RetrofitInterface {
     //상위 3개 병원 배너
     @GET("/hospitals/top")
     Call<ArrayList<Main_Recommend_Response>> getTopH();
+
+    //좋아요 추가
+    @POST("/likes/add")
+    Call<Like_Info> setLikeAdd(@Body Like_Info info);
+
+    //좋아요 취소
+    @DELETE("/likes/cancel/{info}")
+    Call<Like_Info> setLikeCancel(@Path("info") String info);
 
 
 }

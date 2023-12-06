@@ -103,12 +103,162 @@ public class Hospital_Info_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //좋아요 버튼을 눌렀을 때
+                if(hospital_id.equals(null)){
+                    Toast.makeText(sc.getApplicationContext(), "에러 : 병원 정보가 유실되었습니다. 페이지를 다시 열어주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 if (isHospitalLiked) {
                     //만약 이미 좋아요 상태라면?
-                    hospital_like.setImageResource(R.drawable.heart_empty);
+                    Hospital_RetrofitInterface r1 = hospital_retrofitClient.getApiService(sc.getToken());
+
+                    r1.setLikeCancel(hospital_id).enqueue(new Callback<Like_Info>() {
+                        @Override
+                        public void onResponse(Call<Like_Info> call, Response<Like_Info> response) {
+                            //정상적인 통신이 진행될 경우
+                            Log.d("통신 확인", response.toString());
+                            if (response.isSuccessful() || response.body() != null) {
+                                //정상적으로 토큰이 확인되었을 경우
+                                Like_Info result = (Like_Info) response.body();
+
+                                //좋아요 취소 수행
+                                like_count.setText(String.valueOf(result.getTotal()));
+                                hospital_like.setImageResource(R.drawable.heart_empty);
+                                isHospitalLiked = false;
+
+                            } else {
+                                //토큰에 문제가 생겼을 경우
+                                //오류 정보를 받아오기
+                                Like_Info errorObject = null;
+                                ResponseBody rb = response.errorBody();
+                                if (rb != null) {
+                                    try {
+                                        // 오류 응답을 문자열로 읽어옴
+                                        String errorResponse = rb.string();
+
+                                        // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                                        Gson gson = new Gson();
+                                        errorObject = gson.fromJson(errorResponse, Like_Info.class);
+
+
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        if (rb != null) {
+                                            rb.close(); // 반드시 닫아주어야 함
+                                        }
+                                    }
+
+                                    if (errorObject != null) {
+                                        // 오류 응답 처리
+
+                                        if (response.code() == 401) {
+                                            //로그인 관련 에러일 경우
+                                            if(errorObject.getError() == null){
+                                                Toast.makeText(sc.getApplicationContext(), "로그인 만료! 다시 로그인 해주세요! message:" + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                                sc.replaceFragment(new Login_Screen(), true);
+                                            }else{
+                                                Toast.makeText(sc.getApplicationContext(), errorObject.getError() + ", 로그인을 해주세요!", Toast.LENGTH_SHORT).show();
+                                                sc.replaceFragment(new Login_Screen(), true);
+                                            }
+
+                                        } else {
+                                            //기타 에러
+                                            Toast.makeText(sc.getApplicationContext(), "취소 실패 : 상태 번호 : " + errorObject.getStatus() + ", message : " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        Log.d("좋아요 통신 테스트", errorObject.getMessage());
+
+
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Like_Info> call, Throwable t) {
+                            //서버에 문제가 있을 경우
+                            Log.d("통신 확인", "onfailure 실패 ");
+                            Toast.makeText(sc.getApplicationContext(), "취소 실패 : 서버 상태를 확인해주세요", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 } else {
                     //만약 좋아요를 누르지 않은 상태였다면?
-                    hospital_like.setImageResource(R.drawable.heart_full);
+                    Hospital_RetrofitInterface r1 = hospital_retrofitClient.getApiService(sc.getToken());
+
+                    Like_Info info = new Like_Info();
+                    info.setHospitalId(hospital_id);
+
+                    r1.setLikeAdd(info).enqueue(new Callback<Like_Info>() {
+                        @Override
+                        public void onResponse(Call<Like_Info> call, Response<Like_Info> response) {
+                            //정상적인 통신이 진행될 경우
+                            Log.d("통신 확인", response.toString());
+                            if (response.isSuccessful() || response.body() != null) {
+                                //정상적으로 토큰이 확인되었을 경우
+                                Like_Info result = (Like_Info) response.body();
+
+                                //좋아요 취소 수행
+                                like_count.setText(String.valueOf(result.getTotal()));
+                                hospital_like.setImageResource(R.drawable.heart_full);
+                                isHospitalLiked = true;
+
+                            } else {
+                                //토큰에 문제가 생겼을 경우
+                                //오류 정보를 받아오기
+                                Like_Info errorObject = null;
+                                ResponseBody rb = response.errorBody();
+                                if (rb != null) {
+                                    try {
+                                        // 오류 응답을 문자열로 읽어옴
+                                        String errorResponse = rb.string();
+
+
+                                        Log.d("좋아요 통신 테스트", "errorbody : " + errorResponse);
+
+                                        // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                                        Gson gson = new Gson();
+                                        errorObject = gson.fromJson(errorResponse, Like_Info.class);
+
+
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    } finally {
+                                        if (rb != null) {
+                                            rb.close(); // 반드시 닫아주어야 함
+                                        }
+                                    }
+
+                                    if (errorObject != null) {
+                                        // 오류 응답 처리
+
+                                        if (response.code() == 401) {
+                                            //로그인 관련 에러일 경우
+                                            if(errorObject.getError() == null){
+                                                Toast.makeText(sc.getApplicationContext(), "로그인 만료! 다시 로그인 해주세요! message:" + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                                sc.replaceFragment(new Login_Screen(), true);
+                                            }else{
+                                                Toast.makeText(sc.getApplicationContext(), errorObject.getError() + ", 로그인을 해주세요!", Toast.LENGTH_SHORT).show();
+                                                sc.replaceFragment(new Login_Screen(), true);
+                                            }
+                                        } else {
+                                            //기타 에러
+                                            Toast.makeText(sc.getApplicationContext(), "좋아요 실패 : 상태 번호 : " + errorObject.getStatus() + ", message : " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        Log.d("좋아요 통신 테스트", errorObject.getMessage());
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Like_Info> call, Throwable t) {
+                            //서버에 문제가 있을 경우
+                            Log.d("통신 확인", "onfailure 실패 ");
+                            Toast.makeText(sc.getApplicationContext(), "좋아요 실패 : 서버 상태를 확인해주세요", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
         });
@@ -171,7 +321,7 @@ public class Hospital_Info_Screen extends Fragment {
             Toast.makeText(sc.getApplicationContext(), "병원 정보를 불러오는데 실패했습니다!", Toast.LENGTH_SHORT).show();
         }
 
-        if(hospital_id != null){
+        if (hospital_id != null) {
             Hospital_RetrofitInterface r1 = hospital_retrofitClient.getApiService(sc.getToken());
 
             r1.getHospitalInfo(hospital_id).enqueue(new Callback<Hospital_Info_Response>() {
@@ -240,7 +390,7 @@ public class Hospital_Info_Screen extends Fragment {
                                 hospital_type.setText("조회 에러");
                                 hospital_name.setText("해당 병원이 존재하지 않습니다");
 
-                                Toast.makeText(sc.getApplicationContext(), "조회 실패 : id-"+ errorObject.getHospitalId() + ", 해당 아이디에 대한 정보 - " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(sc.getApplicationContext(), "조회 실패 : id-" + errorObject.getHospitalId() + ", 해당 아이디에 대한 정보 - " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
 
                             }
                         }

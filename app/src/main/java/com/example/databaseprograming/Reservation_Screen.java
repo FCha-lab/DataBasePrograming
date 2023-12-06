@@ -254,8 +254,10 @@ public class Reservation_Screen extends Fragment {
                                     if(status == 401){
                                         if(errorObject.getError() == null){
                                             Toast.makeText(sc.getApplicationContext(), "로그인 만료! 다시 로그인 해주세요! message:" + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                            sc.replaceFragment(new Login_Screen(), true);
                                         }else{
                                             Toast.makeText(sc.getApplicationContext(), errorObject.getError() + ", 로그인을 해주세요!", Toast.LENGTH_SHORT).show();
+                                            sc.replaceFragment(new Login_Screen(), true);
                                         }
                                     }else{
                                         Toast.makeText(sc.getApplicationContext(), "status:"+errorObject.getStatus() +", message:" +errorObject.getMessage(), Toast.LENGTH_SHORT).show();
