@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,6 +48,69 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
     //서버 관련 변수 선언
     Inquiry_of_Reservation_Information_Retrofit_Client inquiry_of_reservation_information_retrofit_client;
 
+    //검색 기능
+    private Callback<ArrayList<Inquiry_of_Reservation_Information_Response>> search = new Callback<ArrayList<Inquiry_of_Reservation_Information_Response>>() {
+        @Override
+        public void onResponse(Call<ArrayList<Inquiry_of_Reservation_Information_Response>> call, Response<ArrayList<Inquiry_of_Reservation_Information_Response>> response) {
+            //정상적인 통신이 진행될 경우
+            Log.d("통신 확인", response.toString());
+            if (response.isSuccessful() || response.body() != null) {
+                //정상적으로 토큰이 확인되었을 경우
+                ArrayList<Inquiry_of_Reservation_Information_Response> result = (ArrayList<Inquiry_of_Reservation_Information_Response>) response.body();
+                Log.d("통신 확인", result.toString());
+
+                iorType_recycler = new Inquiry_of_Reservation_Information_recyclerAdapter(result, getContext(), sc);
+                ior_list.setAdapter(iorType_recycler);
+
+            } else {
+                //토큰에 문제가 생겼을 경우
+                //오류 정보를 받아오기
+                Inquiry_of_Reservation_Information_Response errorObject = null;
+                ResponseBody rb = response.errorBody();
+                if (rb != null) {
+                    try {
+                        // 오류 응답을 문자열로 읽어옴
+                        String errorResponse = rb.string();
+
+                        // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
+                        Gson gson = new Gson();
+                        errorObject = gson.fromJson(errorResponse, Inquiry_of_Reservation_Information_Response.class);
+
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (rb != null) {
+                            rb.close(); // 반드시 닫아주어야 함
+                        }
+                    }
+
+                    if (errorObject != null) {
+                        Toast.makeText(sc.getApplicationContext(), "병원명을 한글로 입력하여 주십시오", Toast.LENGTH_SHORT).show();
+                        // 오류 응답 처리
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ArrayList<Inquiry_of_Reservation_Information_Response>> call, Throwable t) {
+            //서버에 문제가 있을 경우
+            Log.d("통신 확인", "onfailure 실패 ");
+            ArrayList<Inquiry_of_Reservation_Information_Response> item = new ArrayList<>();
+            Inquiry_of_Reservation_Information_Response daemi = new Inquiry_of_Reservation_Information_Response();
+            daemi.setStatus("오류");
+            daemi.setHospitalName("Error");
+            daemi.setHospitalAddress("Error");
+            daemi.setDate("서버에 문제가 발생했습니다.");
+            daemi.setTime("서버에 문제가 발생했습니다.");
+
+            item.add(daemi);
+
+            iorType_recycler = new Inquiry_of_Reservation_Information_recyclerAdapter(item, getContext(), sc);
+            ior_list.setAdapter(iorType_recycler);
+        }
+    };
     public Inquiry_of_Reservation_Information_Screen(){
 
     }
@@ -79,7 +143,11 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
         //버튼에 대한 리스너 등록
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
+                //검색 버튼을 누를 경우
+                Inquiry_of_Reservation_Information_Retrofit_Interface r1 = inquiry_of_reservation_information_retrofit_client.getApiService(sc.getToken());
+
+                r1.getSearchResultByName(search_bar.getText().toString()).enqueue(search);
 
             }
         });
@@ -88,19 +156,10 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
         page_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 sc.onBackPressed();
             }
         });
-
-//        reserve_info.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                //예약정보 이미지를 눌렀을 때
-//                sc.replaceFragment(sc.getScreen(new Reservation_Screen()));
-//
-//            }
-//        });
-
 
         return rootView;
     }
@@ -108,6 +167,9 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        //검색창 초기화
+        search_bar.setText("");
 
         Inquiry_of_Reservation_Information_Retrofit_Interface inquiry_of_reservation_information_retrofit_interface = inquiry_of_reservation_information_retrofit_client.getApiService(sc.getToken());
 
@@ -119,7 +181,7 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
                 if (response.isSuccessful() || response.body() != null) {
                     ArrayList<Inquiry_of_Reservation_Information_Response> ior = response.body();
 
-                    iorType_recycler = new Inquiry_of_Reservation_Information_recyclerAdapter(ior, getContext());
+                    iorType_recycler = new Inquiry_of_Reservation_Information_recyclerAdapter(ior, getContext(),sc);
                     ior_list.setAdapter(iorType_recycler);
                 } else {
                     // 오류 처리

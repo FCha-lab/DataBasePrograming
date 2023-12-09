@@ -62,6 +62,7 @@ public class Main_Screen extends Fragment {
     //서버 관련 변수 선언
     Users_RetrofitClient users_retrofitClient;
     Hospital_RetrofitClient hospital_retrofitClient;
+    private boolean isLogin;
 
 
     @Nullable
@@ -118,6 +119,7 @@ public class Main_Screen extends Fragment {
         //서버 관련 변수 초기화
         users_retrofitClient = new Users_RetrofitClient();
         hospital_retrofitClient = new Hospital_RetrofitClient();
+        isLogin = false;
 
 
         //버튼에 대한 리스너 등록
@@ -135,6 +137,10 @@ public class Main_Screen extends Fragment {
 
                 Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
                 r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc));
+                if(isLogin){
+                    isLogin = false;
+                    sc.replaceFragment(new Modification_Screen(), true);
+                }
 
             }
         });
@@ -159,14 +165,38 @@ public class Main_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //예약정보 이미지를 눌렀을 때
-                sc.replaceFragment(new Inquiry_of_Reservation_Information_Screen(), true);
+                if (sc.getToken() == null) {
+                    //토큰이 없음, 로그인이 아예 안된 경우
+                    sc.replaceFragment(new Login_Screen(), true);
+                }
+
+                //만약 토큰이 있다면?
+
+                Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
+                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc));
+                if(isLogin){
+                    isLogin = false;
+                    sc.replaceFragment(new Inquiry_of_Reservation_Information_Screen(), true);
+                }
             }
         });
 
         diagno_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                sc.replaceFragment(new Medical_Records_Inquiry_Screen(), true);
+                if (sc.getToken() == null) {
+                    //토큰이 없음, 로그인이 아예 안된 경우
+                    sc.replaceFragment(new Login_Screen(), true);
+                }
+
+                //만약 토큰이 있다면?
+
+                Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
+                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc));
+                if(isLogin){
+                    isLogin = false;
+                    sc.replaceFragment(new Medical_Records_Inquiry_Screen(), true);
+                }
             }
         });
 
@@ -209,7 +239,7 @@ public class Main_Screen extends Fragment {
                 Fragment target = sc.getScreen(new Modification_Screen());//프래그먼트 선언
                 target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
-                sc.replaceFragment(new Modification_Screen(), true);
+                isLogin = true;
 
             } else {
                 //토큰에 문제가 생겼을 경우
@@ -239,6 +269,7 @@ public class Main_Screen extends Fragment {
                         Log.d("통신 확인", "오류 응답: " + errorObject.getStatus() + ", " + errorObject.getMessage());
                     }
                     sc.setToken(null);
+                    Toast.makeText(sc.getApplicationContext(), "로그인 후 이용할 수 있습니다!", Toast.LENGTH_SHORT).show();
                     sc.replaceFragment(new Login_Screen(), true);
                 }
             }

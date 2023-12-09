@@ -7,7 +7,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Medical_Records_Inquiry_Retrofit_Client {
-    private static final String BASE_URL = "http://3.36.79.34:8080/records/search/";
+    private static final String BASE_URL = "http://3.36.79.34:8080/records/";
 
     private Retrofit retrofit;
 

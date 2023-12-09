@@ -16,6 +16,8 @@ import android.content.DialogInterface;
 public class Inquiry_of_Reservation_Information_recyclerAdapter extends RecyclerView.Adapter<Inquiry_of_Reservation_Information_recyclerAdapter.ViewHolder>{
 
 
+    private Screen_controller sc;
+
     private ArrayList<Inquiry_of_Reservation_Information_Response> ior;
 
     private Context context;
@@ -44,10 +46,10 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
 
     }
 
-    Inquiry_of_Reservation_Information_recyclerAdapter(ArrayList<Inquiry_of_Reservation_Information_Response> ior, Context context) {
-
+    Inquiry_of_Reservation_Information_recyclerAdapter(ArrayList<Inquiry_of_Reservation_Information_Response> ior, Context context, Screen_controller sc) {
         this.ior = ior;
         this.context = context;
+        this.sc = sc;
     }
 
     // onCreateViewHolder() - 아이템 뷰를 위한 뷰홀더 객체 생성하여 리턴.
@@ -73,19 +75,13 @@ public class Inquiry_of_Reservation_Information_recyclerAdapter extends Recycler
         holder.textView4.setText(target.getDate());
         holder.textView5.setText(target.getTime());
 
-        holder.textView1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        holder.textView1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                sc.replaceFragment(new Medical_Records_Screen(), true);
+//            }
+//        });
 
-            }
-        });
-
-        holder.textView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         holder.imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override

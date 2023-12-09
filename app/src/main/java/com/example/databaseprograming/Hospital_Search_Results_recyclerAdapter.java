@@ -24,7 +24,6 @@ public class Hospital_Search_Results_recyclerAdapter extends RecyclerView.Adapte
 
     private Screen_controller sc;
 
-
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView1;
@@ -36,7 +35,6 @@ public class Hospital_Search_Results_recyclerAdapter extends RecyclerView.Adapte
         ImageView imageView1;
 
         LinearLayout frame;
-
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -56,6 +54,7 @@ public class Hospital_Search_Results_recyclerAdapter extends RecyclerView.Adapte
     }
 
     Hospital_Search_Results_recyclerAdapter(ArrayList<Hospital_Search_Result> list, Screen_controller sc) {
+
         resultList = list;
 
         this.sc = sc;

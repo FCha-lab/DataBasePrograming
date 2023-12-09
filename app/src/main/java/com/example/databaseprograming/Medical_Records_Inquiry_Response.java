@@ -31,6 +31,8 @@ public class Medical_Records_Inquiry_Response {
     private String error;
 
 
+
+
     public int getRecordId() {
         return recordId;
     }
