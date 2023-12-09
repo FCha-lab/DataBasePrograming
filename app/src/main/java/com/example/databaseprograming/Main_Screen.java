@@ -116,6 +116,7 @@ public class Main_Screen extends Fragment {
         diagno_info = rootView.findViewById(R.id.diagno_info);
 //        favorites = rootView.findViewById(R.id.favorites);
 
+
         //서버 관련 변수 초기화
         users_retrofitClient = new Users_RetrofitClient();
         hospital_retrofitClient = new Hospital_RetrofitClient();
@@ -131,17 +132,13 @@ public class Main_Screen extends Fragment {
                 if (sc.getToken() == null) {
                     //토큰이 없음, 로그인이 아예 안된 경우
                     sc.replaceFragment(new Login_Screen(), true);
+                    return;
                 }
 
                 //만약 토큰이 있다면?
 
                 Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
-                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc));
-                if(isLogin){
-                    isLogin = false;
-                    sc.replaceFragment(new Modification_Screen(), true);
-                }
-
+                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc, new Modification_Screen()));
             }
         });
 
@@ -168,16 +165,16 @@ public class Main_Screen extends Fragment {
                 if (sc.getToken() == null) {
                     //토큰이 없음, 로그인이 아예 안된 경우
                     sc.replaceFragment(new Login_Screen(), true);
+                    return;
                 }
+
+                Log.d("루트 확인", "실행완료1");
 
                 //만약 토큰이 있다면?
-
                 Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
-                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc));
-                if(isLogin){
-                    isLogin = false;
-                    sc.replaceFragment(new Inquiry_of_Reservation_Information_Screen(), true);
-                }
+                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc, new Inquiry_of_Reservation_Information_Screen()));
+                Log.d("루트 확인", "실행완료2 " + String.valueOf(isLogin));
+
             }
         });
 
@@ -187,16 +184,14 @@ public class Main_Screen extends Fragment {
                 if (sc.getToken() == null) {
                     //토큰이 없음, 로그인이 아예 안된 경우
                     sc.replaceFragment(new Login_Screen(), true);
+                    return;
                 }
 
                 //만약 토큰이 있다면?
 
                 Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
-                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc));
-                if(isLogin){
-                    isLogin = false;
-                    sc.replaceFragment(new Medical_Records_Inquiry_Screen(), true);
-                }
+                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc, new Medical_Records_Inquiry_Screen()));
+
             }
         });
 
@@ -214,9 +209,11 @@ public class Main_Screen extends Fragment {
     private class SetCallback<T> implements Callback<T> {
 
         Screen_controller sc;
+        Fragment target;
 
-        private SetCallback(Screen_controller sc){
+        private SetCallback(Screen_controller sc, Fragment target){
             this.sc = sc;
+            this.target = target;
         }
 
         @Override
@@ -229,17 +226,20 @@ public class Main_Screen extends Fragment {
                 Log.d("통신 확인", result.toString());
                 Log.d("통신 확인", "토큰 확인" + result.toString());
 
+                //만약 회원정보 수정 화면으로의 전환이라면?
+                if(target instanceof Modification_Screen){
+                    //정보 전달
+                    Bundle bundle = new Bundle(); // 번들을 통해 값 전달
+                    //번들에 넘길 값 저장
+                    bundle.putString("userName", result.getUserName());
+                    bundle.putString("userId", result.getUserId());
+                    bundle.putString("phoneNumber", result.getPhoneNumber());
+                    bundle.putString("birthDate", result.getBirthDate());
+                    sc.getScreen(target).setArguments(bundle);
+                }
 
-                Bundle bundle = new Bundle(); // 번들을 통해 값 전달
-                //번들에 넘길 값 저장
-                bundle.putString("userName", result.getUserName());
-                bundle.putString("userId", result.getUserId());
-                bundle.putString("phoneNumber", result.getPhoneNumber());
-                bundle.putString("birthDate", result.getBirthDate());
-                Fragment target = sc.getScreen(new Modification_Screen());//프래그먼트 선언
-                target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
-
-                isLogin = true;
+                //target으로 화면 전환
+                sc.replaceFragment(target, true);
 
             } else {
                 //토큰에 문제가 생겼을 경우
