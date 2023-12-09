@@ -196,6 +196,10 @@ public class Hospital_Search_Results_Screen extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        
+        //검색창 초기화
+        search_bar.setText("");
+        
         if (getArguments() != null) {
             // 페이지에 검색어 정보가 있을 경우
             // 검색 정보 받아 넣기
