@@ -71,6 +71,7 @@ public class Medical_Records_Detail_Response {
     }
 
     public String getHospitalId() { return hospitalId; }
+
     public void setHospitalId(String hospitalId) { this.hospitalId = hospitalId; }
 
     public String getContent() {

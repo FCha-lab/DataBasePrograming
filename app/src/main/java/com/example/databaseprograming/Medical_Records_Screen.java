@@ -104,7 +104,7 @@ public class Medical_Records_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //좋아요 버튼을 눌렀을 때
-                if(hospital_id.equals(null)){
+                if(hospital_id == null){
                     Toast.makeText(sc.getApplicationContext(), "에러 : 병원 정보가 유실되었습니다. 페이지를 다시 열어주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -294,6 +294,8 @@ public class Medical_Records_Screen extends Fragment {
         //페이지 내 처리 변수 초기화
         isHospitalLiked = false;
 
+        hospital_id = null;
+
         record_id = 0;
 
         //페이지 열람시 전송된 정보 저장하기
@@ -306,6 +308,8 @@ public class Medical_Records_Screen extends Fragment {
             // 페이지에 검색어 정보가 없을 경우
             Toast.makeText(sc.getApplicationContext(), "진료 기록을 불러오는데 실패했습니다!", Toast.LENGTH_SHORT).show();
         }
+
+        Log.d("레코드 아이디 검사", String.valueOf(record_id) + hospital_id);
 
         if(record_id != 0){
             Medical_Records_Inquiry_Retrofit_Interface r1 = medical_records_inquiry_retrofit_client.getApiService(sc.getToken());
@@ -330,6 +334,9 @@ public class Medical_Records_Screen extends Fragment {
                         hospital_doctor_name.setText(result.getDoctorName());
                         hospital_doctor_license.setText(result.getLicenseNumber());
                         doctor_opinion.setText(result.getContent());
+
+                        //병원 아이디
+                        hospital_id = result.getHospitalId();
 
                         //좋아요를 눌렀는지 확인
                         isHospitalLiked = result.isLikes();

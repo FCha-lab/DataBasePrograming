@@ -18,8 +18,8 @@ public class Inquiry_of_Reservation_Information_Response {
     private String time;
 
     //진료 상태
-    @SerializedName("status")
-    private String status;
+    @SerializedName("appointmentStatus")
+    private String appointmentStatus;
 
     //병원 아이디
     @SerializedName("hospitalId")
@@ -43,6 +43,9 @@ public class Inquiry_of_Reservation_Information_Response {
     @SerializedName("message")
     private String message;
 
+    @SerializedName("status")
+    private int status;
+
     public int getId() {
         return id;
     }
@@ -57,6 +60,14 @@ public class Inquiry_of_Reservation_Information_Response {
 
     public void setHospitalAddress(String hospitalAddress) {
         this.hospitalAddress = hospitalAddress;
+    }
+
+    public String getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public void setAppointmentStatus(String appointmentStatus) {
+        this.appointmentStatus = appointmentStatus;
     }
 
     public String getUserName() {
@@ -91,11 +102,11 @@ public class Inquiry_of_Reservation_Information_Response {
         this.hospitalId = hospitalId;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 

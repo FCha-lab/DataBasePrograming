@@ -48,9 +48,10 @@ public class Reservation_Screen extends Fragment {
     //페이지 관련 위젯 변수 선언
     private ImageView page_back;
     private String hospital_id;
+    private Calendar selectedDate = Calendar.getInstance();
 
     //서버 관련 변수 선언
-    private Reservation_Available_Time_RetrofitClient reservation_available_time_retrofitClient;
+    private Reservation_RetrofitClient reservation_available_time_retrofitClient;
     private Reservation_RetrofitClient reservation_retrofitClient;
     private retrofit2.Callback<Reservation_Available_Time_Response> check_time = new Callback<Reservation_Available_Time_Response>() {
         @Override
@@ -155,7 +156,7 @@ public class Reservation_Screen extends Fragment {
         hospital_name.setText("병원 이름");
 
         //서버 관련 변수 초기화
-        reservation_available_time_retrofitClient = new Reservation_Available_Time_RetrofitClient();
+        reservation_available_time_retrofitClient = new Reservation_RetrofitClient();
         reservation_retrofitClient = new Reservation_RetrofitClient();
 
 
@@ -198,12 +199,12 @@ public class Reservation_Screen extends Fragment {
                     return;
                 }
 
-                // 선택된 날짜로 Calendar 객체 생성
-                Calendar selectedDate = Calendar.getInstance();
-                selectedDate.setTimeInMillis(select_date.getDate());
+
                 // 날짜 포맷 지정
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 String date = sdf.format(selectedDate.getTime());
+
+                Log.d("시간 문제", date);
 
                 Reservation_Request body = new Reservation_Request();
                 body.setDate(date);
@@ -224,7 +225,7 @@ public class Reservation_Screen extends Fragment {
 
                             Toast.makeText(sc.getApplicationContext(), result.getDate() + " " + result.getTime() + " " + hospital_name.getText().toString() + " 예약되었습니다!", Toast.LENGTH_SHORT).show();
 
-                            sc.replaceFragment(new Hospital_Info_Screen(), true);
+                            sc.onBackPressed();
                         } else {
                             //토큰에 문제가 생겼을 경우
                             //오류 정보를 받아오기
@@ -295,7 +296,6 @@ public class Reservation_Screen extends Fragment {
                 }
 
                 // 선택된 날짜로 Calendar 객체 생성
-                Calendar selectedDate = Calendar.getInstance();
                 selectedDate.set(year, month, dayOfMonth);
 
                 // 날짜 포맷 지정
@@ -304,7 +304,7 @@ public class Reservation_Screen extends Fragment {
                 // 포맷된 날짜 문자열 가져오기
                 String date = sdf.format(selectedDate.getTime());
 
-                Reservation_Available_Time_RetrofitInterface r1 = reservation_available_time_retrofitClient.getApiService();
+                Reservation_RetrofitInterface r1 = reservation_available_time_retrofitClient.getApiService(sc.getToken());
 
                 r1.getAvailableTime(hospital_id, date).enqueue(check_time);
 
@@ -334,7 +334,7 @@ public class Reservation_Screen extends Fragment {
         }
 
         if(hospital_id != null){
-            Reservation_Available_Time_RetrofitInterface r1 = reservation_available_time_retrofitClient.getApiService();
+            Reservation_RetrofitInterface r1 = reservation_available_time_retrofitClient.getApiService(sc.getToken());
             // 선택된 날짜로 Calendar 객체 생성
             Calendar selectedDate = Calendar.getInstance();
             selectedDate.setTimeInMillis(select_date.getDate());

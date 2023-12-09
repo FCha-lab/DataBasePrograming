@@ -9,6 +9,10 @@ public class Medical_Records_Inquiry_Response {
     @SerializedName("recordId")
     private int recordId;
 
+    //병원 아이디
+    @SerializedName("hospitalId")
+    private String hospitalId;
+
     //진료기록 날짜
     @SerializedName("recordDate")
     private String recordDate;
@@ -40,6 +44,10 @@ public class Medical_Records_Inquiry_Response {
     public void setRecordId(int recordId) {
         this.recordId = recordId;
     }
+
+    public String getHospitalId() { return hospitalId; }
+
+    public void setHospitalId(String hospitalId) { this.hospitalId = hospitalId; }
 
     public String getRecordDate() {
         return recordDate;

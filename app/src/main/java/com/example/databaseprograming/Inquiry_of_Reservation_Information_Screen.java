@@ -46,7 +46,7 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
     private ImageView page_back;
 
     //서버 관련 변수 선언
-    Inquiry_of_Reservation_Information_Retrofit_Client inquiry_of_reservation_information_retrofit_client;
+    Reservation_RetrofitClient inquiry_of_reservation_information_retrofit_client;
 
     //검색 기능
     private Callback<ArrayList<Inquiry_of_Reservation_Information_Response>> search = new Callback<ArrayList<Inquiry_of_Reservation_Information_Response>>() {
@@ -99,7 +99,7 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
             Log.d("통신 확인", "onfailure 실패 ");
             ArrayList<Inquiry_of_Reservation_Information_Response> item = new ArrayList<>();
             Inquiry_of_Reservation_Information_Response daemi = new Inquiry_of_Reservation_Information_Response();
-            daemi.setStatus("오류");
+            daemi.setAppointmentStatus("오류");
             daemi.setHospitalName("Error");
             daemi.setHospitalAddress("Error");
             daemi.setDate("서버에 문제가 발생했습니다.");
@@ -138,14 +138,14 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
         page_back = rootView.findViewById(R.id.page_back);
 
         //서버 관련 변수 초기화
-        inquiry_of_reservation_information_retrofit_client = new Inquiry_of_Reservation_Information_Retrofit_Client();
+        inquiry_of_reservation_information_retrofit_client = new Reservation_RetrofitClient();
 
         //버튼에 대한 리스너 등록
         search_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //검색 버튼을 누를 경우
-                Inquiry_of_Reservation_Information_Retrofit_Interface r1 = inquiry_of_reservation_information_retrofit_client.getApiService(sc.getToken());
+                Reservation_RetrofitInterface r1 = inquiry_of_reservation_information_retrofit_client.getApiService(sc.getToken());
 
                 r1.getSearchResultByName(search_bar.getText().toString()).enqueue(search);
 
@@ -171,7 +171,7 @@ public class Inquiry_of_Reservation_Information_Screen extends Fragment {
         //검색창 초기화
         search_bar.setText("");
 
-        Inquiry_of_Reservation_Information_Retrofit_Interface inquiry_of_reservation_information_retrofit_interface = inquiry_of_reservation_information_retrofit_client.getApiService(sc.getToken());
+        Reservation_RetrofitInterface inquiry_of_reservation_information_retrofit_interface = inquiry_of_reservation_information_retrofit_client.getApiService(sc.getToken());
 
         inquiry_of_reservation_information_retrofit_interface.getIOR().enqueue(new Callback<ArrayList<Inquiry_of_Reservation_Information_Response>>() {
             @Override

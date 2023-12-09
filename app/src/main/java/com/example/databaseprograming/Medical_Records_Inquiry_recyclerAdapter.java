@@ -2,6 +2,7 @@ package com.example.databaseprograming;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,8 +76,8 @@ public class Medical_Records_Inquiry_recyclerAdapter extends RecyclerView.Adapte
                 Bundle bundle = new Bundle(); // 번들을 통해 값 전달
                 //번들에 넘길 값 저장
                 bundle.putInt("record_id", target.getRecordId());
-                Fragment target = sc.getScreen(new Medical_Records_Screen());//프래그먼트 선언
-                target.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
+                Fragment fragment = sc.getScreen(new Medical_Records_Screen());//프래그먼트 선언
+                fragment.setArguments(bundle);//번들을 프래그먼트로 보낼 준비
 
                 sc.replaceFragment(new Medical_Records_Screen(), true);
             }

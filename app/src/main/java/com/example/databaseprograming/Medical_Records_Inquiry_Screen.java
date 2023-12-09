@@ -33,7 +33,6 @@ import retrofit2.Response;
 
 public class Medical_Records_Inquiry_Screen extends Fragment {
 
-
     //Screen Controller 변수 선언
     private Screen_controller sc;
 
@@ -215,7 +214,8 @@ public class Medical_Records_Inquiry_Screen extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Medical_Records_Inquiry_Response>> call, Throwable t) {
-
+                //서버에 문제가 있을 경우
+                Log.d("통신 확인", "onfailure 실패 ");
             }
         });
     }
