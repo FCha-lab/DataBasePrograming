@@ -89,7 +89,6 @@ public class Main_Screen extends Fragment {
         );
 
 
-
         //리사이클러뷰 연결
         hospital_list = rootView.findViewById(R.id.hospital_type_recycle);
         recomend_list = rootView.findViewById(R.id.recomend_recycle);
@@ -138,7 +137,8 @@ public class Main_Screen extends Fragment {
                 //만약 토큰이 있다면?
 
                 Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
-                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc, new Modification_Screen()));
+                SetCallback<UserInfo_Response> scb = new SetCallback<>(sc, new Modification_Screen());
+                r1.getUserInfoResponse().enqueue(scb);
             }
         });
 
@@ -164,6 +164,7 @@ public class Main_Screen extends Fragment {
                 //예약정보 이미지를 눌렀을 때
                 if (sc.getToken() == null) {
                     //토큰이 없음, 로그인이 아예 안된 경우
+                    Toast.makeText(sc.getApplicationContext(), "로그인 후 이용할 수 있습니다!", Toast.LENGTH_SHORT).show();
                     sc.replaceFragment(new Login_Screen(), true);
                     return;
                 }
@@ -172,7 +173,8 @@ public class Main_Screen extends Fragment {
 
                 //만약 토큰이 있다면?
                 Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
-                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc, new Inquiry_of_Reservation_Information_Screen()));
+                SetCallback<UserInfo_Response> scb = new SetCallback<>(sc, new Inquiry_of_Reservation_Information_Screen());
+                r1.getUserInfoResponse().enqueue(scb);
                 Log.d("루트 확인", "실행완료2 " + String.valueOf(isLogin));
 
             }
@@ -183,6 +185,7 @@ public class Main_Screen extends Fragment {
             public void onClick(View view) {
                 if (sc.getToken() == null) {
                     //토큰이 없음, 로그인이 아예 안된 경우
+                    Toast.makeText(sc.getApplicationContext(), "로그인 후 이용할 수 있습니다!", Toast.LENGTH_SHORT).show();
                     sc.replaceFragment(new Login_Screen(), true);
                     return;
                 }
@@ -190,7 +193,8 @@ public class Main_Screen extends Fragment {
                 //만약 토큰이 있다면?
 
                 Users_RetrofitInterface r1 = users_retrofitClient.getApiService(sc.getToken());
-                r1.getUserInfoResponse().enqueue(new SetCallback<UserInfo_Response>(sc, new Medical_Records_Inquiry_Screen()));
+                SetCallback<UserInfo_Response> scb = new SetCallback<>(sc, new Medical_Records_Inquiry_Screen());
+                r1.getUserInfoResponse().enqueue(scb);
 
             }
         });
@@ -211,7 +215,7 @@ public class Main_Screen extends Fragment {
         Screen_controller sc;
         Fragment target;
 
-        private SetCallback(Screen_controller sc, Fragment target){
+        private SetCallback(Screen_controller sc, Fragment target) {
             this.sc = sc;
             this.target = target;
         }
@@ -227,7 +231,7 @@ public class Main_Screen extends Fragment {
                 Log.d("통신 확인", "토큰 확인" + result.toString());
 
                 //만약 회원정보 수정 화면으로의 전환이라면?
-                if(target instanceof Modification_Screen){
+                if (target instanceof Modification_Screen) {
                     //정보 전달
                     Bundle bundle = new Bundle(); // 번들을 통해 값 전달
                     //번들에 넘길 값 저장
@@ -270,6 +274,7 @@ public class Main_Screen extends Fragment {
                     }
                     sc.setToken(null);
                     Toast.makeText(sc.getApplicationContext(), "로그인 후 이용할 수 있습니다!", Toast.LENGTH_SHORT).show();
+
                     sc.replaceFragment(new Login_Screen(), true);
                 }
             }
@@ -286,7 +291,7 @@ public class Main_Screen extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        
+
         //검색창 초기화
         search_bar.setText("");
 
@@ -317,7 +322,8 @@ public class Main_Screen extends Fragment {
 
                             // Gson을 사용하여 JSON 문자열을 JsonObject로 파싱
                             Gson gson = new Gson();
-                            Type listType = new TypeToken<ArrayList<Main_Recommend_Response>>(){}.getType();
+                            Type listType = new TypeToken<ArrayList<Main_Recommend_Response>>() {
+                            }.getType();
                             errorObject = gson.fromJson(errorResponse, listType);
 
 
