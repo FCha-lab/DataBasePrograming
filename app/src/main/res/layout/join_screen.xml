@@ -148,7 +148,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:fontFamily="@font/pretendard_medium"
-                android:text="✓ 비밀번호를 입력해주세요"
+                android:text="✓ 비밀번호를 8자 이상 입력해주세요\n (영문자, 숫자, 특수문자만 가능)"
                 android:textColor="#FF6E65"
                 android:textSize="12dp" />
 

@@ -261,7 +261,7 @@ public class Reservation_Screen extends Fragment {
                                             sc.replaceFragment(new Login_Screen(), true);
                                         }
                                     }else{
-                                        Toast.makeText(sc.getApplicationContext(), "status:"+errorObject.getStatus() +", message:" +errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(sc.getApplicationContext(), "message : " +errorObject.getMessage(), Toast.LENGTH_SHORT).show();
                                     }
 
 

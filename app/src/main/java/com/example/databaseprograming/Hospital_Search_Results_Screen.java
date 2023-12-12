@@ -266,7 +266,7 @@ public class Hospital_Search_Results_Screen extends Fragment {
                                     daemi.setAddress("입력 형식이 잘못되었습니다");
 
                                     item.add(daemi);
-                                    Toast.makeText(sc.getApplicationContext(), "status:" + errorObject.getStatus() + ", message:" + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(sc.getApplicationContext(), "message:" + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
 
                                     hsrType_recycler = new Hospital_Search_Results_recyclerAdapter(item, sc);
                                     hsr_list.setAdapter(hsrType_recycler);

@@ -92,7 +92,21 @@ public class Join_Screen extends Fragment {
         warning_pw = rootView.findViewById(R.id.warning_pw);
 
         //공백 관련 필터 선언
+        InputFilter idFilter[] =  new InputFilter[]{
+                new InputFilter.LengthFilter(10),
+                new NoSpaceInputFilter()
+        };
+        InputFilter pwFilter[] =  new InputFilter[]{
+                new InputFilter.LengthFilter(20),
+                new NoSpaceInputFilter()
+        };
+
         InputFilter filter[] =  new InputFilter[]{
+                new NoSpaceInputFilter()
+        };
+
+        InputFilter[] firstPhoneFilters = new InputFilter[]{
+                new InputFilter.LengthFilter(3),
                 new NoSpaceInputFilter()
         };
         InputFilter[] phoneFilters = new InputFilter[]{
@@ -105,13 +119,13 @@ public class Join_Screen extends Fragment {
         };
 
         //필터 등록
-        id_input.setFilters(filter);
-        pw_input.setFilters(filter);
+        id_input.setFilters(idFilter);
+        pw_input.setFilters(pwFilter);
 
         name_input.setFilters(filter);
         birthday_input.setFilters(birthdayFilters);
 
-        first_phone_input.setFilters(phoneFilters);
+        first_phone_input.setFilters(firstPhoneFilters);
         middle_phone_input.setFilters(phoneFilters);
         last_phone_input.setFilters(phoneFilters);
 
@@ -149,7 +163,8 @@ public class Join_Screen extends Fragment {
                     id = id_input.getText().toString();
                     pw = pw_input.getText().toString();
                     name = name_input.getText().toString();
-                    birthday = birthday_input.getText().toString();
+                    birthday = birthday_input.getText().toString().substring(0,4) + "-" + birthday_input.getText().toString().substring(4,6) + "-" + birthday_input.getText().toString().substring(6,8);
+                    Log.d("생일 정보", birthday);
                     phoneNumber = first_phone_input.getText().toString() + "-" + middle_phone_input.getText().toString() + "-" + last_phone_input.getText().toString();
                 }catch(Exception e){
                     Toast.makeText(sc.getApplicationContext(), "정보 입력 상황을 다시 확인해주세요.", Toast.LENGTH_SHORT).show();
@@ -177,7 +192,7 @@ public class Join_Screen extends Fragment {
                             Log.d("통신 확인", "회원가입 확인 완료!!!!" + result.toString());
 
                             Toast.makeText(sc.getApplicationContext(), "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                            sc.replaceFragment(new Login_Screen(), true);
+                            sc.onBackPressed();
 
                         } else {
                             //오류 처리
@@ -205,7 +220,7 @@ public class Join_Screen extends Fragment {
                                     // 오류 응답 처리
                                     Log.d("통신 확인", "오류 응답: " + errorObject.toString());
                                 }
-                                Toast.makeText(sc.getApplicationContext(), errorObject.getStatus() + ", " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(sc.getApplicationContext(), errorObject.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -272,7 +287,7 @@ public class Join_Screen extends Fragment {
                                     // 오류 응답 처리
                                     Log.d("통신 확인", "오류 응답: " + errorObject.toString());
                                 }
-                                Toast.makeText(sc.getApplicationContext(), errorObject.getStatus() + ", " + errorObject.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(sc.getApplicationContext(), errorObject.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
                     }

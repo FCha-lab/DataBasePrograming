@@ -88,7 +88,17 @@ public class Modification_Screen extends Fragment {
         warning_pw = rootView.findViewById(R.id.warning_pw);
 
         //공백 관련 필터 선언
+        InputFilter pwFilter[] =  new InputFilter[]{
+                new InputFilter.LengthFilter(20),
+                new NoSpaceInputFilter()
+        };
+
         InputFilter filter[] =  new InputFilter[]{
+                new NoSpaceInputFilter()
+        };
+
+        InputFilter[] firstPhoneFilters = new InputFilter[]{
+                new InputFilter.LengthFilter(3),
                 new NoSpaceInputFilter()
         };
         InputFilter[] phoneFilters = new InputFilter[]{
@@ -101,13 +111,12 @@ public class Modification_Screen extends Fragment {
         };
 
         //필터 등록
-        id_input.setFilters(filter);
-        pw_input.setFilters(filter);
+        pw_input.setFilters(pwFilter);
 
         name_input.setFilters(filter);
         birthday_input.setFilters(birthdayFilters);
 
-        first_phone_input.setFilters(phoneFilters);
+        first_phone_input.setFilters(firstPhoneFilters);
         middle_phone_input.setFilters(phoneFilters);
         last_phone_input.setFilters(phoneFilters);
 
