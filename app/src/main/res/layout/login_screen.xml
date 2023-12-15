@@ -16,20 +16,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="8"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="240dp"
+            android:layout_height="140dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:fontWeight="900"
-            android:text="CapyBara"
-            android:textColor="#000000"
-            android:textSize="30dp"
-            android:textStyle="italic" />
+            android:src="@drawable/capybara_icon2" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -103,7 +97,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
 
 
             <TextView
