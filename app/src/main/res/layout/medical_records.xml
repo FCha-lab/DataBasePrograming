@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
         android:orientation="horizontal"
@@ -13,27 +13,25 @@
 
         <ImageButton
             android:id="@+id/page_back"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="#FFFFFF"
             android:src="@drawable/page_back_icon" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="15"
             android:fontFamily="@font/pretendard_semibold"
             android:gravity="center"
             android:text="진료 기록"
             android:textColor="#000000" />
-    </LinearLayout>
+    </FrameLayout>
 
     <View
         android:layout_width="wrap_content"
         android:layout_height="2dp"
         android:layout_marginBottom="30dp"
-        android:background="#D3D3D3" />
+        android:background="#f0f0f0" />
 
     <LinearLayout
         android:layout_width="match_parent"

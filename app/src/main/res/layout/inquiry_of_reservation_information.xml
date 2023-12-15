@@ -2,35 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
     android:background="#FFFFFF"
     android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:orientation="horizontal"
         >
 
         <ImageButton
             android:id="@+id/page_back"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:background="#FFFFFF"
             android:src="@drawable/page_back_icon" />
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="15"
             android:fontFamily="@font/pretendard_semibold"
             android:gravity="center"
             android:text="예약 정보"
             android:textColor="#000000" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,6 +46,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="44dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:background="@drawable/view_border"
         android:orientation="horizontal"
         >
@@ -84,6 +84,8 @@
         android:id="@+id/ior_recycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:layout_marginTop="20dp"/>
 
 
