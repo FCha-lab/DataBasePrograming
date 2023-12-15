@@ -314,6 +314,10 @@ public class Join_Screen extends Fragment {
                     show_pw_button.setImageResource(R.drawable.openedeye);
                     pw_input.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
+
+                // 입력 커서를 맨 오른쪽으로 이동
+                pw_input.setSelection(pw_input.getText().length());
+
                 //출처: https://gooners0304.tistory.com/entry/EditText-비밀번호-보이기숨기기 [괴발개발 개발새발:티스토리]
             }
         });

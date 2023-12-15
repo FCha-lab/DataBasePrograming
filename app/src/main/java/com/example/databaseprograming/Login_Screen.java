@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +37,8 @@ public class Login_Screen extends Fragment {
     private Screen_controller sc;
 
     //입력 관련 위젯 선언
-    private TextView id_textview;
-    private TextView pw_textview;
+    private EditText id_input;
+    private EditText pw_input;
     private ImageButton show_pw_button;
 
     //로그인 조작 관련 위젯 선언
@@ -56,8 +57,8 @@ public class Login_Screen extends Fragment {
         View rootView = inflater.inflate(R.layout.login_screen, container, false);
 
         //위젯을 연결
-        id_textview = rootView.findViewById(R.id.id_textview);
-        pw_textview = rootView.findViewById(R.id.pw_textview);
+        id_input = rootView.findViewById(R.id.id_textview);
+        pw_input = rootView.findViewById(R.id.pw_textview);
         show_pw_button = rootView.findViewById(R.id.show_pw_button);
 
         login_button = rootView.findViewById(R.id.login_button);
@@ -71,8 +72,8 @@ public class Login_Screen extends Fragment {
         };
 
         //필터 등록
-        id_textview.setFilters(filter);
-        pw_textview.setFilters(filter);
+        id_input.setFilters(filter);
+        pw_input.setFilters(filter);
 
         //서버 관련 변수 선언
         users_retrofitClient = new Users_RetrofitClient();
@@ -82,15 +83,19 @@ public class Login_Screen extends Fragment {
             @Override
             public void onClick(View view) {
                 //비밀번호 보이기 버튼 누르기
-                if (pw_textview.getTransformationMethod() == HideReturnsTransformationMethod.getInstance()) {
+                if (pw_input.getTransformationMethod() == HideReturnsTransformationMethod.getInstance()) {
                     //비밀번호 숨기기
                     show_pw_button.setImageResource(R.drawable.closedeye);
-                    pw_textview.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    pw_input.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 } else {
                     //비밀번호 보이기
                     show_pw_button.setImageResource(R.drawable.openedeye);
-                    pw_textview.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    pw_input.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
+
+                // 입력 커서를 맨 오른쪽으로 이동
+                pw_input.setSelection(pw_input.getText().length());
+
                 //출처: https://gooners0304.tistory.com/entry/EditText-비밀번호-보이기숨기기 [괴발개발 개발새발:티스토리]
             }
         });
@@ -101,8 +106,8 @@ public class Login_Screen extends Fragment {
             public void onClick(View view) {
                 //로그인 버튼을 눌렀다면?
                 //로그인 시도 정보를 객체로 저장
-                String id = id_textview.getText().toString();
-                String pw = pw_textview.getText().toString();
+                String id = id_input.getText().toString();
+                String pw = pw_input.getText().toString();
 
                 //공백 지우기
                 id = id.trim();
@@ -206,8 +211,8 @@ public class Login_Screen extends Fragment {
     public void onResume() {
         super.onResume();
 
-        id_textview.setText("");
-        pw_textview.setText("");
+        id_input.setText("");
+        pw_input.setText("");
     }
 
     //Screen Controller 초기화 및 메모리 해제
