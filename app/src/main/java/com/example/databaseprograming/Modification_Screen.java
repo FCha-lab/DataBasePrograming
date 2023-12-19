@@ -122,6 +122,7 @@ public class Modification_Screen extends Fragment {
 
         //페이지 필요 변수 초기화
         id_input.setEnabled(false);
+        birthday_input.setEnabled(false);
 
         //서버 관련 변수 초기화
         users_retrofitClient = new Users_RetrofitClient();
